@@ -113,7 +113,11 @@ npm install --save-dev @types/pg
 
 ## Implementation Roadmap
 
-- [ ] Phase 1: Board CRUD — types, db/pool, repository, service, controller, routes, tests
+- [x] Phase 1: Board CRUD — types, db/pool, repository, service, controller, routes, tests ✓
+
+**Status**: BUILD_COMPLETE - 2026-06-09
+**Test Results**: 18/18 tests passing
+**Code Review**: APPROVED
 
 ## Creative Phases
 
