@@ -4,6 +4,16 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-09 - TASK-003 Reflection
+
+### Extracted Patterns
+- **architecture** → amended `agent-rules/_learned/architecture.md` — Express middleware mount order (evidence count: 2)
+
+### Confirmed Rules
+- `testing-patterns.md` (app/server split): confirmed reused in TASK-003 CORS tests — pattern still valid
+
+---
+
 ## 2026-06-09 - TASK-002 Reflection
 
 ### Extracted Patterns
