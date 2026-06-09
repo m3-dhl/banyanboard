@@ -24,9 +24,10 @@
 
 ### Database
 - **Engine**: PostgreSQL 16-alpine
-- **Client**: `pg` (chosen for TASK-002; not yet installed)
-- **Migrations**: TBD (node-pg-migrate or SQL scripts)
+- **Client**: `pg` ^8.x (installed — TASK-002)
+- **Migrations**: SQL script files in `backend/src/db/migrations/` (e.g., `001_create_boards.sql`)
 - **Connection**: `DATABASE_URL` env var (`postgresql://postgres:postgres@db:5432/banyanboard`)
+- **Pool**: Singleton `pool` exported from `backend/src/db/pool.ts`
 
 ### Infrastructure
 - **Local Dev**: Docker Compose (`docker compose up` — single command startup)

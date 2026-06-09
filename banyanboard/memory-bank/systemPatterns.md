@@ -25,6 +25,11 @@
 
 **Current endpoints**:
 - `GET /health` → `{ status: "ok", timestamp: ISO-8601 }`
+- `GET /boards` → `Board[]`
+- `GET /boards/:id` → `Board` | 404
+- `POST /boards` → `Board` (201) | 400
+- `PATCH /boards/:id` → `Board` | 400 | 404
+- `DELETE /boards/:id` → 204 | 404
 
 ## Directory Structure
 
@@ -32,11 +37,24 @@
 backend/
 ├── src/
 │   ├── __tests__/           # Integration tests (supertest)
-│   │   └── health.test.ts
+│   │   ├── health.test.ts
+│   │   └── board.test.ts
 │   ├── controllers/         # Request handlers
-│   │   └── health.controller.ts
+│   │   ├── health.controller.ts
+│   │   └── board.controller.ts
+│   ├── db/                  # Database layer
+│   │   ├── pool.ts          # pg Pool singleton
+│   │   └── migrations/      # SQL DDL scripts
+│   │       └── 001_create_boards.sql
+│   ├── repositories/        # DB queries
+│   │   └── board.repository.ts
 │   ├── routes/              # Express routers
-│   │   └── health.routes.ts
+│   │   ├── health.routes.ts
+│   │   └── board.routes.ts
+│   ├── services/            # Business logic + validation
+│   │   └── board.service.ts
+│   ├── types/               # Shared TypeScript interfaces
+│   │   └── board.types.ts
 │   ├── app.ts               # Express factory (no HTTP listen)
 │   └── server.ts            # Entry point (listen on PORT)
 ├── dist/                    # Compiled output (git-ignored)
@@ -72,6 +90,27 @@ backend/
 ```typescript
 export function handlerName(req: Request, res: Response): void { ... }
 ```
+
+### Validation Error Pattern
+Services export `ValidationError extends Error` for domain validation failures. Controllers catch it and return 400:
+```typescript
+// service
+export class ValidationError extends Error { ... }
+function validateX(x: string): void { if (!x) throw new ValidationError('...'); }
+
+// controller
+} catch (err) {
+  if (err instanceof ValidationError) { res.status(400).json({ error: err.message }); return; }
+  res.status(500).json({ error: 'Internal server error' });
+}
+```
+
+### Repository Pattern
+Repositories use parameterized pg queries and map snake_case columns to camelCase via a `rowToX` helper:
+```typescript
+function rowToBoard(row: Record<string, unknown>): Board { ... }
+```
+All queries use `$1`, `$2` placeholders — no string interpolation.
 
 ## Testing Patterns
 
