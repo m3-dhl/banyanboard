@@ -13,13 +13,13 @@
 
 | Task ID | Date | Learnings Extracted | Rules Amended | Rules Created |
 |---------|------|--------------------:|-------------:|-------------:|
-| (none yet) | | | | |
+| TASK-001 | 2026-06-09 | 1 | 0 | 1 |
 
 ## Rule Effectiveness
 
 | File | Topics | Evidence Count | Priority | Last Updated |
 |------|--------|---------------:|:--------:|:------------:|
-| (none yet) | | | | |
+| testing-patterns.md | testing, express, backend | 1 | low | 2026-06-09 |
 
 ## Consolidation History
 
