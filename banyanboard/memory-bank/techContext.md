@@ -15,6 +15,7 @@
 - **Language**: TypeScript ^5.6.0 (target: ES2022, strict mode)
 - **Architecture**: Clean architecture — layered (routes → controllers → services → repositories)
 - **Config files**: `backend/tsconfig.json`, `backend/jest.config.ts`
+- **CORS**: `cors` ^2.x — configured via `backend/src/config/cors.ts`; env vars: `CORS_ALLOWED_ORIGINS`, `CORS_ALLOWED_METHODS`, `CORS_ALLOWED_HEADERS` (defaults: `*`, all methods, `Content-Type,Authorization`)
 
 ### Testing
 - **Framework**: Jest ^29.7.0 + Supertest ^7.0.0
