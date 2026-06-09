@@ -15,13 +15,14 @@
 |---------|------|--------------------:|-------------:|-------------:|
 | TASK-001 | 2026-06-09 | 1 | 0 | 1 |
 | TASK-002 | 2026-06-09 | 2 | 1 | 1 |
+| TASK-003 | 2026-06-09 | 1 | 1 | 0 |
 
 ## Rule Effectiveness
 
 | File | Topics | Evidence Count | Priority | Last Updated |
 |------|--------|---------------:|:--------:|:------------:|
 | testing-patterns.md | testing, express, backend | 2 | low | 2026-06-09 |
-| architecture.md | architecture, typescript, backend | 1 | low | 2026-06-09 |
+| architecture.md | architecture, error-handling, express, backend, middleware | 2 | low | 2026-06-09 |
 
 ## Consolidation History
 

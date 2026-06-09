@@ -106,11 +106,42 @@
 
 ---
 
+### 2026-06-09 — TASK-003 Phase 1: CORS Middleware (BUILD_COMPLETE)
+
+**Branch**: task/003-add-cors-configuration
+
+**Delivered**:
+- `backend/src/config/cors.ts` — `buildCorsOptions()` pure function, env-var driven
+- `backend/src/app.ts` (modified) — CORS mounted as first middleware
+- `backend/src/__tests__/cors.test.ts` — 4 integration tests (simple + preflight)
+- `backend/package.json` (modified) — added `cors@^2.8.6` + `@types/cors`
+
+**Test results**: 22/22 PASS (18 existing + 4 new)
+**Typecheck**: CLEAN
+**Code Review**: APPROVED, 0 blocking issues, Security PASS
+
+#### Reflection (Step 3)
+- Completed: 2026-06-09
+- Document: memory-bank/reflection/reflection-TASK-003.md
+- Task Quality: Excellent — all requirements met, 22/22 tests, zero rework
+- Ecosystem Effectiveness: Highly Effective — Level 1 workflow correctly scoped, testing-patterns learned rule directly reused
+
+---
+
 ## Task Archive: TASK-002
 
 **Task**: Board model + full CRUD endpoints + tests
 **Status**: ✅ ARCHIVED
 **Date**: 2026-06-09
 **Archive**: `memory-bank/archive/archive-TASK-002.md`
+
+---
+
+## Task Archive: TASK-003
+
+**Task**: Add CORS configuration (allowed origins, methods, headers)
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-09
+**Archive**: `memory-bank/archive/archive-TASK-003.md`
 
 ---
