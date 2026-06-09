@@ -136,3 +136,12 @@
 **Archive**: `memory-bank/archive/archive-TASK-002.md`
 
 ---
+
+## Task Archive: TASK-003
+
+**Task**: Add CORS configuration (allowed origins, methods, headers)
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-09
+**Archive**: `memory-bank/archive/archive-TASK-003.md`
+
+---
