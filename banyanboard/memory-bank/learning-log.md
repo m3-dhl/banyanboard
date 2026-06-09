@@ -15,6 +15,16 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-09 - Consolidation (during TASK-002 archive)
+
+- Files before: 2, Files after: 2
+- Merged: 0 files
+- Expired: 0 bullets (0 files deleted)
+- Promoted: 0 files (testing-patterns at evidence_count=2, threshold=3)
+- Pruned: 0 excess bullets
+
+---
+
 ## 2026-06-09 - TASK-001 Reflection
 
 ### Extracted Patterns

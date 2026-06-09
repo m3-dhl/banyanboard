@@ -67,3 +67,12 @@
 - Ecosystem Effectiveness: Highly Effective — TDD-first pipeline produced zero-rework build
 
 ---
+
+## Task Archive: TASK-002
+
+**Task**: Board model + full CRUD endpoints + tests
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-09
+**Archive**: `memory-bank/archive/archive-TASK-002.md`
+
+---
