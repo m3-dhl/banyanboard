@@ -10,37 +10,46 @@
 - **Build**: TBD (Vite recommended)
 
 ### Backend
-- **Runtime**: Node.js
-- **Framework**: Express
-- **Language**: TypeScript
-- **Architecture**: Clean architecture — simple layered approach (routes → controllers → services → repositories)
+- **Runtime**: Node.js 20-alpine
+- **Framework**: Express ^4.21.0
+- **Language**: TypeScript ^5.6.0 (target: ES2022, strict mode)
+- **Architecture**: Clean architecture — layered (routes → controllers → services → repositories)
+- **Config files**: `backend/tsconfig.json`, `backend/jest.config.ts`
+
+### Testing
+- **Framework**: Jest ^29.7.0 + Supertest ^7.0.0
+- **Runner**: ts-jest ^29.2.6
+- **Pattern**: `**/__tests__/**/*.test.ts`
+- **Approach**: Integration tests via supertest against app factory (no live server)
 
 ### Database
-- **Engine**: PostgreSQL
-- **Migrations**: TBD (node-pg-migrate or similar)
-- **ORM/Query builder**: TBD (pg / Drizzle / Knex)
+- **Engine**: PostgreSQL 16-alpine
+- **Client**: `pg` (chosen for TASK-002; not yet installed)
+- **Migrations**: TBD (node-pg-migrate or SQL scripts)
+- **Connection**: `DATABASE_URL` env var (`postgresql://postgres:postgres@db:5432/banyanboard`)
 
 ### Infrastructure
 - **Local Dev**: Docker Compose (`docker compose up` — single command startup)
-- **Services**: frontend container, backend container, postgres container
+- **Services**: backend container (port 3001), postgres container (port 5432)
+- **Dockerfile**: Multi-stage build — builder stage (tsc) + runner stage (prod deps only)
+- **Frontend**: Not yet scaffolded
 
 ## Development Commands
 
 ```bash
-# Start all services
-docker compose up
+# Docker (primary local dev)
+docker compose up            # Start backend + postgres
+docker compose up -d         # Background
+docker compose down          # Stop
+docker compose up --build    # Rebuild after code changes
 
-# Start in background
-docker compose up -d
-
-# Stop
-docker compose down
-
-# Rebuild after code changes
-docker compose up --build
+# npm (inside backend/ directory)
+npm run dev        # ts-node development server
+npm run build      # TypeScript compilation (tsc)
+npm start          # Run compiled dist/server.js
+npm test           # Run Jest test suite
+npm run typecheck  # tsc --noEmit (type check only)
 ```
-
-> Note: Commands to be confirmed once docker-compose.yml is created.
 
 ## Environment Setup
 

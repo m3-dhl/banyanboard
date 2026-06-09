@@ -12,6 +12,15 @@
 
 ## Key Functionality
 
+**MVP Scope (phased delivery):**
+
+| Phase | Feature | Status |
+|-------|---------|--------|
+| v0.1.0 — Foundation | Health check + project skeleton | ✅ Complete (TASK-001) |
+| next — Board CRUD | Board model: GET all, GET by id, POST, PATCH, DELETE | 🔄 In Progress (TASK-002) |
+| Future | Columns, Cards, Labels, Users, Auth, Drag-and-drop | Planned |
+
+**Target full feature set:**
 - Create and manage boards with customizable columns (To Do, In Progress, Done)
 - Create cards with title, description, due date, and labels
 - Drag-and-drop cards between columns
@@ -157,9 +166,15 @@
 
 ### APIs Provided
 
-| API | Purpose | Consumers |
-|-----|---------|-----------|
-| REST API (/api/v1) | CRUD for boards, columns, cards, users | React frontend |
+| Endpoint | Purpose | Status |
+|----------|---------|--------|
+| `GET /health` | Service health check | ✅ Implemented |
+| `GET /boards` | List all boards | 🔄 TASK-002 |
+| `POST /boards` | Create board | 🔄 TASK-002 |
+| `GET /boards/:id` | Get board by ID | 🔄 TASK-002 |
+| `PATCH /boards/:id` | Update board | 🔄 TASK-002 |
+| `DELETE /boards/:id` | Delete board | 🔄 TASK-002 |
+| Columns, Cards, Users API | Full CRUD | 📋 Future |
 
 ### Data Sources
 
@@ -208,6 +223,7 @@
 |------|--------|---------|
 | 2026-06-09 | banyan-init | Initial creation from placeholder |
 | 2026-06-09 | user | Populated with BanyanBoard product context |
+| 2026-06-09 | banyan-init refresh | Added MVP scope phasing; updated APIs Provided with implementation status |
 
 ## Last Refreshed
 

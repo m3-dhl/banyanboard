@@ -1,11 +1,11 @@
 # Product Roadmap
 
 ## Summary
-- **Total Features**: 1
+- **Total Features**: 3
 - **Released Versions**: 0
 - **Active Versions**: 0
 - **Planning Versions**: 1
-- **Backlog (next)**: 0
+- **Backlog (next)**: 2
 
 ---
 
@@ -22,11 +22,38 @@
 
 ### next (Backlog)
 - **Status**: planning
-- **Features**: None
+- **Features**:
+  - FEAT-002: Board CRUD Endpoints (complete) [Level 2]
+  - FEAT-003: Add Board CRUD API (planned) [Level 2]
 
 ---
 
 ## Features
+
+### FEAT-002: Board CRUD Endpoints
+- **Version**: next
+- **Status**: complete
+- **Priority**: high
+- **Complexity**: Level 2
+- **Description**: Create a Board model with full CRUD endpoints (GET all, GET by id, POST, PATCH, DELETE) and comprehensive tests. Includes pg integration, repository layer, service layer, controller, routes, and jest-mocked unit/integration tests.
+- **Linked Tasks**: TASK-002 (COMPLETE)
+- **Branch**: feature/FEAT-002-board-crud-endpoints
+- **Created**: 2026-06-09
+- **Completed**: 2026-06-09
+
+---
+
+### FEAT-003: Add Board CRUD API
+- **Version**: next
+- **Status**: planned
+- **Priority**: medium
+- **Complexity**: Level 2
+- **Description**: Add input validation and error handling to Board CRUD API endpoints with validation middleware, structured error responses, and comprehensive error scenarios.
+- **Linked Tasks**: None
+- **Branch**: feature/FEAT-003-add-board-crud-api
+- **Created**: 2026-06-09
+
+---
 
 ### FEAT-001: Project Foundation
 - **Version**: v0.1.0
