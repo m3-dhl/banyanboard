@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+backend/dist/
+
+# Environment files
+.env
+backend/.env
+
+# Docker volumes
+postgres_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+backend/coverage/
+
+# Logs
+*.log
+.claude-logs/
+
+# Session logs
+.agent-logs/sessions/
