@@ -10,6 +10,7 @@
 | Zero Over-Engineering | YAGNI: services/repositories added only when features need them |
 | Clean Container Patterns | Multi-stage Docker builds; health checks to prevent startup race conditions |
 | Observability Required | No bare `console.log` in production code; structured logging required before business logic |
+| Configuration as Code | All configuration via environment variables with sensible defaults; middleware configured via factory functions |
 
 ## Architecture Overview
 
@@ -38,7 +39,8 @@ backend/
 ├── src/
 │   ├── __tests__/           # Integration tests (supertest)
 │   │   ├── health.test.ts
-│   │   └── board.test.ts
+│   │   ├── board.test.ts
+│   │   └── cors.test.ts
 │   ├── controllers/         # Request handlers
 │   │   ├── health.controller.ts
 │   │   └── board.controller.ts
@@ -48,6 +50,8 @@ backend/
 │   │       └── 001_create_boards.sql
 │   ├── repositories/        # DB queries
 │   │   └── board.repository.ts
+│   ├── config/              # Environment-based configuration factories
+│   │   └── cors.ts          # buildCorsOptions() — parses CORS_* env vars
 │   ├── routes/              # Express routers
 │   │   ├── health.routes.ts
 │   │   └── board.routes.ts
@@ -84,7 +88,18 @@ backend/
 - `PORT` — HTTP listen port (default 3001)
 - `NODE_ENV` — `development` in Compose
 - `DATABASE_URL` — `postgresql://postgres:postgres@db:5432/banyanboard`
+- `CORS_ALLOWED_ORIGINS` — comma-separated origins (default: `*`)
+- `CORS_ALLOWED_METHODS` — comma-separated methods (default: `GET,HEAD,PUT,PATCH,POST,DELETE`)
+- `CORS_ALLOWED_HEADERS` — comma-separated headers (default: `Content-Type,Authorization`)
 - No hardcoded values in source; all config via `process.env`
+
+### Config Factory Pattern
+Config modules export factory functions that read env vars and return typed options objects:
+```typescript
+// src/config/cors.ts
+export function buildCorsOptions(): CorsOptions { ... }
+```
+Middleware wired in `app.ts` as `app.use(cors(buildCorsOptions()))`.
 
 ### Request Handler Signature
 ```typescript
@@ -135,6 +150,10 @@ describe('GET /endpoint', () => {
 
 **Current test coverage**:
 - `health.test.ts`: 3 tests (HTTP 200, `status: "ok"`, valid ISO timestamp)
+- `board.test.ts`: 18 tests — full CRUD (list, get by id, create, update, delete); mocked repository pattern
+- `cors.test.ts`: CORS preflight, simple requests, header validation
+
+**Total**: 22+ tests
 
 **What NOT to test**:
 - Docker Compose startup (manual smoke test)
@@ -143,4 +162,4 @@ describe('GET /endpoint', () => {
 
 ## Last Refreshed
 
-2026-06-09 — Updated after TASK-001 completion; patterns extracted from working implementation
+2026-06-15 — Updated after TASK-003 completion; added Config Factory pattern, CORS env vars, cors.test.ts, Configuration as Code principle

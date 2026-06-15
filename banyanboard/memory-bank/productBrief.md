@@ -17,7 +17,8 @@
 | Phase | Feature | Status |
 |-------|---------|--------|
 | v0.1.0 — Foundation | Health check + project skeleton | ✅ Complete (TASK-001) |
-| next — Board CRUD | Board model: GET all, GET by id, POST, PATCH, DELETE | 🔄 In Progress (TASK-002) |
+| v0.2.0 — Board CRUD | Board model: GET all, GET by id, POST, PATCH, DELETE | ✅ Complete (TASK-002) |
+| v0.3.0 — CORS | CORS middleware with env-var driven configuration | ✅ Complete (TASK-003) |
 | Future | Columns, Cards, Labels, Users, Auth, Drag-and-drop | Planned |
 
 **Target full feature set:**
@@ -110,6 +111,7 @@
 - **Compliance**: None required (self-hosted, no PII beyond usernames/emails)
 - **Data Classification**: Internal — no sensitive/regulated data
 - **Encryption**: HTTPS recommended for production; HTTP acceptable for local dev
+- **CORS Configuration**: Configurable via `CORS_ALLOWED_ORIGINS`, `CORS_ALLOWED_METHODS`, `CORS_ALLOWED_HEADERS`; defaults permissive for local dev, lockdown required for production
 
 ### Availability & Reliability
 
@@ -169,11 +171,11 @@
 | Endpoint | Purpose | Status |
 |----------|---------|--------|
 | `GET /health` | Service health check | ✅ Implemented |
-| `GET /boards` | List all boards | 🔄 TASK-002 |
-| `POST /boards` | Create board | 🔄 TASK-002 |
-| `GET /boards/:id` | Get board by ID | 🔄 TASK-002 |
-| `PATCH /boards/:id` | Update board | 🔄 TASK-002 |
-| `DELETE /boards/:id` | Delete board | 🔄 TASK-002 |
+| `GET /boards` | List all boards | ✅ Implemented |
+| `POST /boards` | Create board | ✅ Implemented |
+| `GET /boards/:id` | Get board by ID | ✅ Implemented |
+| `PATCH /boards/:id` | Update board | ✅ Implemented |
+| `DELETE /boards/:id` | Delete board | ✅ Implemented |
 | Columns, Cards, Users API | Full CRUD | 📋 Future |
 
 ### Data Sources
@@ -224,7 +226,8 @@
 | 2026-06-09 | banyan-init | Initial creation from placeholder |
 | 2026-06-09 | user | Populated with BanyanBoard product context |
 | 2026-06-09 | banyan-init refresh | Added MVP scope phasing; updated APIs Provided with implementation status |
+| 2026-06-15 | banyan-init refresh | Board CRUD (TASK-002) and CORS (TASK-003) marked complete; APIs Provided updated; CORS NFR added |
 
 ## Last Refreshed
 
-2026-06-09
+2026-06-15
