@@ -128,6 +128,21 @@
 
 ---
 
+### 2026-06-16 — TASK-004 Phase 1: JSON Error Handler Middleware (BUILD_COMPLETE)
+
+**Branch**: task/004-add-input-validation-middleware
+
+**Delivered**:
+- `backend/src/middleware/json-error.ts` — `jsonErrorHandler` ErrorRequestHandler; catches SyntaxError from express.json(), returns `{ error: string }` 400
+- `backend/src/app.ts` (modified) — jsonErrorHandler mounted after express.json(), before routes
+- `backend/src/__tests__/validation.test.ts` — 7 tests covering malformed JSON (2), valid pass-through (2), existing domain validation (3)
+
+**Test results**: 29/29 PASS (7 new + 22 existing)
+**Typecheck**: CLEAN (tsc --noEmit)
+**Code Review**: APPROVED, 0 blocking issues, Security PASS
+
+---
+
 ## Task Archive: TASK-002
 
 **Task**: Board model + full CRUD endpoints + tests
@@ -143,5 +158,14 @@
 **Status**: ✅ ARCHIVED
 **Date**: 2026-06-09
 **Archive**: `memory-bank/archive/archive-TASK-003.md`
+
+---
+
+## Task Archive: TASK-004
+
+**Task**: Add input validation middleware (required fields + malformed JSON)
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-16
+**Archive**: `memory-bank/archive/archive-TASK-004.md`
 
 ---

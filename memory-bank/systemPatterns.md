@@ -40,7 +40,8 @@ backend/
 │   ├── __tests__/           # Integration tests (supertest)
 │   │   ├── health.test.ts
 │   │   ├── board.test.ts
-│   │   └── cors.test.ts
+│   │   ├── cors.test.ts
+│   │   └── validation.test.ts
 │   ├── controllers/         # Request handlers
 │   │   ├── health.controller.ts
 │   │   └── board.controller.ts
@@ -52,6 +53,8 @@ backend/
 │   │   └── board.repository.ts
 │   ├── config/              # Environment-based configuration factories
 │   │   └── cors.ts          # buildCorsOptions() — parses CORS_* env vars
+│   ├── middleware/          # Express error-handling middleware
+│   │   └── json-error.ts
 │   ├── routes/              # Express routers
 │   │   ├── health.routes.ts
 │   │   └── board.routes.ts
@@ -120,6 +123,15 @@ function validateX(x: string): void { if (!x) throw new ValidationError('...'); 
 }
 ```
 
+### JSON Error Handler Pattern
+Express error-handling middleware (4-param `(err, req, res, next)` signature) placed in `src/middleware/json-error.ts`, registered in `app.ts` after `express.json()` and before routes. Intercepts `SyntaxError` parse failures from the body parser and returns a structured `{ error: string }` 400 response instead of crashing the request:
+```typescript
+export function jsonErrorHandler(err: Error, req: Request, res: Response, next: NextFunction): void {
+  if (err instanceof SyntaxError) { res.status(400).json({ error: err.message }); return; }
+  next(err);
+}
+```
+
 ### Repository Pattern
 Repositories use parameterized pg queries and map snake_case columns to camelCase via a `rowToX` helper:
 ```typescript
@@ -152,8 +164,9 @@ describe('GET /endpoint', () => {
 - `health.test.ts`: 3 tests (HTTP 200, `status: "ok"`, valid ISO timestamp)
 - `board.test.ts`: 18 tests — full CRUD (list, get by id, create, update, delete); mocked repository pattern
 - `cors.test.ts`: CORS preflight, simple requests, header validation
+- `validation.test.ts`: 7 tests — malformed JSON body returns 400, valid JSON proceeds normally
 
-**Total**: 22+ tests
+**Total**: 29 tests
 
 **What NOT to test**:
 - Docker Compose startup (manual smoke test)
@@ -162,4 +175,4 @@ describe('GET /endpoint', () => {
 
 ## Last Refreshed
 
-2026-06-15 — Updated after TASK-003 completion; added Config Factory pattern, CORS env vars, cors.test.ts, Configuration as Code principle
+2026-06-16 — Updated after TASK-004 completion; added middleware/ directory, JSON Error Handler pattern, validation.test.ts (29 total tests)

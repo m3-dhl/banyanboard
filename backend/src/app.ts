@@ -3,11 +3,13 @@ import cors from 'cors';
 import healthRouter from './routes/health.routes';
 import boardRouter from './routes/board.routes';
 import { buildCorsOptions } from './config/cors';
+import jsonErrorHandler from './middleware/json-error';
 
 const app = express();
 
 app.use(cors(buildCorsOptions()));
 app.use(express.json());
+app.use(jsonErrorHandler);
 app.use('/health', healthRouter);
 app.use('/boards', boardRouter);
 

@@ -70,7 +70,7 @@ Desarrollador → [Comando slash] → [Orchestrador] → [Sub-agentes] → [memo
 ### El memory-bank/ como fuente de verdad
 
 | Fichero / Directorio | Rol | Quién lo escribe |
-|---|---|---|
+| --- | --- | --- |
 | `tasks.md` | Registro central de tareas (tabla de referencia rápida) | Comandos banyan |
 | `tasks/TASK-XXX.md` | Plan completo + estado de ejecución en tiempo real | banyan-plan, banyan-build |
 | `roadmap.md` | Versiones, features y complejidad asignada | banyan-roadmap |
@@ -313,7 +313,7 @@ Extrae patrones automáticamente a `agent-rules/_learned/` organizados por tema.
 Cierra la tarea según la estrategia en `projectbrief.md`:
 
 | Estrategia | Qué hace | Cuándo usar |
-|---|---|---|
+| --- | --- | --- |
 | `local-merge` | Merge de rama feature a main en local | Repos sin CI/CD, proyectos personales |
 | `push-and-pr` | Push de la rama + crea PR automáticamente | Proyectos con revisión en equipo |
 
@@ -450,22 +450,22 @@ Verificación ad-hoc del código en cualquier momento. No requiere fase específ
 
 ## Referencia Rápida de Comandos
 
-| Comando | Nivel | Cuándo | Salida principal |
-|---|---|---|---|
-| `/banyan-init` | Todos | Primera vez; re-ejecutar para actualizar | `memory-bank/` completo |
-| `/banyan-task` | L1 | Bug fix, config, cambio simple sin planificación | `tasks.md` + `TASK-XXX.md` mínimo |
-| `/banyan-roadmap` | L2-L4 | Gestionar versiones y features | `roadmap.md` actualizado |
-| `/banyan-plan TASK-XXX` | L2-L4 | Antes de construir cualquier feature no trivial | `tasks/TASK-XXX.md` con plan completo |
-| `/banyan-creative TASK-XXX` | L3-L4 | Decisiones de arquitectura no obvias | `creative/TASK-XXX-*.md` |
-| `/banyan-build TASK-XXX` | Todos | Implementar una fase (repetir por fase) | Código en rama feature, commit |
-| `/banyan-uat TASK-XXX` | L2-L4 | Después del build, antes de archivar | Informe de hallazgos, spec E2E |
-| `/banyan-reflect TASK-XXX` | Todos | Después de completar todas las fases | `reflection/`, reglas en `_learned/` |
-| `/banyan-archive TASK-XXX` | Todos | Después de la reflexión | merge o PR, `archive/` |
-| `/banyan-verify TASK-XXX` | Ad-hoc | Verificación puntual en cualquier momento | Informe de verificación |
-| `/banyan-c4` | L3-L4 | Init en brownfield; antes de planning arquitectónico | `memory-bank/c4/` |
-| `/banyan-rules-index` | Ad-hoc | Después de crear/modificar `agent-rules/` | `agent-rules-index.md` |
-| `/banyan-uat-init` | Una vez | Config inicial de UAT | `memory-bank/uat-config.md` |
-| `/banyan-upgrade` | Mantenimiento | Al actualizar versión del plugin | `projectConfig.md` actualizado |
+| Comando | Nivel | Cuándo usarlo | Qué aporta al flujo | Salida principal |
+| --- | --- | --- | --- | --- |
+| `/banyan-init` | Todos | Primera vez en el proyecto; re-ejecutar al actualizar el plugin | Crea el `memory-bank/` vacío y configura permisos. Sin esto, ningún otro comando funciona | `memory-bank/` completo |
+| `/banyan-task` | L1 | Bug fix, config, cambio simple sin planificación previa | Registra la tarea y arranca directamente al build. Evita el overhead de plan+roadmap para cambios pequeños | `tasks.md` + `TASK-XXX.md` mínimo |
+| `/banyan-roadmap` | L2-L4 | Antes de planificar cualquier feature no trivial | Organiza el trabajo por versiones, evalúa complejidad y genera la rama git correcta. Es la fuente de verdad del producto | `roadmap.md` actualizado |
+| `/banyan-plan TASK-XXX` | L2-L4 | Después de crear la feature en el roadmap | Un agente lee el codebase real y redacta la spec completa (criterios, fases, tests). Tú la apruebas — es el contrato que el build ejecutará | `tasks/TASK-XXX.md` con plan completo |
+| `/banyan-creative TASK-XXX` | L3-L4 | Cuando hay varias soluciones viables y la decisión tiene impacto arquitectónico | Explora alternativas, compara trade-offs y documenta la opción elegida. Evita construir la solución equivocada | `creative/TASK-XXX-*.md` |
+| `/banyan-build TASK-XXX` | Todos | Implementar una fase (repetir por cada fase del plan) | Pipeline TDD completo: tests → código → typecheck → code review → actualización de memoria. Bloquea el commit si hay violaciones | Código en rama feature, commit |
+| `/banyan-uat TASK-XXX` | L2-L4 | Después del build, antes de archivar | Un agente actúa como usuario real en Chrome, recorre los journeys documentados y emite un informe de hallazgos categorizado por severidad. PASS genera spec E2E | Informe de hallazgos, spec E2E |
+| `/banyan-reflect TASK-XXX` | Todos | Después de completar todas las fases de build | Analiza la tarea completa, extrae patrones reutilizables y los guarda como reglas para tareas futuras. El sistema aprende de lo que funcionó | `reflection/`, reglas en `_learned/` |
+| `/banyan-archive TASK-XXX` | Todos | Después de la reflexión | Cierra la tarea: merge a main o PR según config del proyecto, consolida reglas aprendidas, limpia el entorno para la siguiente tarea | merge o PR, `archive/` |
+| `/banyan-verify TASK-XXX` | Ad-hoc | Verificación puntual en cualquier momento | Comprueba que el código implementado cumple los criterios de aceptación del plan, sin ejecutar el pipeline completo de build | Informe de verificación |
+| `/banyan-c4` | L3-L4 | Tras init en proyectos grandes; antes de planning arquitectónico | Genera documentación C4 (Code → Component → Container → Context) leyendo el codebase real. Da a los agentes un mapa preciso de la arquitectura | `memory-bank/c4/` |
+| `/banyan-rules-index` | Ad-hoc | Después de crear o modificar ficheros en `agent-rules/` | Regenera el índice que los agentes usan para cargar solo las reglas relevantes según los ficheros que tocan | `agent-rules-index.md` |
+| `/banyan-uat-init` | Una vez | Configuración inicial antes del primer `/banyan-uat` | Define la URL base, las personas de usuario y la estrategia de autenticación para los tests UAT | `memory-bank/uat-config.md` |
+| `/banyan-upgrade` | Mantenimiento | Al actualizar la versión del plugin | Migra el `memory-bank/` al esquema de la nueva versión sin perder el contexto acumulado | `projectConfig.md` actualizado |
 
 ### Estados de una tarea
 
@@ -482,6 +482,177 @@ REFLECTION_COMPLETE → ARCHIVE → COMPLETE
 ```
 
 > Los estados `BUILD` y `BUILD_COMPLETE` son los únicos que pueden repetirse — una vuelta por cada fase del plan. El resto son lineales.
+
+---
+
+## Flujos de Desarrollo en la Práctica
+
+Tres ejemplos reales del proyecto BanyanBoard. Cada caja es un comando ejecutado; las flechas son el orden; los rombos son decisiones humanas.
+
+---
+
+### Ejemplo L1 — Añadir middleware CORS
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-task "Añadir CORS con allowed origins y headers"   │
+│  → Registra TASK-003 en tasks.md. Rama: task/003-cors       │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-build TASK-003                                      │
+│  → Test Writer: 4 tests (simple request + preflight)        │
+│  → Coding Agent: buildCorsOptions() env-var driven          │
+│  → Test Runner: 22/22 PASS                                  │
+│  → Code Reviewer: APPROVED                                  │
+│  → Documentation Agent: actualiza techContext.md            │
+│  → Commit en rama task/003-cors                             │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+                   ◆ Revisión humana ◆
+                   ¿Resultado OK?
+                         ↓ SÍ
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-archive TASK-003                                    │
+│  → Merge a main (local-merge)                               │
+│  → Consolida reglas aprendidas                              │
+│  → TASK-003: COMPLETE                                       │
+└─────────────────────────────────────────────────────────────┘
+
+Duración típica: 1 comando de setup + 1 build + 1 archive. Sin roadmap, sin plan, sin creative.
+```
+
+---
+
+### Ejemplo L2 — Endpoints CRUD de boards
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-roadmap feature create "Board CRUD Endpoints"      │
+│  → Evalúa complejidad: L2                                   │
+│  → Crea FEAT-002 en roadmap.md. Rama: feature/FEAT-002-...  │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-plan TASK-002                                       │
+│  → Spec Writer lee codebase + productBrief.md               │
+│  → Redacta: 8 ACs, estrategia de tests, 1 fase de build     │
+│  → Escribe tasks/TASK-002.md                                │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+                   ◆ Revisión humana ◆
+                   ¿El plan es correcto?
+                         ↓ SÍ (aprobado)
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-build TASK-002                                      │
+│  → Test Writer: 18 tests (CRUD + validación + errores)      │
+│  → Coding Agent: repository + service + controller + routes │
+│  → Test Runner: 18/18 PASS                                  │
+│  → Code Reviewer: APPROVED, 0 blocking issues               │
+│  → Documentation Agent: actualiza techContext + patterns    │
+│  → Commit en rama feature/FEAT-002-board-crud-endpoints     │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+                   ◆ Revisión humana ◆
+                   ¿Una sola fase → todas COMPLETE?
+                         ↓ SÍ
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-reflect TASK-002                                    │
+│  → Analiza calidad e impacto del build                      │
+│  → Extrae 2 reglas a agent-rules/_learned/                  │
+│  → Escribe reflection/reflection-TASK-002.md                │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-archive TASK-002                                    │
+│  → Merge a main (local-merge)                               │
+│  → Escribe archive/archive-TASK-002.md                      │
+│  → TASK-002: COMPLETE                                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Ejemplo L3 — Sistema de notificaciones (multi-fase, con diseño)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-roadmap feature create "Sistema de notificaciones" │
+│  → Evalúa complejidad: L3                                   │
+│  → Crea FEAT-004. Rama: feature/FEAT-004-notifications      │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-plan TASK-004                                       │
+│  → Spec Writer: 3 fases (modelo, API, WebSocket real-time)  │
+│  → Escribe tasks/TASK-004.md con 3 fases de implementación  │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+                   ◆ Revisión humana ◆
+                         ↓ SÍ
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-creative TASK-004                                   │
+│  → Explora: polling vs WebSocket vs SSE                     │
+│  → Documenta decisión: WebSocket + justificación            │
+│  → Escribe creative/TASK-004-realtime-strategy.md           │
+└────────────────────────┬────────────────────────────────────┘
+                         ↓
+                   ◆ Revisión humana ◆
+                   ¿La decisión de diseño es correcta?
+                         ↓ SÍ
+                         │
+          ┌──────────────┘  BUCLE DE BUILD (3 fases)
+          │
+          ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-build TASK-004  ← FASE 1: modelo de datos          │
+│  → notifications table + migration + repository             │
+│  → 12 tests / 12 PASS → commit                             │
+└──────────────┬──────────────────────────────────────────────┘
+               ↓
+         ◆ Revisión humana ◆  →  ¿Quedan fases? SÍ
+               ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-build TASK-004  ← FASE 2: API REST                 │
+│  → service + controller + routes                            │
+│  → 20 tests / 20 PASS → commit                             │
+└──────────────┬──────────────────────────────────────────────┘
+               ↓
+         ◆ Revisión humana ◆  →  ¿Quedan fases? SÍ
+               ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-build TASK-004  ← FASE 3: WebSocket real-time      │
+│  → ws handler + integración con service                     │
+│  → 8 tests / 8 PASS → commit                               │
+└──────────────┬──────────────────────────────────────────────┘
+               ↓
+         ◆ Revisión humana ◆  →  ¿Quedan fases? NO → salir bucle
+               ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-uat TASK-004                                        │
+│  → Agente actúa como usuario en Chrome real                 │
+│  → Recorre journey: crear board → recibir notificación      │
+│  → Informe: 0 Required, 2 Recommended, 1 Optional           │
+│  → PASS → genera spec E2E                                   │
+└──────────────┬──────────────────────────────────────────────┘
+               ↓
+         ◆ Revisión humana ◆
+               ↓ SÍ
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-reflect TASK-004                                    │
+│  → 3 nuevas reglas extraídas a _learned/                    │
+│  → reflection/reflection-TASK-004.md                        │
+└──────────────┬──────────────────────────────────────────────┘
+               ↓
+┌─────────────────────────────────────────────────────────────┐
+│  /banyan-archive TASK-004                                    │
+│  → Merge a main + archive/archive-TASK-004.md               │
+│  → TASK-004: COMPLETE                                       │
+└─────────────────────────────────────────────────────────────┘
+
+El bucle de build es el núcleo de L3/L4. Cada iteración: un comando, un commit, una revisión humana.
+Condición de salida: todas las fases en tasks/TASK-004.md marcadas COMPLETE.
+```
 
 ---
 
