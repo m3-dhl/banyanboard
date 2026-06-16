@@ -181,6 +181,30 @@
 
 ---
 
+### 2026-06-16 — TASK-005 Phase 2: Drag-and-Drop Card Movement (PHASE_COMPLETE)
+
+**Branch**: feature/FEAT-004-simple-frontend-kanban-board
+**Commit**: 50c28b2
+
+**Delivered**:
+- `frontend/src/components/Board.tsx` (modified) — DragDropContext + onDragEnd handler
+- `frontend/src/components/Column.tsx` (modified) — Droppable render prop
+- `frontend/src/components/Card.tsx` (modified) — Draggable render prop + card--dragging CSS class
+- `frontend/src/__tests__/DnD.test.tsx` — 4 DnD-specific tests
+- `frontend/src/__tests__/Board.test.tsx` (modified) — updated with dnd mock
+- `frontend/src/__tests__/Column.test.tsx` (modified) — updated with dnd mock
+
+**Test results**: 12/12 PASS
+**Build**: tsc + vite build + eslint CLEAN
+
+#### Reflection (Step 3)
+- Completed: 2026-06-16
+- Document: memory-bank/reflection/reflection-TASK-005.md
+- Task Quality: Good — all 6 ACs met, 12/12 tests, clean TypeScript, 12-factor compliant
+- Ecosystem Effectiveness: Moderately Effective — Level 2 workflow correctly sized; UAT not run
+
+---
+
 ## Task Archive: TASK-004
 
 **Task**: Add input validation middleware (required fields + malformed JSON)

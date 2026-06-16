@@ -4,6 +4,20 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-16 - TASK-005 Reflection
+
+### Extracted Patterns
+- **testing-patterns** → amended `agent-rules/_learned/testing-patterns.md` — added @hello-pangea/dnd mock via captured onDragEnd closure (evidence count: 3)
+- **frontend-architecture** → created `agent-rules/_learned/frontend-architecture.md` — ColumnId string union for DnD cast (evidence count: 1)
+
+### Confirmed Rules
+- `testing-patterns.md` (resetAllMocks/fixture pattern): confirmed applicable via Vitest equivalent `vi.restoreAllMocks()` — broadened rule to cover both Jest and Vitest
+
+### systemPatterns.md Updates
+- None (component hierarchy and state pattern are too task-specific)
+
+---
+
 ## 2026-06-09 - TASK-003 Reflection
 
 ### Extracted Patterns
