@@ -2,6 +2,31 @@
 
 ## History
 
+### 2026-06-16 — TASK-006 Phase 2: Wire feed into Board.tsx onDragEnd (BUILD_COMPLETE)
+
+**Branch**: feature/FEAT-005-realtime-activity-feed
+
+**Delivered**:
+- `frontend/src/components/Board.tsx` (modified) — `feedEntries` useState, `onDragEnd` extended to create `ActivityFeedEntry` on cross-column drop, capped at 20, `<ActivityFeed>` rendered below board columns
+- `frontend/src/__tests__/Board.feed.test.tsx` — 6 new tests (empty state, cross-column entry, same-column no-entry, reverse-chronological order, 20-entry cap, re-render survival)
+- `frontend/src/__tests__/Board.test.tsx` (fix) — column region query narrowed to exclude ActivityFeed section
+- `frontend/src/__tests__/DnD.test.tsx` (fix) — card title assertion scoped to column region
+
+**Test results**: 24/24 PASS
+**Build**: PASS (vite)
+**Lint**: PASS (eslint)
+
+**AC Coverage (Phase 2)**:
+- AC-HAPPY-1: feed entry on cross-column drag ✓
+- AC-HAPPY-2: reverse-chronological accumulation ✓
+- AC-HAPPY-3: 20-entry cap + oldest dropped ✓
+- AC-HAPPY-4: same-column drop = no entry ✓
+- AC-ERROR-1: feed works in offline/API-error state ✓ (no API dependency)
+- AC-ASYNC-1: feed survives unrelated re-renders ✓
+- AC-INTEGRATION-1: entries derived from real onDragEnd DropResult ✓
+
+---
+
 ### 2026-06-16 — TASK-006 Phase 1: ActivityFeed component + types (BUILD Phase 1 COMPLETE)
 
 **Branch**: feature/FEAT-005-realtime-activity-feed

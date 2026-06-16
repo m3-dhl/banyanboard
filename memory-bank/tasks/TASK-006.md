@@ -179,7 +179,7 @@ This spec defaults to Option A. If the user prefers Option B, the implementation
 ## Implementation Roadmap
 
 - [x] Phase 1: ActivityFeed component + types (ActivityFeedEntry type, ActivityFeed component, empty state, entry rendering, 20-entry cap logic)
-- [ ] Phase 2: Wire feed into Board.tsx onDragEnd (extend onDragEnd from TASK-005 Phase 2, prepend entry on cross-column drop, integrate ActivityFeed render into Board layout)
+- [x] Phase 2: Wire feed into Board.tsx onDragEnd (extend onDragEnd from TASK-005 Phase 2, prepend entry on cross-column drop, integrate ActivityFeed render into Board layout)
 
 ## Creative Phases
 
@@ -195,10 +195,14 @@ This spec defaults to Option A. If the user prefers Option B, the implementation
 **Phase Number**: 1 of 2
 **Is Multi-Phase**: YES
 
+**Build Status**: COMPLETE
+**Current Build**: Phase 2: Wire feed into Board.tsx onDragEnd (TASK-006)
+**Phase Number**: 2 of 2
+
 ### Current Build Step
-**Step**: Step 11 - Git Commit
-**Status**: RUNNING
-**Started**: 2026-06-16
+**Step**: PHASE 2 COMPLETE — all phases done
+**Status**: COMPLETE
+**Completed**: 2026-06-16
 
 ### Completed Steps (Build)
 - Step 0.5 Git Setup: COMPLETE (2026-06-16) — branch feature/FEAT-005-realtime-activity-feed created
