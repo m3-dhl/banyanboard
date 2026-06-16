@@ -9,22 +9,36 @@ const columnLabelMap = Object.fromEntries(COLUMNS.map((col) => [col.id, col.labe
 
 const MAX_ENTRIES = 20
 
+function formatTime(date: Date): string {
+  const now = Date.now()
+  const diff = Math.floor((now - date.getTime()) / 1000)
+  if (diff < 60) return 'just now'
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+}
+
 export default function ActivityFeed({ entries }: ActivityFeedProps) {
   const visible = entries.slice(0, MAX_ENTRIES)
 
   return (
-    <section aria-label="Activity feed">
-      <h2>Activity</h2>
+    <section className="activity-feed" aria-label="Activity feed">
+      <h2 className="activity-feed-heading">Activity</h2>
       {visible.length === 0 ? (
-        <p>No activity yet.</p>
+        <p className="activity-feed-empty">No activity yet.</p>
       ) : (
-        <div role="log" aria-label="Recent card activity" aria-live="polite">
-          <ul>
-            {visible.map((entry) => {
-              const iso = entry.timestamp.toISOString()
-              return (
-                <li key={entry.id}>
-                  <span>{entry.cardTitle}</span>
+        <ul
+          className="activity-feed-list"
+          role="log"
+          aria-label="Recent card activity"
+          aria-live="polite"
+        >
+          {visible.map((entry) => {
+            const iso = entry.timestamp.toISOString()
+            return (
+              <li key={entry.id} className="activity-feed-entry">
+                <span>
+                  <span className="activity-entry-card">{entry.cardTitle}</span>
                   {entry.kind === 'move' ? (
                     <>
                       {' moved from '}
@@ -38,13 +52,14 @@ export default function ActivityFeed({ entries }: ActivityFeedProps) {
                       <span>{columnLabelMap[entry.columnId]}</span>
                     </>
                   )}
-                  {' — '}
-                  <time dateTime={iso}>{iso}</time>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
+                </span>
+                <time className="activity-entry-time" dateTime={iso}>
+                  {formatTime(entry.timestamp)}
+                </time>
+              </li>
+            )
+          })}
+        </ul>
       )}
     </section>
   )

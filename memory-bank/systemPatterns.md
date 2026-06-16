@@ -288,9 +288,29 @@ describe('ActivityFeed', () => {
 - CSS layout or visual regression
 - Timestamp formatting precision (locale-dependent)
 
+### ReactDOM Portal for Positioned Overlays Inside DnD Containers
+
+When a positioned overlay (popover, tooltip, dropdown) is rendered as a descendant of a `@hello-pangea/dnd` `Draggable`, the dnd library applies CSS `transform` to the draggable wrapper during drag. CSS transforms create a new stacking context and a new containing block, which breaks `position: fixed` and causes positioned overlays to clip or misplace. The solution is to render the overlay directly into `document.body` via `ReactDOM.createPortal`.
+
+- **Problem**: A `LabelPickerPopover` rendered inside a `Draggable` would be clipped or shift position during drag because of the `transform` applied by dnd
+- **Implementation**: `frontend/src/components/LabelPickerPopover.tsx` uses `ReactDOM.createPortal(content, document.body)`
+- **Escape-key scoping**: Escape listeners must be attached to the portal container element (not `document`) to avoid intercepting dnd's own keyboard drag handlers, which also use Escape to cancel a keyboard drag
+- **Trade-offs**: Portal-rendered content lives outside the React tree's DOM position, so inherited CSS (font, color) still flows via React context but DOM-position-dependent CSS (e.g., `overflow: hidden` on an ancestor) no longer clips the overlay. Acceptable trade-off for overlays that must float above the full viewport.
+- **Example**: `frontend/src/components/LabelPickerPopover.tsx`
+
+### useFocusTrap Hook for Accessible Dialogs
+
+Modal dialogs and popovers must trap keyboard focus within themselves while open (WCAG 2.1 success criterion 2.1.2). The `useFocusTrap` hook implements this with a `MutationObserver`-driven focus query limited to the container element, without pulling in a third-party focus-trap library.
+
+- **Problem**: When a dialog opens, Tab/Shift+Tab should cycle only through the dialog's focusable elements, not escape to the page behind it
+- **Implementation**: `frontend/src/hooks/useFocusTrap.ts` — accepts a `containerRef` and an `isActive` flag; queries focusable descendants and intercepts Tab keydown events
+- **Dep array note**: `containerRef` is intentionally excluded from the `useEffect` dep array because React ref objects are stable across renders (the object identity never changes, only `.current` does). An eslint-disable comment in the file documents this decision.
+- **Trade-offs**: Minimal implementation; does not handle edge cases like dynamically added focusable children after initial render (not needed for the current label UI). Upgrade to a library (`focus-trap-react`) if dialogs grow more dynamic.
+- **Example**: `frontend/src/hooks/useFocusTrap.ts`; used in `frontend/src/components/LabelManagementPanel.tsx`
+
 ## Last Refreshed
 
-2026-06-16 — Updated after TASK-006 Phase 1 completion; added Frontend Component Patterns section (Presentational Component, Shared Type Module, ARIA Live Region, Frontend Testing Pattern)
+2026-06-16 — Updated after TASK-008 Phase 2 completion; added ReactDOM Portal for Positioned Overlays Inside DnD Containers and useFocusTrap Hook for Accessible Dialogs patterns
 
 ## Domain Event Pattern
 

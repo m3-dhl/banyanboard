@@ -65,7 +65,8 @@ describe('ActivityFeed', () => {
     expect(screen.getByText('My Task')).toBeInTheDocument()
     expect(screen.getByText(/Todo/)).toBeInTheDocument()
     expect(screen.getByText(/In Progress/)).toBeInTheDocument()
-    expect(screen.getByText(/2026/)).toBeInTheDocument()
+    const timeEl = document.querySelector('time[datetime*="2026"]')
+    expect(timeEl).not.toBeNull()
   })
 
   // AC-ASYNC-1: creation entry shows "created in [column label]"

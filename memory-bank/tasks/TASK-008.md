@@ -204,7 +204,7 @@ Three distinct entry points, each needs a design decision (see Creative Explorat
 ## Implementation Roadmap
 
 - [x] **Phase 1 — Data model + backend endpoints**: Migration `003_create_labels.sql` (labels table + card_labels join); `label.repository.ts`, `label.service.ts`, `label.controller.ts`, `label.routes.ts`; extend `card.repository.ts` with `GET /cards` including labels; wire routes in `app.ts`; backend tests
-- **Phase 2 — Frontend label badges + picker**: Update `frontend/src/types.ts` (Label interface, CardData.labels); new `LabelBadge.tsx` component; new `LabelPicker.tsx` component; update `Card.tsx` to render badges and host picker; update `api.ts` with label API functions; update Board.tsx to fetch labels; frontend tests
+- [x] **Phase 2 — Frontend label badges + picker**: Update `frontend/src/types.ts` (Label interface, CardData.labels); new `LabelBadge.tsx` component; new `LabelPicker.tsx` component; update `Card.tsx` to render badges and host picker; update `api.ts` with label API functions; update Board.tsx to fetch labels; frontend tests
 - **Phase 3 — Filter panel + activity feed integration**: New filter control component (TBD name from creative phase); update `Board.tsx` filter state logic; update `ActivityFeedEntry` union type for label events; update `ActivityFeed.tsx` to render label events; end-to-end frontend tests for filter behavior
 
 ## Creative Phases
@@ -217,16 +217,15 @@ Three distinct entry points, each needs a design decision (see Creative Explorat
 ## Execution State
 
 **Build Status**: PHASE_COMPLETE
-**Current Build**: Phase 1: Data model + backend endpoints (TASK-008)
+**Current Build**: Phase 2 complete
 **Build Started**: 2026-06-16
-**Phase Number**: 1 of 3
+**Phase Number**: 2 of 3
 **Is Multi-Phase**: YES
 **Branch**: feature/FEAT-007-card-labels
 
 ### Current Build Step
-**Step**: Step 11 - Git Commit
-**Status**: COMPLETE
-**Completed**: 2026-06-16
+**Step**: Phase 2 complete — awaiting Phase 3 start
+**Status**: IDLE
 
 ### Completed Steps
 - Step 0.1: Task created for FEAT-007
@@ -238,13 +237,23 @@ Three distinct entry points, each needs a design decision (see Creative Explorat
 - UI/UX Design: COMPLETE (2026-06-16) — `memory-bank/creative/TASK-008-card-labels-uiux.md`
 - Architecture Design: COMPLETE (2026-06-16) — `memory-bank/creative/TASK-008-card-labels-architecture.md`
 - Step 0.5 Git Setup: COMPLETE (2026-06-16) — Branch feature/FEAT-007-card-labels created
-- Step 1 Read Task Context: COMPLETE (2026-06-16) — Phase 1 identified (Data model + backend)
-- Step 2 Load Context: COMPLETE (2026-06-16) — Level 3 rules, creative docs read
+- Step 1 Read Task Context [Phase 1]: COMPLETE (2026-06-16) — Phase 1 identified (Data model + backend)
+- Step 2 Load Context [Phase 1]: COMPLETE (2026-06-16) — Level 3 rules, creative docs read
+- Phase 1 Build: COMPLETE (2026-06-16) — Backend endpoints + migration complete
+- Step 0.5 Git Setup [Phase 2]: COMPLETE (2026-06-16) — On feature/FEAT-007-card-labels
+- Step 1 Read Task Context [Phase 2]: COMPLETE (2026-06-16) — Phase 2 identified
+- Step 2 Load Context [Phase 2]: COMPLETE (2026-06-16) — Level 3 rules loaded
+- Step 3 Test Writer: COMPLETE (2026-06-16) — 26 tests in 2 files (Label.test.tsx, Board.filter.test.tsx)
+- Step 4 Coding Agent: COMPLETE (2026-06-16) — all Phase 2 frontend files (useFocusTrap, LabelBadge, LabelPickerPopover, LabelManagementPanel, FilterBar, Card.tsx, Board.tsx, api.ts, types.ts, App.css)
+- Step 5-7 Test Execution/Integration: COMPLETE (2026-06-16) — 71/71 tests passing
+- Step 8 Code Review: COMPLETE (2026-06-16) — 4 blocking issues found and fixed
+- Step 9 Documentation: COMPLETE (2026-06-16)
 
 ### Sub-Agents
-(spawning)
+- Test Writer: COMPLETE (2026-06-16) — 26 tests in 2 files (Label.test.tsx, Board.filter.test.tsx)
+- Coding Agent: COMPLETE (2026-06-16) — Phase 2 frontend implementation
 
 ### Resumption Notes
 **Can Resume**: YES
-**Resume From**: Step 3 - Test Writer
-**Notes**: Phase 1 — backend only (migration, label CRUD endpoints, card-label endpoints, GET /cards extended)
+**Resume From**: Phase 3 start
+**Notes**: Phase 3 — FilterBar integration + activity feed label events; start with `/banyan-build TASK-008`

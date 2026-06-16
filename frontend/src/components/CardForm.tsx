@@ -56,8 +56,10 @@ export default function CardForm({ columnId, onAdd, onCancel }: Props) {
           {error}
         </span>
       )}
-      <button type="submit">Add</button>
-      <button type="button" onClick={onCancel}>Cancel</button>
+      <div className="card-form-actions">
+        <button type="submit">Add</button>
+        <button type="button" onClick={onCancel}>Cancel</button>
+      </div>
     </form>
   )
 }
