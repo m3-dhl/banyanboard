@@ -100,13 +100,14 @@
 
 ### FEAT-007: Card Labels
 - **Version**: next
-- **Status**: planned
+- **Status**: complete
 - **Priority**: medium
 - **Complexity**: Level 3
 - **Description**: Add color-coded labels to cards with filtering support. Includes label data model, backend CRUD + filter endpoints, frontend label badges, color picker, and filter panel.
-- **Linked Tasks**: TASK-008 (PLANNING)
+- **Linked Tasks**: TASK-008 (COMPLETE)
 - **Branch**: feature/FEAT-007-card-labels
 - **Created**: 2026-06-16
+- **Completed**: 2026-06-16
 
 ---
 

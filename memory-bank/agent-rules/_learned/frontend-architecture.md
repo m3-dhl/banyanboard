@@ -2,7 +2,7 @@
 name: "Learned: Frontend Architecture Patterns"
 globs: ["*.tsx", "*.ts", "frontend/src/**"]
 topics: ["frontend", "react", "typescript", "vite", "architecture", "dnd", "accessibility"]
-priority: low
+priority: medium
 evidence_count: 3
 last_updated: 2026-06-16
 auto_generated: true

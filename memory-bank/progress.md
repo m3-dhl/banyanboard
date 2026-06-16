@@ -4,6 +4,15 @@
 
 ---
 
+## Task Archive: TASK-008
+
+**Task**: Card Labels
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-16
+**Archive**: `memory-bank/archive/archive-TASK-008.md`
+
+---
+
 ### 2026-06-16 — TASK-008 Reflection (REFLECTION_COMPLETE)
 
 #### Reflection (Step 3)

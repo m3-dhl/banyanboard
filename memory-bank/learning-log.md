@@ -4,6 +4,16 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-16 - Consolidation (during TASK-008 archive)
+
+- Files before: 4, Files after: 4
+- Merged: 0 files
+- Expired: 0 bullets (0 files deleted)
+- Promoted: 1 file to medium priority (`frontend-architecture.md`, evidence_count reached 3)
+- Pruned: 0 excess bullets
+
+---
+
 ## 2026-06-16 - TASK-008 Reflection
 
 ### Extracted Patterns

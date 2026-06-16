@@ -28,7 +28,7 @@
 |------|--------|---------------:|:--------:|:------------:|
 | testing-patterns.md | testing, express, backend, react, frontend, vitest | 6 | medium | 2026-06-16 |
 | architecture.md | architecture, error-handling, express, backend, middleware | 3 | medium | 2026-06-16 |
-| frontend-architecture.md | frontend, react, typescript, vite, architecture, dnd, accessibility | 3 | low | 2026-06-16 |
+| frontend-architecture.md | frontend, react, typescript, vite, architecture, dnd, accessibility | 3 | medium | 2026-06-16 |
 | accessibility.md | accessibility, wcag, frontend, react, design | 1 | low | 2026-06-16 |
 
 ## Consolidation History
@@ -40,3 +40,4 @@
 | 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
 | 2026-06-16 | 3 | 3 | 0 | 0 | 0 |
 | 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
+| 2026-06-16 | 4 | 4 | 0 | 0 | 1 |
