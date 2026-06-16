@@ -66,7 +66,8 @@ describe('DnD - card movement', () => {
       })
     })
 
-    expect(screen.getByText('Design login page')).toBeInTheDocument()
+    const inProgressCol = screen.getByRole('region', { name: /in progress/i })
+    expect(inProgressCol).toHaveTextContent('Design login page')
   })
 
   it('does not move card when destination is null', () => {

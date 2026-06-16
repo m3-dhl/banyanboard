@@ -3,11 +3,15 @@
 ## Technology Stack
 
 ### Frontend
-- **Framework**: React
-- **Language**: TypeScript
-- **State**: TBD (Redux Toolkit / Zustand / React Query)
-- **DnD**: TBD (recommended: @hello-pangea/dnd)
-- **Build**: TBD (Vite recommended)
+- **Framework**: React ^19.2.6
+- **Language**: TypeScript ~6.0.2 (strict mode)
+- **Build**: Vite ^8.0.12 — `npm run dev` starts dev server on port 5173
+- **DnD**: @hello-pangea/dnd ^18.0.1 — drag-and-drop card movement (TASK-005)
+- **State**: React `useState` (local component state; no external state library)
+- **Testing**: Vitest ^4.1.9 + @testing-library/react ^16.3.2 + jsdom
+- **Test runner**: `npm test` runs `vitest run`; `npm run test:watch` for watch mode
+- **Config files**: `frontend/tsconfig.json`, `frontend/vite.config.ts`
+- **Component structure**: `frontend/src/components/` (presentational components); `frontend/src/types.ts` (shared types)
 
 ### Backend
 - **Runtime**: Node.js 20-alpine
@@ -34,12 +38,12 @@
 - **Local Dev**: Docker Compose (`docker compose up` — single command startup)
 - **Services**: backend container (port 3001), postgres container (port 5432)
 - **Dockerfile**: Multi-stage build — builder stage (tsc) + runner stage (prod deps only)
-- **Frontend**: Not yet scaffolded
+- **Frontend**: Scaffolded at `frontend/` — served separately via `npm run dev` (port 5173)
 
 ## Development Commands
 
 ```bash
-# Docker (primary local dev)
+# Docker (primary local dev — backend + postgres)
 docker compose up            # Start backend + postgres
 docker compose up -d         # Background
 docker compose down          # Stop
@@ -51,6 +55,13 @@ npm run build      # TypeScript compilation (tsc)
 npm start          # Run compiled dist/server.js
 npm test           # Run Jest test suite
 npm run typecheck  # tsc --noEmit (type check only)
+
+# npm (inside frontend/ directory)
+npm run dev        # Vite dev server (port 5173, HMR)
+npm run build      # tsc + Vite production build
+npm test           # Vitest run (single pass)
+npm run test:watch # Vitest watch mode
+npm run lint       # ESLint
 ```
 
 ## Environment Setup
@@ -69,4 +80,4 @@ npm run typecheck  # tsc --noEmit (type check only)
 
 ## Last Refreshed
 
-2026-06-16
+2026-06-16 — Updated after TASK-006 Phase 1 completion; frontend stack details added (Vite, React 19, TypeScript 6, Vitest, @hello-pangea/dnd); frontend dev commands added; "Frontend: Not yet scaffolded" corrected

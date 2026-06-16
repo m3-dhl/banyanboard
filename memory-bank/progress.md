@@ -2,6 +2,61 @@
 
 ## History
 
+### 2026-06-16 — TASK-006 Reflection (REFLECTION_COMPLETE)
+
+#### Reflection (Step 3)
+- Completed: 2026-06-16
+- Document: memory-bank/reflection/reflection-TASK-006.md
+- Task Quality: Good — all 9 ACs met, 24/24 tests, clean TypeScript, accessible ARIA
+- Ecosystem Effectiveness: Highly Effective — 2-phase decomp clean, Spec Writer pre-resolved layout ambiguity, Code Reviewer caught ARIA error before integration
+
+---
+
+### 2026-06-16 — TASK-006 Phase 2: Wire feed into Board.tsx onDragEnd (BUILD_COMPLETE)
+
+**Branch**: feature/FEAT-005-realtime-activity-feed
+
+**Delivered**:
+- `frontend/src/components/Board.tsx` (modified) — `feedEntries` useState, `onDragEnd` extended to create `ActivityFeedEntry` on cross-column drop, capped at 20, `<ActivityFeed>` rendered below board columns
+- `frontend/src/__tests__/Board.feed.test.tsx` — 6 new tests (empty state, cross-column entry, same-column no-entry, reverse-chronological order, 20-entry cap, re-render survival)
+- `frontend/src/__tests__/Board.test.tsx` (fix) — column region query narrowed to exclude ActivityFeed section
+- `frontend/src/__tests__/DnD.test.tsx` (fix) — card title assertion scoped to column region
+
+**Test results**: 24/24 PASS
+**Build**: PASS (vite)
+**Lint**: PASS (eslint)
+
+**AC Coverage (Phase 2)**:
+- AC-HAPPY-1: feed entry on cross-column drag ✓
+- AC-HAPPY-2: reverse-chronological accumulation ✓
+- AC-HAPPY-3: 20-entry cap + oldest dropped ✓
+- AC-HAPPY-4: same-column drop = no entry ✓
+- AC-ERROR-1: feed works in offline/API-error state ✓ (no API dependency)
+- AC-ASYNC-1: feed survives unrelated re-renders ✓
+- AC-INTEGRATION-1: entries derived from real onDragEnd DropResult ✓
+
+---
+
+### 2026-06-16 — TASK-006 Phase 1: ActivityFeed component + types (BUILD Phase 1 COMPLETE)
+
+**Branch**: feature/FEAT-005-realtime-activity-feed
+
+**Delivered**:
+- `frontend/src/types.ts` — Added `ActivityFeedEntry` interface (`id`, `cardTitle`, `fromColumn: ColumnId`, `toColumn: ColumnId`, `timestamp: Date`)
+- `frontend/src/components/ActivityFeed.tsx` — Presentational component: heading, empty state, `<div role="log"><ul>` list, 20-entry cap, ColumnId→label resolution
+- `frontend/src/__tests__/ActivityFeed.test.tsx` — 6 Vitest tests (empty state, heading, list rendering, entry content, 20-entry cap, ARIA role)
+
+**Test results**: 18/18 PASS (all existing + 6 new)
+**Build**: PASS (tsc + vite)
+**Lint**: PASS (eslint)
+**Code review**: APPROVED (2 recommended fixes applied — timestamp narrowed to `Date`, ARIA corrected to `div[role=log]` + `ul`)
+
+**AC Coverage (Phase 1)**:
+- AC-ENTRY-1: feed visible, heading present, empty state ✓
+- AC-ERROR-2: graceful empty render ✓
+
+---
+
 ### 2026-06-09 — TASK-001 Phase 1: Full scaffold (BUILD_COMPLETE)
 
 **Branch**: feature/FEAT-001-project-foundation

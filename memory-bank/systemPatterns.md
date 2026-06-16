@@ -173,9 +173,73 @@ describe('GET /endpoint', () => {
 - TypeScript compilation (covered by `tsc --noEmit`)
 - Express framework internals
 
+## Frontend Component Patterns
+
+These patterns apply to all React components under `frontend/src/components/`.
+
+### Presentational Component Pattern
+
+Components receive all data via props and own no fetch logic. State lives in the nearest stateful ancestor (currently `Board.tsx`) and is passed down. This keeps components independently testable with `@testing-library/react` without mocking network calls.
+
+- **Problem**: Components that own their own fetch logic are tightly coupled to backend availability
+- **Implementation**: `ActivityFeed` receives `entries: ActivityFeedEntry[]` — it does not know how entries were produced
+- **Trade-offs**: Slight prop-drilling overhead; acceptable at this scale
+- **Example**: `frontend/src/components/ActivityFeed.tsx`
+
+### Shared Type Module
+
+All domain types (`ColumnId`, `CardData`, `ColumnData`, `ActivityFeedEntry`) and compile-time constants (`COLUMNS`, `SEED_CARDS`) are co-located in `frontend/src/types.ts`. Components import only what they need. This avoids scattered type declarations and ensures the canonical column-label mapping (`COLUMNS`) is a single source of truth.
+
+- **Example**: `frontend/src/types.ts`
+
+### ARIA Live Region for Activity Feeds
+
+Dynamically updating lists that convey status (such as card movement history) use `role="log"` with `aria-live="polite"`. This allows screen readers to announce new entries without interrupting the user's current focus. The outer container uses `role="log"`; the parent section carries an `aria-label` to identify the region.
+
+```tsx
+<section aria-label="Activity feed">
+  <div role="log" aria-label="Recent card moves" aria-live="polite">
+    <ul>...</ul>
+  </div>
+</section>
+```
+
+- **Problem**: Dynamic list updates are silent to assistive technology without an ARIA live region
+- **Implementation**: `frontend/src/components/ActivityFeed.tsx`
+- **Guiding Principle alignment**: Supports the WCAG 2.1 AA accessibility NFR in `productBrief.md`
+
+### Frontend Testing Pattern
+
+**Framework**: Vitest + @testing-library/react + jsdom
+
+**File location**: `frontend/src/__tests__/`
+
+**File naming**: `*.test.tsx`
+
+**Test structure**: Render component with props via `render()`, assert via `screen` queries, verify ARIA roles are present:
+```tsx
+import { render, screen } from '@testing-library/react';
+import ActivityFeed from '../components/ActivityFeed';
+
+describe('ActivityFeed', () => {
+  it('shows empty state when entries is empty', () => {
+    render(<ActivityFeed entries={[]} />);
+    expect(screen.getByText('No activity yet.')).toBeInTheDocument();
+  });
+});
+```
+
+**Current test coverage (frontend)**:
+- `ActivityFeed.test.tsx`: 6 tests — empty state, single entry render, multiple entries, 20-entry cap, column label resolution, timestamp element
+
+**What NOT to test**:
+- @hello-pangea/dnd internals (tested by the library)
+- CSS layout or visual regression
+- Timestamp formatting precision (locale-dependent)
+
 ## Last Refreshed
 
-2026-06-16 — Updated after TASK-004 completion; added middleware/ directory, JSON Error Handler pattern, validation.test.ts (29 total tests)
+2026-06-16 — Updated after TASK-006 Phase 1 completion; added Frontend Component Patterns section (Presentational Component, Shared Type Module, ARIA Live Region, Frontend Testing Pattern)
 
 ## Domain Event Pattern
 

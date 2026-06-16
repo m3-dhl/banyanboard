@@ -32,7 +32,7 @@ describe('Board', () => {
 
   it('renders exactly 3 columns in left-to-right order', async () => {
     render(<Board />)
-    const columns = screen.getAllByRole('region')
+    const columns = screen.getAllByRole('region', { name: /^(todo|in progress|done)$/i })
     expect(columns).toHaveLength(3)
     expect(columns[0]).toHaveTextContent('Todo')
     expect(columns[1]).toHaveTextContent('In Progress')

@@ -28,6 +28,20 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-16 - TASK-006 Reflection
+
+### Extracted Patterns
+- **testing-patterns** → amended `agent-rules/_learned/testing-patterns.md` — scope existing component test queries to named landmark regions before adding new always-visible section (evidence count: 4)
+
+### Confirmed Rules
+- `testing-patterns.md` (@hello-pangea/dnd mock pattern): directly reused in Board.feed.test.tsx — third task to use this pattern
+- `frontend-architecture.md` (ColumnId string union): reused as-is for ActivityFeedEntry fromColumn/toColumn — type cast from droppableId worked cleanly
+
+### systemPatterns.md Updates
+- None (in-memory feed pattern is too task-specific)
+
+---
+
 ## 2026-06-09 - TASK-003 Reflection
 
 ### Extracted Patterns

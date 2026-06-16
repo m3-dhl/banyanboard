@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
 import { COLUMNS, SEED_CARDS } from '../types'
-import type { CardData, ColumnId } from '../types'
+import type { ActivityFeedEntry, CardData, ColumnId } from '../types'
 import { fetchBoards } from '../api'
 import Column from './Column'
+import ActivityFeed from './ActivityFeed'
+
+const MAX_FEED_ENTRIES = 20
 
 export default function Board() {
   const [cards, setCards] = useState<CardData[]>(SEED_CARDS)
   const [boardName, setBoardName] = useState<string>('BanyanBoard')
   const [apiError, setApiError] = useState(false)
+  const [feedEntries, setFeedEntries] = useState<ActivityFeedEntry[]>([])
 
   useEffect(() => {
     fetchBoards()
@@ -24,6 +28,20 @@ export default function Board() {
     const { source, destination, draggableId } = result
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
+
+    if (destination.droppableId !== source.droppableId) {
+      const movedCard = cards.find((c) => c.id === draggableId)
+      if (movedCard) {
+        const entry: ActivityFeedEntry = {
+          id: `${draggableId}-${Date.now()}`,
+          cardTitle: movedCard.title,
+          fromColumn: source.droppableId as ColumnId,
+          toColumn: destination.droppableId as ColumnId,
+          timestamp: new Date(),
+        }
+        setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+      }
+    }
 
     setCards((prev) =>
       prev.map((c) =>
@@ -53,6 +71,7 @@ export default function Board() {
             />
           ))}
         </div>
+        <ActivityFeed entries={feedEntries} />
       </main>
     </DragDropContext>
   )
