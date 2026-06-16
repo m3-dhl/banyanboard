@@ -1,14 +1,14 @@
 import * as cardRepository from '../repositories/card.repository';
 import { Card, CardColumnId, CreateCardDto } from '../types/card.types';
+import { ValidationError } from '../errors/index';
+
+export { ValidationError };
 
 const MAX_TITLE_LENGTH = 100;
 const VALID_COLUMN_IDS: CardColumnId[] = ['todo', 'in-progress', 'done'];
 
-export class ValidationError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'ValidationError';
-  }
+export async function getCards(): Promise<Card[]> {
+  return cardRepository.getCards();
 }
 
 export async function createCard(data: CreateCardDto): Promise<Card> {

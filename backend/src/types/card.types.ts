@@ -1,3 +1,5 @@
+import { LabelSummary } from './label.types';
+
 export type CardColumnId = 'todo' | 'in-progress' | 'done';
 
 export interface Card {
@@ -5,6 +7,7 @@ export interface Card {
   title: string;
   columnId: CardColumnId;
   createdAt: Date;
+  labels?: LabelSummary[];
 }
 
 export interface CreateCardDto {

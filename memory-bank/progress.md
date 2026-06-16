@@ -4,6 +4,83 @@
 
 ---
 
+## Task Archive: TASK-008
+
+**Task**: Card Labels
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-16
+**Archive**: `memory-bank/archive/archive-TASK-008.md`
+
+---
+
+### 2026-06-16 — TASK-008 Reflection (REFLECTION_COMPLETE)
+
+#### Reflection (Step 3)
+- Completed: 2026-06-16
+- Document: memory-bank/reflection/reflection-TASK-008.md
+- Task Quality: Good — all 13 ACs met, 74 tests, WCAG AA verified, full keyboard nav, dnd-safe portal popover
+- Ecosystem Effectiveness: Highly Effective — 3-phase decomp matched natural dep order; creative phase resolved 3 design questions before build; code reviewer caught 4 blocking issues
+
+---
+
+### 2026-06-16 — TASK-008 Phase 2: Frontend label badges + picker (PHASE_COMPLETE)
+
+**Branch**: feature/FEAT-007-card-labels
+
+**Delivered**:
+- `frontend/src/hooks/useFocusTrap.ts` — minimal focus trap hook for accessible dialogs; dep array intentionally omits `containerRef` (ref objects are stable)
+- `frontend/src/components/LabelBadge.tsx` — colored pill badge rendering label name + WCAG-AA hex color as background
+- `frontend/src/components/LabelPickerPopover.tsx` — popover portal-rendered into `document.body` (avoids CSS transform stacking context issues with `@hello-pangea/dnd` during drag); Escape listener scoped to container element (not document) to avoid interference with dnd keyboard handlers
+- `frontend/src/components/LabelManagementPanel.tsx` — dialog with create form (radio color swatches from `LABEL_COLORS`) and per-label delete
+- `frontend/src/components/FilterBar.tsx` — horizontal chip filter strip; conditionally rendered when labels exist on the board
+- `frontend/src/types.ts` (modified) — added `Label` interface, `LABEL_COLORS` constant (10 WCAG-AA colors), updated `CardData.labels?: Label[]`
+- `frontend/src/api.ts` (modified) — added `fetchCards`, `fetchLabels`, `createLabel`, `deleteLabel`, `attachLabel`, `detachLabel`
+- `frontend/src/components/Card.tsx` (modified) — renders `LabelBadge` list, `[+ Label]` button with `aria-label`, `LabelPickerPopover` via ReactDOM portal
+- `frontend/src/components/Column.tsx` (modified) — passes `labels` and `onLabelToggle` through to Card
+- `frontend/src/components/Board.tsx` (modified) — owns label/filter state, optimistic label attach/detach, `fetchLabels` on mount, `FilterBar` + `LabelManagementPanel` rendering; `labelAssignError` cleared at start of each mutation handler (matching `cardCreateError` pattern)
+- `frontend/src/App.css` (modified) — CSS for all new label components
+- `frontend/src/__tests__/ActivityFeed.test.tsx` (fix) — fixed pre-existing test failure: `formatTime` renders "just now", check `datetime` attribute instead of text content
+
+**Test results**: 71/71 PASS (26 new + 45 existing)
+**Build**: PASS (vite)
+**Lint**: PASS (eslint)
+
+**Key implementation notes**:
+- `LabelPickerPopover` uses `ReactDOM.createPortal` into `document.body` to avoid CSS transform stacking context issues that arise inside `@hello-pangea/dnd` draggable containers
+- Escape key listener attached to the popover container element (not `document`) so it does not fire when dnd is handling keyboard drag events
+- `useFocusTrap` dep array omits `containerRef` intentionally (ref objects are stable across renders; eslint-disable comment documents the reason)
+- `labelAssignError` cleared at start of each mutation handler, matching the existing `cardCreateError` pattern for `onAddCard`
+
+---
+
+### 2026-06-16 — TASK-008 Phase 1: Data model + backend endpoints (PHASE_COMPLETE)
+
+**Branch**: feature/FEAT-007-card-labels
+
+**Delivered**:
+- `backend/src/db/migrations/003_create_labels.sql` — DDL for `labels` and `card_labels` tables (UUID PK, board_id FK with cascade, UNIQUE(name, board_id), indexes)
+- `backend/src/types/label.types.ts` — `Label`, `LabelSummary`, `CreateLabelDto` interfaces
+- `backend/src/errors/index.ts` — Shared `ValidationError`, `NotFoundError`, `ConflictError` classes
+- `backend/src/repositories/label.repository.ts` — `createLabel`, `getLabelsByBoard`, `getLabelById`, `deleteLabel`, `attachLabelToCard`, `detachLabelFromCard` (pg error code handling for FK/PK violations)
+- `backend/src/services/label.service.ts` — validation (hex color regex, name length, boardId presence, duplicate check), delegates to repository
+- `backend/src/controllers/label.controller.ts` — HTTP handlers with dual instanceof/name error guards
+- `backend/src/routes/label.routes.ts` — `POST /labels`, `GET /labels`, `DELETE /labels/:id`
+- `backend/src/types/card.types.ts` (modified) — added `labels?: LabelSummary[]` to `Card`
+- `backend/src/repositories/card.repository.ts` (modified) — added `getCards()` with LEFT JOIN + `json_agg`
+- `backend/src/services/card.service.ts` (modified) — added `getCards()`, replaced local `ValidationError` with shared class from `errors/index.ts`
+- `backend/src/controllers/card.controller.ts` (modified) — added `getCards` handler
+- `backend/src/routes/card.routes.ts` (modified) — added `GET /cards`, `POST /cards/:id/labels`, `DELETE /cards/:id/labels/:labelId`
+- `backend/src/app.ts` (modified) — mounted `labelRouter` at `/labels`
+- `backend/src/__tests__/label.test.ts` — 21 tests (label CRUD + card-label endpoints + GET /cards label integration)
+
+**Test results**: 58/58 PASS (21 new + 37 existing)
+**Build**: PASS (tsc)
+**Typecheck**: CLEAN
+
+---
+
+---
+
 ## Task Archive: TASK-007
 
 **Task**: Task Creation System

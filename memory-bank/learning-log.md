@@ -4,6 +4,34 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-16 - Consolidation (during TASK-008 archive)
+
+- Files before: 4, Files after: 4
+- Merged: 0 files
+- Expired: 0 bullets (0 files deleted)
+- Promoted: 1 file to medium priority (`frontend-architecture.md`, evidence_count reached 3)
+- Pruned: 0 excess bullets
+
+---
+
+## 2026-06-16 - TASK-008 Reflection
+
+### Extracted Patterns
+- **frontend-architecture** → amended `agent-rules/_learned/frontend-architecture.md` — ReactDOM portal for dnd-adjacent popovers + Escape key scoped to container (evidence count: 3)
+- **testing-patterns** → amended `agent-rules/_learned/testing-patterns.md` — dual instanceof/name guard in controllers for Jest module isolation (evidence count: 6)
+- **accessibility** → created `agent-rules/_learned/accessibility.md` — pre-verify WCAG contrast ratios in creative doc (evidence count: 1)
+
+### Confirmed Rules
+- `testing-patterns.md` (resetAllMocks/fixture pattern): applied in label.test.ts
+- `testing-patterns.md` (dnd mock via captured onDragEnd): applied in Board.feed.test.tsx label feed tests
+- `testing-patterns.md` (scope existing queries to named regions): applied when FilterBar added to Board
+- `frontend-architecture.md` (ColumnId string union): held correctly throughout
+
+### systemPatterns.md Updates
+- ReactDOM portal pattern already captured during Phase 2 build — no new addition needed
+
+---
+
 ## 2026-06-16 - TASK-007 Reflection
 
 ### Extracted Patterns

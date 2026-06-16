@@ -2,6 +2,15 @@ import { Request, Response } from 'express';
 import * as cardService from '../services/card.service';
 import { ValidationError } from '../services/card.service';
 
+export async function getCards(_req: Request, res: Response): Promise<void> {
+  try {
+    const cards = await cardService.getCards();
+    res.json(cards);
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 export async function createCard(req: Request, res: Response): Promise<void> {
   try {
     const card = await cardService.createCard({

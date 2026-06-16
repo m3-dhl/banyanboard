@@ -1,11 +1,11 @@
 # Product Roadmap
 
 ## Summary
-- **Total Features**: 6
+- **Total Features**: 7
 - **Released Versions**: 0
 - **Active Versions**: 0
 - **Planning Versions**: 1
-- **Backlog (next)**: 5
+- **Backlog (next)**: 6
 
 ---
 
@@ -28,6 +28,7 @@
   - FEAT-004: Simple Frontend Kanban Board (planned) [Level 2]
   - FEAT-005: Realtime Activity Feed (complete) [Level 2]
   - FEAT-006: Task Creation System (planned) [Level 2]
+  - FEAT-007: Card Labels (planned) [Level 3]
 
 ---
 
@@ -92,6 +93,19 @@
 - **Description**: Add ability to create new cards on the kanban board — UI form/modal per column, POST /tasks endpoint, input validation, and integration with the existing activity feed on card creation.
 - **Linked Tasks**: TASK-007 (COMPLETE)
 - **Branch**: feature/FEAT-006-task-creation-system
+- **Created**: 2026-06-16
+- **Completed**: 2026-06-16
+
+---
+
+### FEAT-007: Card Labels
+- **Version**: next
+- **Status**: complete
+- **Priority**: medium
+- **Complexity**: Level 3
+- **Description**: Add color-coded labels to cards with filtering support. Includes label data model, backend CRUD + filter endpoints, frontend label badges, color picker, and filter panel.
+- **Linked Tasks**: TASK-008 (COMPLETE)
+- **Branch**: feature/FEAT-007-card-labels
 - **Created**: 2026-06-16
 - **Completed**: 2026-06-16
 

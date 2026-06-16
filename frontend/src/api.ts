@@ -1,4 +1,4 @@
-import type { CardData, ColumnId } from './types'
+import type { CardData, ColumnId, Label } from './types'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:3001'
 
@@ -14,6 +14,18 @@ export async function fetchBoards(): Promise<Board[]> {
   return data.map((b) => ({ id: b.id, name: b.title }))
 }
 
+export async function fetchCards(): Promise<CardData[]> {
+  const res = await fetch(`${API_BASE}/cards`)
+  if (!res.ok) throw new Error(`GET /cards failed: ${res.status}`)
+  const data = await res.json() as { id: string; title: string; columnId: string; labels?: Label[] }[]
+  return data.map((c) => ({
+    id: c.id,
+    title: c.title,
+    columnId: c.columnId as ColumnId,
+    labels: c.labels ?? [],
+  }))
+}
+
 export async function createCard(title: string, columnId: ColumnId): Promise<CardData> {
   const res = await fetch(`${API_BASE}/cards`, {
     method: 'POST',
@@ -23,4 +35,39 @@ export async function createCard(title: string, columnId: ColumnId): Promise<Car
   if (!res.ok) throw new Error(`POST /cards failed: ${res.status}`)
   const data = await res.json() as { id: string; title: string; columnId: string }
   return { id: data.id, title: data.title, columnId: data.columnId as ColumnId }
+}
+
+export async function fetchLabels(boardId: string): Promise<Label[]> {
+  const res = await fetch(`${API_BASE}/boards/${boardId}/labels`)
+  if (!res.ok) throw new Error(`GET /boards/${boardId}/labels failed: ${res.status}`)
+  return res.json() as Promise<Label[]>
+}
+
+export async function createLabel(boardId: string, name: string, color: string): Promise<Label> {
+  const res = await fetch(`${API_BASE}/boards/${boardId}/labels`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, color }),
+  })
+  if (!res.ok) throw new Error(`POST /boards/${boardId}/labels failed: ${res.status}`)
+  return res.json() as Promise<Label>
+}
+
+export async function deleteLabel(labelId: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/labels/${labelId}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(`DELETE /labels/${labelId} failed: ${res.status}`)
+}
+
+export async function attachLabel(cardId: string, labelId: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}/labels`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ labelId }),
+  })
+  if (!res.ok) throw new Error(`POST /cards/${cardId}/labels failed: ${res.status}`)
+}
+
+export async function detachLabel(cardId: string, labelId: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}/labels/${labelId}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(`DELETE /cards/${cardId}/labels/${labelId} failed: ${res.status}`)
 }
