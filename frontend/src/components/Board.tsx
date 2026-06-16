@@ -110,6 +110,7 @@ export default function Board() {
     const card = cards.find((c) => c.id === cardId)
     if (!card) return
     const isAttached = (card.labels ?? []).some((l) => l.id === labelId)
+    const labelName = labels.find((l) => l.id === labelId)?.name ?? ''
 
     setLabelAssignError(null)
     // Optimistic update
@@ -126,6 +127,15 @@ export default function Board() {
       })
     )
 
+    const feedEntry: ActivityFeedEntry = {
+      id: `label-${isAttached ? 'removed' : 'added'}-${cardId}-${labelId}-${Date.now()}`,
+      kind: isAttached ? 'label-removed' : 'label-added',
+      cardTitle: card.title,
+      labelName,
+      timestamp: new Date(),
+    }
+    setFeedEntries((prev) => [feedEntry, ...prev].slice(0, MAX_FEED_ENTRIES))
+
     try {
       if (isAttached) {
         await detachLabel(cardId, labelId)
@@ -133,10 +143,11 @@ export default function Board() {
         await attachLabel(cardId, labelId)
       }
     } catch {
-      // Revert
+      // Revert optimistic updates
       setCards((prev) =>
         prev.map((c) => (c.id === cardId ? { ...c, labels: card.labels } : c))
       )
+      setFeedEntries((prev) => prev.filter((e) => e.id !== feedEntry.id))
       setLabelAssignError('Failed to update label — please try again')
     }
   }

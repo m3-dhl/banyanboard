@@ -1,17 +1,23 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
+import type { DropResult } from '@hello-pangea/dnd'
 import FilterBar from '../components/FilterBar'
 import Board from '../components/Board'
 import type { Label } from '../types'
 
 // ---------------------------------------------------------------------------
-// DnD mock — required for any test that renders Board
+// DnD mock — captures onDragEnd so tests can simulate drags
 // ---------------------------------------------------------------------------
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+let capturedOnDragEnd: ((result: DropResult) => void) | null = null
+
 vi.mock('@hello-pangea/dnd', () => ({
-  DragDropContext: ({ children }: any) => <>{children}</>,
+  DragDropContext: ({ children, onDragEnd }: any) => {
+    capturedOnDragEnd = onDragEnd
+    return <>{children}</>
+  },
   Droppable: ({ children }: any) =>
     children(
       { innerRef: () => {}, droppableProps: {}, placeholder: null },
@@ -24,6 +30,18 @@ vi.mock('@hello-pangea/dnd', () => ({
     ),
 }))
 /* eslint-enable @typescript-eslint/no-explicit-any */
+
+function makeDropResult(draggableId: string, fromCol: string, toCol: string): DropResult {
+  return {
+    draggableId,
+    type: 'DEFAULT',
+    source: { droppableId: fromCol, index: 0 },
+    destination: { droppableId: toCol, index: 0 },
+    reason: 'DROP',
+    mode: 'FLUID',
+    combine: null,
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Shared fixtures
@@ -140,7 +158,8 @@ describe('FilterBar', () => {
 
 describe('Board label filtering', () => {
   beforeEach(() => {
-    // Default fetch: board name + empty labels list + seed cards implied by Board state
+    capturedOnDragEnd = null
+    // Default fetch: board name + labels
     global.fetch = vi.fn().mockImplementation((url: string) => {
       if (typeof url === 'string' && url.includes('/labels')) {
         return Promise.resolve({
@@ -199,6 +218,34 @@ describe('Board label filtering', () => {
       expect(screen.getByText('Design login page')).toBeInTheDocument()
       expect(screen.getByText('Implement auth API')).toBeInTheDocument()
       expect(screen.getByText('Write README')).toBeInTheDocument()
+    })
+  })
+
+  // AC-ERROR-3: filter state preserved across drag-and-drop
+  it('preserves active filter when a card is dragged to a different column', async () => {
+    render(<Board />)
+
+    // Wait for labels to load
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /bug/i })).toBeInTheDocument()
+    })
+
+    // Activate Bug filter — all seed cards have no labels so all become hidden
+    const bugChip = screen.getByRole('button', { name: /bug/i })
+    await userEvent.click(bugChip)
+
+    await waitFor(() => {
+      expect(screen.queryByText('Design login page')).toBeNull()
+    })
+
+    // Simulate a drag — "Design login page" (card-1) moves todo → in-progress
+    capturedOnDragEnd!(makeDropResult('card-1', 'todo', 'in-progress'))
+
+    // Filter must remain active: the card is still hidden (no Bug label)
+    await waitFor(() => {
+      expect(screen.queryByText('Design login page')).toBeNull()
+      // Filter chip still shows active state
+      expect(screen.getByRole('button', { name: /bug/i })).toHaveAttribute('aria-pressed', 'true')
     })
   })
 })

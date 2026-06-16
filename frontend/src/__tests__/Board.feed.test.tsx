@@ -1,6 +1,8 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor, within, fireEvent } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { DropResult } from '@hello-pangea/dnd'
+import type { Label } from '../types'
 import Board from '../components/Board'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -153,5 +155,106 @@ describe('Board feed integration', () => {
     })
     // Feed entry must survive the unrelated state update
     expect(screen.getByRole('listitem')).toHaveTextContent('Design login page')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Board label activity feed
+// ---------------------------------------------------------------------------
+
+const BUG_LABEL: Label = { id: 'label-1', name: 'Bug', color: '#C0392B' }
+
+describe('Board label activity feed', () => {
+  beforeEach(() => {
+    capturedOnDragEnd = null
+    global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      // GET /boards/:id/labels — return one label
+      if (url.includes('/boards/') && url.includes('/labels') && (!init?.method || init.method === 'GET')) {
+        return Promise.resolve({ ok: true, json: async () => [BUG_LABEL] } as unknown as Response)
+      }
+      // POST /cards/:id/labels — attach succeeds
+      if (url.includes('/cards/') && url.includes('/labels') && init?.method === 'POST') {
+        return Promise.resolve({ ok: true, json: async () => ({}) } as unknown as Response)
+      }
+      // Default: boards list
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: 'board-1', name: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('adds a "label added" feed entry when a label is attached to a card', async () => {
+    render(<Board />)
+
+    // Wait for labels to load — filter bar appears
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /bug/i })).toBeInTheDocument()
+    })
+
+    // Open label picker on the first seed card
+    const addLabelBtn = screen.getByRole('button', { name: /add label to design login page/i })
+    await userEvent.click(addLabelBtn)
+
+    // Popover opens as a dialog
+    const dialog = await screen.findByRole('dialog')
+    const bugChip = within(dialog).getByRole('button', { name: /bug/i })
+    await userEvent.click(bugChip)
+
+    // Feed entry with "label added"
+    await waitFor(() => {
+      const listItems = screen.getAllByRole('listitem')
+      const labelEntry = listItems.find(
+        (li) => li.textContent?.includes('Design login page') && li.textContent?.includes('Bug')
+      )
+      expect(labelEntry).toBeDefined()
+    })
+  })
+
+  it('adds a "label removed" feed entry when a label is detached from a card', async () => {
+    global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes('/boards/') && url.includes('/labels') && (!init?.method || init.method === 'GET')) {
+        return Promise.resolve({ ok: true, json: async () => [BUG_LABEL] } as unknown as Response)
+      }
+      if (url.includes('/cards/') && url.includes('/labels')) {
+        return Promise.resolve({ ok: true, json: async () => ({}) } as unknown as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: 'board-1', name: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+
+    render(<Board />)
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /bug/i })).toBeInTheDocument()
+    })
+
+    const addLabelBtn = screen.getByRole('button', { name: /add label to design login page/i })
+    await userEvent.click(addLabelBtn)
+
+    const dialog = await screen.findByRole('dialog')
+    const bugChip = within(dialog).getByRole('button', { name: /bug/i })
+
+    // First click → attach (label-added)
+    await userEvent.click(bugChip)
+
+    // Popover stays open; chip is now aria-pressed=true after optimistic update
+    // Second click → detach (label-removed)
+    await userEvent.click(bugChip)
+
+    // Feed should include a "label removed" entry
+    await waitFor(() => {
+      const listItems = screen.getAllByRole('listitem')
+      const removedEntry = listItems.find(
+        (li) => li.textContent?.includes('Design login page') && li.textContent?.includes('removed')
+      )
+      expect(removedEntry).toBeDefined()
+    })
   })
 })

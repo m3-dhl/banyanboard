@@ -46,10 +46,22 @@ export default function ActivityFeed({ entries }: ActivityFeedProps) {
                       {' to '}
                       <span>{columnLabelMap[entry.toColumn]}</span>
                     </>
-                  ) : (
+                  ) : entry.kind === 'created' ? (
                     <>
                       {' created in '}
                       <span>{columnLabelMap[entry.columnId]}</span>
+                    </>
+                  ) : entry.kind === 'label-added' ? (
+                    <>
+                      {' label '}
+                      <span>{entry.labelName}</span>
+                      {' added'}
+                    </>
+                  ) : (
+                    <>
+                      {' label '}
+                      <span>{entry.labelName}</span>
+                      {' removed'}
                     </>
                   )}
                 </span>
