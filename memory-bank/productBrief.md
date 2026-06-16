@@ -19,12 +19,16 @@
 | v0.1.0 — Foundation | Health check + project skeleton | ✅ Complete (TASK-001) |
 | v0.2.0 — Board CRUD | Board model: GET all, GET by id, POST, PATCH, DELETE | ✅ Complete (TASK-002) |
 | v0.3.0 — CORS | CORS middleware with env-var driven configuration | ✅ Complete (TASK-003) |
-| Future | Columns, Cards, Labels, Users, Auth, Drag-and-drop | Planned |
+| v0.4.0 — Frontend | React/Vite frontend scaffold with kanban board UI | ✅ Complete (TASK-004) |
+| v0.5.0 — Drag-and-drop | Drag-and-drop card movement between columns | ✅ Complete (TASK-005) |
+| v0.6.0 — Activity Feed | Real-time activity feed of card movements (in progress) | 🔄 In Progress (TASK-006) |
+| Future | Columns, Cards, Labels, Users, Auth | Planned |
 
 **Target full feature set:**
 - Create and manage boards with customizable columns (To Do, In Progress, Done)
 - Create cards with title, description, due date, and labels
 - Drag-and-drop cards between columns
+- Activity feed showing recent card movements (card title, source column, destination column, timestamp)
 - Multi-user boards for team collaboration
 - Label-based card filtering and organization
 
@@ -137,7 +141,8 @@
   - [x] Keyboard navigation (card creation, column navigation)
   - [x] Color contrast compliance
   - [x] Focus indicators
-  - [ ] Screen reader compatibility (nice-to-have)
+  - [x] Activity feed uses `role="log"` + `aria-live="polite"` for screen reader announcements (TASK-006)
+  - [ ] Full screen reader compatibility (nice-to-have)
   - [ ] Alt text for images (no images in scope)
   - [ ] Captions for video/audio (not applicable)
 
@@ -227,7 +232,8 @@
 | 2026-06-09 | user | Populated with BanyanBoard product context |
 | 2026-06-09 | banyan-init refresh | Added MVP scope phasing; updated APIs Provided with implementation status |
 | 2026-06-15 | banyan-init refresh | Board CRUD (TASK-002) and CORS (TASK-003) marked complete; APIs Provided updated; CORS NFR added |
+| 2026-06-16 | build-documentation-agent | TASK-004/005/006 phases added to phase table; activity feed capability added to target feature set; ARIA live region a11y requirement marked complete |
 
 ## Last Refreshed
 
-2026-06-15
+2026-06-16
