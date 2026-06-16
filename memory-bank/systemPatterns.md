@@ -123,6 +123,57 @@ function validateX(x: string): void { if (!x) throw new ValidationError('...'); 
 }
 ```
 
+### Error Handling Pattern
+
+All API errors return structured JSON with three fields: `code` (machine-readable string), `message` (human-readable), and `details` (optional extra context). Domain-specific error classes extend a shared `AppError` base:
+
+```typescript
+// src/errors/AppError.ts
+export class AppError extends Error {
+  constructor(
+    public readonly code: string,
+    public readonly message: string,
+    public readonly statusCode: number,
+    public readonly details?: unknown,
+  ) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+// Extend for domain-specific errors
+export class ValidationError extends AppError {
+  constructor(message: string, details?: unknown) {
+    super('VALIDATION_ERROR', message, 400, details);
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(resource: string) {
+    super('NOT_FOUND', `${resource} not found`, 404);
+  }
+}
+```
+
+Controllers catch `AppError` subclasses and forward their structured payload; unknown errors fall back to a generic 500:
+```typescript
+} catch (err) {
+  if (err instanceof AppError) {
+    res.status(err.statusCode).json({ code: err.code, message: err.message, details: err.details });
+    return;
+  }
+  res.status(500).json({ code: 'INTERNAL_ERROR', message: 'Internal server error' });
+}
+```
+
+Response shape:
+```json
+{ "code": "VALIDATION_ERROR", "message": "Title is required and cannot be empty", "details": null }
+```
+
+- **Problem**: Ad-hoc error shapes (`{ error: string }`) can't be reliably parsed by clients or logged by monitoring tools
+- **Trade-offs**: Adds `AppError` base class dependency; worth it once there are multiple error types across services
+
 ### JSON Error Handler Pattern
 Express error-handling middleware (4-param `(err, req, res, next)` signature) placed in `src/middleware/json-error.ts`, registered in `app.ts` after `express.json()` and before routes. Intercepts `SyntaxError` parse failures from the body parser and returns a structured `{ error: string }` 400 response instead of crashing the request:
 ```typescript

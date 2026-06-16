@@ -19,13 +19,14 @@
 | TASK-004 | 2026-06-16 | 0 | 0 | 0 |
 | TASK-005 | 2026-06-16 | 2 | 1 | 1 |
 | TASK-006 | 2026-06-16 | 1 | 1 | 0 |
+| TASK-007 | 2026-06-16 | 2 | 2 | 0 |
 
 ## Rule Effectiveness
 
 | File | Topics | Evidence Count | Priority | Last Updated |
 |------|--------|---------------:|:--------:|:------------:|
-| testing-patterns.md | testing, express, backend, react, frontend, vitest | 4 | medium | 2026-06-16 |
-| architecture.md | architecture, error-handling, express, backend, middleware | 2 | low | 2026-06-09 |
+| testing-patterns.md | testing, express, backend, react, frontend, vitest | 5 | medium | 2026-06-16 |
+| architecture.md | architecture, error-handling, express, backend, middleware | 3 | medium | 2026-06-16 |
 | frontend-architecture.md | frontend, react, typescript, vite, architecture | 1 | low | 2026-06-16 |
 
 ## Consolidation History
@@ -36,3 +37,4 @@
 | 2026-06-16 | 2 | 2 | 0 | 0 | 0 |
 | 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
 | 2026-06-16 | 3 | 3 | 0 | 0 | 0 |
+| 2026-06-16 | 3 | 3 | 0 | 0 | 1 |

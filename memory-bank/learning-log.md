@@ -4,6 +4,32 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-16 - TASK-007 Reflection
+
+### Extracted Patterns
+- **testing-patterns** → amended `agent-rules/_learned/testing-patterns.md` — write rollback test before implementing async optimistic-update (evidence count: 5)
+- **architecture** → amended `agent-rules/_learned/architecture.md` — atomic rollback across multiple state arrays via single setState + UUID filter (evidence count: 3)
+
+### Confirmed Rules
+- `testing-patterns.md` (named landmark region scoping): directly reused in Phase 1 and Phase 2 test specs for Column and Board tests
+- `architecture.md` (ValidationError in service layer): applied verbatim in card.service.ts → card.controller.ts
+- `frontend-architecture.md` (ColumnId string union): reused in discriminated union ActivityFeedEntry branches
+
+### systemPatterns.md Updates
+- None (optimistic update/rollback pattern is documented in reflection but is feature-level, not novel architecture)
+
+---
+
+## 2026-06-16 - Consolidation (during TASK-007 archive)
+
+- Files before: 3, Files after: 3
+- Merged: 0 files
+- Expired: 0 bullets (0 files deleted)
+- Promoted: 1 file (`architecture.md` low → medium, evidence_count reached 3)
+- Pruned: 0 excess bullets
+
+---
+
 ## 2026-06-16 - Consolidation (during TASK-006 archive)
 
 - Files before: 3, Files after: 3

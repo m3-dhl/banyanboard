@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
 import { COLUMNS, SEED_CARDS } from '../types'
 import type { ActivityFeedEntry, CardData, ColumnId } from '../types'
-import { fetchBoards } from '../api'
+import { fetchBoards, createCard } from '../api'
 import Column from './Column'
 import ActivityFeed from './ActivityFeed'
 
@@ -13,6 +13,7 @@ export default function Board() {
   const [boardName, setBoardName] = useState<string>('BanyanBoard')
   const [apiError, setApiError] = useState(false)
   const [feedEntries, setFeedEntries] = useState<ActivityFeedEntry[]>([])
+  const [cardCreateError, setCardCreateError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchBoards()
@@ -34,6 +35,7 @@ export default function Board() {
       if (movedCard) {
         const entry: ActivityFeedEntry = {
           id: `${draggableId}-${Date.now()}`,
+          kind: 'move',
           cardTitle: movedCard.title,
           fromColumn: source.droppableId as ColumnId,
           toColumn: destination.droppableId as ColumnId,
@@ -50,6 +52,33 @@ export default function Board() {
     )
   }
 
+  async function onAddCard(columnId: ColumnId, title: string) {
+    const newCard: CardData = {
+      id: crypto.randomUUID(),
+      title,
+      columnId,
+    }
+    const entry: ActivityFeedEntry = {
+      id: `created-${newCard.id}`,
+      kind: 'created',
+      cardTitle: title,
+      columnId,
+      timestamp: new Date(),
+    }
+
+    setCards((prev) => [...prev, newCard])
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+    setCardCreateError(null)
+
+    try {
+      await createCard(title, columnId)
+    } catch {
+      setCards((prev) => prev.filter((c) => c.id !== newCard.id))
+      setFeedEntries((prev) => prev.filter((e) => e.id !== entry.id))
+      setCardCreateError('Failed to save card — please try again')
+    }
+  }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <main className="board-container">
@@ -60,6 +89,11 @@ export default function Board() {
               Backend unavailable — showing local data
             </p>
           )}
+          {cardCreateError && (
+            <p role="alert" className="card-create-error">
+              {cardCreateError}
+            </p>
+          )}
         </header>
         <div className="board-columns">
           {COLUMNS.map((col) => (
@@ -68,6 +102,7 @@ export default function Board() {
               id={col.id}
               label={col.label}
               cards={cards.filter((c) => c.columnId === col.id)}
+              onAddCard={onAddCard}
             />
           ))}
         </div>

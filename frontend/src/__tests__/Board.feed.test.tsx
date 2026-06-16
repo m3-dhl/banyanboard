@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { DropResult } from '@hello-pangea/dnd'
 import Board from '../components/Board'
@@ -96,6 +96,45 @@ describe('Board feed integration', () => {
       const items = screen.getAllByRole('listitem')
       expect(items).toHaveLength(20)
     })
+  })
+
+  // AC-ASYNC-1: card creation appends a "created in" entry to the feed
+  it('adds a "created in" feed entry when a card is created via the inline form', async () => {
+    render(<Board />)
+    const todoCol = screen.getByRole('region', { name: /todo/i })
+    fireEvent.click(todoCol.querySelector('button')!)  // "Add card" button
+    fireEvent.change(screen.getByRole('textbox', { name: /card title/i }), {
+      target: { value: 'Brand new task' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }))
+    await waitFor(() => {
+      expect(screen.getByRole('listitem')).toHaveTextContent('Brand new task')
+      expect(screen.getByRole('listitem')).toHaveTextContent(/created in/i)
+    })
+  })
+
+  // AC-ERROR-2: rollback on backend failure
+  it('rolls back card and feed entry and shows error when POST /cards fails', async () => {
+    global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (init && init.method === 'POST') {
+        return Promise.resolve({ ok: false, status: 500 } as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+    render(<Board />)
+    const todoCol = screen.getByRole('region', { name: /todo/i })
+    fireEvent.click(todoCol.querySelector('button')!)
+    fireEvent.change(screen.getByRole('textbox', { name: /card title/i }), {
+      target: { value: 'Rollback card' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }))
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toHaveTextContent(/failed to save card/i)
+    })
+    expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
   })
 
   it('feed entries survive unrelated re-renders caused by board name update', async () => {
