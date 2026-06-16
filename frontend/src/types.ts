@@ -17,13 +17,9 @@ export const COLUMNS: ColumnData[] = [
   { id: 'done', label: 'Done' },
 ]
 
-export interface ActivityFeedEntry {
-  id: string
-  cardTitle: string
-  fromColumn: ColumnId
-  toColumn: ColumnId
-  timestamp: Date
-}
+export type ActivityFeedEntry =
+  | { id: string; kind: 'move'; cardTitle: string; fromColumn: ColumnId; toColumn: ColumnId; timestamp: Date }
+  | { id: string; kind: 'created'; cardTitle: string; columnId: ColumnId; timestamp: Date }
 
 export const SEED_CARDS: CardData[] = [
   { id: 'card-1', title: 'Design login page', columnId: 'todo' },

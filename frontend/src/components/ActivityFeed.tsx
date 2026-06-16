@@ -5,7 +5,6 @@ interface ActivityFeedProps {
   entries: ActivityFeedEntry[]
 }
 
-// Build a lookup map from ColumnId to label using the COLUMNS constant
 const columnLabelMap = Object.fromEntries(COLUMNS.map((col) => [col.id, col.label]))
 
 const MAX_ENTRIES = 20
@@ -19,17 +18,26 @@ export default function ActivityFeed({ entries }: ActivityFeedProps) {
       {visible.length === 0 ? (
         <p>No activity yet.</p>
       ) : (
-        <div role="log" aria-label="Recent card moves" aria-live="polite">
+        <div role="log" aria-label="Recent card activity" aria-live="polite">
           <ul>
             {visible.map((entry) => {
               const iso = entry.timestamp.toISOString()
               return (
                 <li key={entry.id}>
                   <span>{entry.cardTitle}</span>
-                  {' moved from '}
-                  <span>{columnLabelMap[entry.fromColumn]}</span>
-                  {' to '}
-                  <span>{columnLabelMap[entry.toColumn]}</span>
+                  {entry.kind === 'move' ? (
+                    <>
+                      {' moved from '}
+                      <span>{columnLabelMap[entry.fromColumn]}</span>
+                      {' to '}
+                      <span>{columnLabelMap[entry.toColumn]}</span>
+                    </>
+                  ) : (
+                    <>
+                      {' created in '}
+                      <span>{columnLabelMap[entry.columnId]}</span>
+                    </>
+                  )}
                   {' — '}
                   <time dateTime={iso}>{iso}</time>
                 </li>

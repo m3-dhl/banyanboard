@@ -34,6 +34,7 @@ export default function Board() {
       if (movedCard) {
         const entry: ActivityFeedEntry = {
           id: `${draggableId}-${Date.now()}`,
+          kind: 'move',
           cardTitle: movedCard.title,
           fromColumn: source.droppableId as ColumnId,
           toColumn: destination.droppableId as ColumnId,
@@ -48,6 +49,24 @@ export default function Board() {
         c.id === draggableId ? { ...c, columnId: destination.droppableId as ColumnId } : c
       )
     )
+  }
+
+  function onAddCard(columnId: ColumnId, title: string) {
+    const newCard: CardData = {
+      id: crypto.randomUUID(),
+      title,
+      columnId,
+    }
+    setCards((prev) => [...prev, newCard])
+
+    const entry: ActivityFeedEntry = {
+      id: `created-${newCard.id}`,
+      kind: 'created',
+      cardTitle: title,
+      columnId,
+      timestamp: new Date(),
+    }
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
   }
 
   return (
@@ -68,6 +87,7 @@ export default function Board() {
               id={col.id}
               label={col.label}
               cards={cards.filter((c) => c.columnId === col.id)}
+              onAddCard={onAddCard}
             />
           ))}
         </div>

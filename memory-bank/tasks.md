@@ -8,3 +8,4 @@
 | TASK-004 | Add input validation middleware (required fields + malformed JSON) | ARCHIVE | COMPLETE | N/A |
 | TASK-005 | Simple Frontend Kanban Board | ARCHIVE | COMPLETE | FEAT-004 |
 | TASK-006 | Realtime Activity Feed | ARCHIVE | COMPLETE | FEAT-005 |
+| TASK-007 | Task Creation System | BUILD | Phase 1/2 COMPLETE | FEAT-006 |

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { DropResult } from '@hello-pangea/dnd'
 import Board from '../components/Board'
@@ -95,6 +95,21 @@ describe('Board feed integration', () => {
     await waitFor(() => {
       const items = screen.getAllByRole('listitem')
       expect(items).toHaveLength(20)
+    })
+  })
+
+  // AC-ASYNC-1: card creation appends a "created in" entry to the feed
+  it('adds a "created in" feed entry when a card is created via the inline form', async () => {
+    render(<Board />)
+    const todoCol = screen.getByRole('region', { name: /todo/i })
+    fireEvent.click(todoCol.querySelector('button')!)  // "Add card" button
+    fireEvent.change(screen.getByRole('textbox', { name: /card title/i }), {
+      target: { value: 'Brand new task' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }))
+    await waitFor(() => {
+      expect(screen.getByRole('listitem')).toHaveTextContent('Brand new task')
+      expect(screen.getByRole('listitem')).toHaveTextContent(/created in/i)
     })
   })
 
