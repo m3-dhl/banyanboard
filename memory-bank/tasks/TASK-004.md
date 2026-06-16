@@ -1,10 +1,12 @@
 # TASK-004: Add input validation middleware to validate required fields and reject malformed JSON on Board endpoints
 
 **Complexity**: Level 1
-**Status**: BUILD_COMPLETE
+**Status**: COMPLETE
 **Roadmap**: N/A
 **Branch**: task/004-add-input-validation-middleware
 **Worktree**: N/A (Level 1 uses direct branch, not worktree)
+**Archived**: memory-bank/archive/archive-TASK-004.md
+**Completed**: 2026-06-16
 
 ## Task Description
 
@@ -32,8 +34,8 @@ Specifically:
 
 ## Execution State
 
-**Build Status**: COMPLETE
-**Current Phase**: Phase 1 — COMPLETE
+**Build Status**: IDLE
+**Current Phase**: COMPLETE
 **Phase Number**: 1 of 1
 **Is Multi-Phase**: NO
 **Build Started**: 2026-06-16

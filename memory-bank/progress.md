@@ -160,3 +160,12 @@
 **Archive**: `memory-bank/archive/archive-TASK-003.md`
 
 ---
+
+## Task Archive: TASK-004
+
+**Task**: Add input validation middleware (required fields + malformed JSON)
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-16
+**Archive**: `memory-bank/archive/archive-TASK-004.md`
+
+---
