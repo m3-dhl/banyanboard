@@ -176,3 +176,13 @@ describe('GET /endpoint', () => {
 ## Last Refreshed
 
 2026-06-16 — Updated after TASK-004 completion; added middleware/ directory, JSON Error Handler pattern, validation.test.ts (29 total tests)
+
+## Domain Event Pattern
+
+Card actions (create, move, label, assign, delete) emit domain events.
+
+Consumers subscribe to event streams rather than polling.
+
+Events: timestamp, actor, action type, card ID, before/after state.
+
+In-process emitter for v1; design for future message bus.

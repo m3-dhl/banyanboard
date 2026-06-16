@@ -1,11 +1,11 @@
 # Product Roadmap
 
 ## Summary
-- **Total Features**: 4
+- **Total Features**: 5
 - **Released Versions**: 0
 - **Active Versions**: 0
 - **Planning Versions**: 1
-- **Backlog (next)**: 3
+- **Backlog (next)**: 4
 
 ---
 
@@ -26,6 +26,7 @@
   - FEAT-002: Board CRUD Endpoints (complete) [Level 2]
   - FEAT-003: Add Board CRUD API (planned) [Level 2]
   - FEAT-004: Simple Frontend Kanban Board (planned) [Level 2]
+  - FEAT-005: Realtime Activity Feed (planned) [Level 2]
 
 ---
 
@@ -65,6 +66,19 @@
 - **Description**: Build a minimal frontend kanban board with 3 columns (Todo, In Progress, Done) and drag-and-drop card movement. Scoped to ≤2 implementation phases.
 - **Linked Tasks**: TASK-005 (PLANNING)
 - **Branch**: feature/FEAT-004-simple-frontend-kanban-board
+- **Created**: 2026-06-16
+
+---
+
+### FEAT-005: Realtime Activity Feed
+- **Version**: next
+- **Status**: planned
+- **Priority**: medium
+- **Complexity**: Level 2 (user-capped; natural eval = Level 3)
+- **Max Phases**: 2 (user-enforced)
+- **Description**: Track and display a realtime activity feed of card movements between columns. Scoped to ≤2 implementation phases.
+- **Linked Tasks**: TASK-006 (PLANNING)
+- **Branch**: feature/FEAT-005-realtime-activity-feed
 - **Created**: 2026-06-16
 
 ---
