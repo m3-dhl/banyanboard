@@ -113,6 +113,30 @@ describe('Board feed integration', () => {
     })
   })
 
+  // AC-ERROR-2: rollback on backend failure
+  it('rolls back card and feed entry and shows error when POST /cards fails', async () => {
+    global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (init && init.method === 'POST') {
+        return Promise.resolve({ ok: false, status: 500 } as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+    render(<Board />)
+    const todoCol = screen.getByRole('region', { name: /todo/i })
+    fireEvent.click(todoCol.querySelector('button')!)
+    fireEvent.change(screen.getByRole('textbox', { name: /card title/i }), {
+      target: { value: 'Rollback card' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /^add$/i }))
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toHaveTextContent(/failed to save card/i)
+    })
+    expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
+  })
+
   it('feed entries survive unrelated re-renders caused by board name update', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,

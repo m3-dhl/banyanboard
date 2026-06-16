@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
 import { COLUMNS, SEED_CARDS } from '../types'
 import type { ActivityFeedEntry, CardData, ColumnId } from '../types'
-import { fetchBoards } from '../api'
+import { fetchBoards, createCard } from '../api'
 import Column from './Column'
 import ActivityFeed from './ActivityFeed'
 
@@ -13,6 +13,7 @@ export default function Board() {
   const [boardName, setBoardName] = useState<string>('BanyanBoard')
   const [apiError, setApiError] = useState(false)
   const [feedEntries, setFeedEntries] = useState<ActivityFeedEntry[]>([])
+  const [cardCreateError, setCardCreateError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchBoards()
@@ -51,14 +52,12 @@ export default function Board() {
     )
   }
 
-  function onAddCard(columnId: ColumnId, title: string) {
+  async function onAddCard(columnId: ColumnId, title: string) {
     const newCard: CardData = {
       id: crypto.randomUUID(),
       title,
       columnId,
     }
-    setCards((prev) => [...prev, newCard])
-
     const entry: ActivityFeedEntry = {
       id: `created-${newCard.id}`,
       kind: 'created',
@@ -66,7 +65,18 @@ export default function Board() {
       columnId,
       timestamp: new Date(),
     }
+
+    setCards((prev) => [...prev, newCard])
     setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+    setCardCreateError(null)
+
+    try {
+      await createCard(title, columnId)
+    } catch {
+      setCards((prev) => prev.filter((c) => c.id !== newCard.id))
+      setFeedEntries((prev) => prev.filter((e) => e.id !== entry.id))
+      setCardCreateError('Failed to save card — please try again')
+    }
   }
 
   return (
@@ -77,6 +87,11 @@ export default function Board() {
           {apiError && (
             <p role="status" className="api-error-notice">
               Backend unavailable — showing local data
+            </p>
+          )}
+          {cardCreateError && (
+            <p role="alert" className="card-create-error">
+              {cardCreateError}
             </p>
           )}
         </header>

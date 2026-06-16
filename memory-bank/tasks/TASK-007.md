@@ -156,7 +156,7 @@ Specification is concrete — proceed to implementation planning.
 ## Implementation Roadmap
 
 - [x] Phase 1: Frontend — inline card-creation form in Column; extend ActivityFeedEntry type; wire card creation into Board state and Activity Feed; all new frontend tests passing
-- [ ] Phase 2: Backend — DB migration `002_create_cards.sql`; card types (`backend/src/types/card.types.ts`); repository, service, controller, routes for `POST /cards`; register route in `app.ts`; `createCard` API call added to `frontend/src/api.ts`; optimistic update + rollback in `Board.tsx`; all new backend integration tests passing
+- [x] Phase 2: Backend — DB migration `002_create_cards.sql`; card types (`backend/src/types/card.types.ts`); repository, service, controller, routes for `POST /cards`; register route in `app.ts`; `createCard` API call added to `frontend/src/api.ts`; optimistic update + rollback in `Board.tsx`; all new backend integration tests passing
 
 ## Creative Phases
 
@@ -166,20 +166,20 @@ N/A (Level 2)
 
 ## Execution State
 
-**Build Status**: RUNNING
-**Current Phase**: Phase 1 — Frontend inline form + in-memory state
-**Phase Number**: 1 of 2
+**Build Status**: COMPLETE
+**Current Phase**: Phase 2 — Backend POST /cards + optimistic frontend
+**Phase Number**: 2 of 2
 **Is Multi-Phase**: YES
 **Build Started**: 2026-06-16
 
 ### Current Build Step
-**Step**: Phase 1 - COMPLETE
+**Step**: Phase 2 - COMPLETE
 **Status**: COMPLETE
 **Started**: 2026-06-16
 **Completed**: 2026-06-16
 
 ### Active Sub-Agents
-(none)
+(none — orchestrator implementing directly)
 
 ### Completed Steps
 - Step 0: TASK-007 created for FEAT-006
@@ -194,3 +194,9 @@ N/A (Level 2)
 - Step 6 Test Execution: COMPLETE (2026-06-16) — 42/42 tests passing
 - Step 7 Integration Verification: COMPLETE (2026-06-16) — tests PASS, build PASS, lint PASS
 - Phase 1: COMPLETE (2026-06-16)
+- Step 0 Build Phase 2: New build started — Phase 2 (2026-06-16)
+- Step 3 Test Writer Phase 2: COMPLETE (2026-06-16) — 8 backend tests (card.test.ts), 1 frontend rollback test (Board.feed.test.tsx)
+- Step 4 Coding Agent Phase 2: COMPLETE (2026-06-16) — 002_create_cards.sql, card.types.ts, card.repository.ts, card.service.ts, card.controller.ts, card.routes.ts, app.ts updated, api.ts updated, Board.tsx async onAddCard + rollback
+- Step 6 Test Execution Phase 2: COMPLETE (2026-06-16) — 37/37 backend, 43/43 frontend
+- Step 7 Integration Verification Phase 2: COMPLETE (2026-06-16) — backend build PASS, frontend build PASS, lint PASS
+- Phase 2: COMPLETE (2026-06-16)
