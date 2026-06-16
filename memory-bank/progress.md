@@ -161,6 +161,26 @@
 
 ---
 
+### 2026-06-16 — TASK-005 Phase 1: Frontend Scaffold + Static Board Layout (PHASE_COMPLETE)
+
+**Branch**: feature/FEAT-004-simple-frontend-kanban-board
+
+**Delivered**:
+- `frontend/` — Vite + React + TypeScript scaffold
+- `frontend/src/types.ts` — CardData, ColumnData, SEED_CARDS
+- `frontend/src/api.ts` — GET /boards with graceful error fallback
+- `frontend/src/components/Board.tsx` — 3-column board, useState, API fetch
+- `frontend/src/components/Column.tsx` — accessible region + drop area
+- `frontend/src/components/Card.tsx` — focusable article with title
+- `frontend/src/__tests__/Board.test.tsx` — 5 tests
+- `frontend/src/__tests__/Column.test.tsx` — 3 tests
+
+**Test results**: 8/8 PASS
+**Build**: tsc + vite build CLEAN
+**Phase Archive**: `memory-bank/archive/archive-TASK-005-phase1.md`
+
+---
+
 ## Task Archive: TASK-004
 
 **Task**: Add input validation middleware (required fields + malformed JSON)
