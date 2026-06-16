@@ -147,7 +147,7 @@ Specification is concrete — proceed to implementation planning.
 
 ## Implementation Roadmap
 
-- [ ] Phase 1: Frontend scaffold + static board layout (Vite + React + 3 columns)
+- [x] Phase 1: Frontend scaffold + static board layout (Vite + React + 3 columns)
 - [ ] Phase 2: Drag-and-drop card movement (@hello-pangea/dnd integration)
 
 ## Creative Phases
@@ -158,28 +158,29 @@ Specification is concrete — proceed to implementation planning.
 
 ## Execution State
 
-**Build Status**: RUNNING
-**Current Phase**: Phase 1: Frontend scaffold + static board layout
-**Phase Number**: 1 of 2
+**Build Status**: PHASE_1_COMPLETE
+**Current Phase**: Phase 2: Drag-and-drop card movement
+**Phase Number**: 2 of 2
 **Is Multi-Phase**: YES
 **Build Started**: 2026-06-16
 
 ### Current Build Step
-**Step**: Step 0.5 - Git Setup
-**Status**: RUNNING
-**Started**: 2026-06-16
+**Step**: Awaiting Phase 2
+**Status**: IDLE
 
 ### Completed Steps
 - Step 0: Parsed FEAT-004 → created TASK-005
 - Step 0.1: Auto-provisioned task file and registry entry
 - Step 0.2: Phase gate passed
-- Step 1 Read Task Context: COMPLETE (2026-06-16) - Phase 1 identified (scaffold + static layout)
+- Step 1 Read Task Context: COMPLETE (2026-06-16) - Phase 1 identified
 - Step 2 Load Context: COMPLETE (2026-06-16) - Level 2 rules loaded
-
-### Sub-Agents
-(none yet)
+- Step 3 Tests Written: COMPLETE (2026-06-16) - 8 tests in Board.test.tsx + Column.test.tsx
+- Step 4 Coding: COMPLETE (2026-06-16) - Board, Column, Card components; types.ts, api.ts
+- Step 6 Test Execution: COMPLETE (2026-06-16) - 8/8 passing
+- Step 7 Build Verification: COMPLETE (2026-06-16) - tsc + vite build PASS
+- Phase 1 Git Commit: COMPLETE (2026-06-16) - committed to feature/FEAT-004-simple-frontend-kanban-board
 
 ### Resumption Notes
 **Can Resume**: YES
-**Resume From**: Step 3 - Test Writer
-**Notes**: Feature branch to be created: feature/FEAT-004-simple-frontend-kanban-board
+**Resume From**: Phase 2 - Step 3 Test Writer
+**Notes**: Phase 1 complete. Run /banyan-build TASK-005 for Phase 2 (DnD integration)
