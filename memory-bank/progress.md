@@ -161,6 +161,15 @@
 
 ---
 
+## Task Archive: TASK-005
+
+**Task**: Simple Frontend Kanban Board
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-16
+**Archive**: `memory-bank/archive/archive-TASK-005.md`
+
+---
+
 ### 2026-06-16 — TASK-005 Phase 1: Frontend Scaffold + Static Board Layout (PHASE_COMPLETE)
 
 **Branch**: feature/FEAT-004-simple-frontend-kanban-board

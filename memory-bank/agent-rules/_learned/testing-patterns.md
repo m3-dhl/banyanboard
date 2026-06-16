@@ -2,7 +2,7 @@
 name: "Learned: Testing Patterns"
 globs: ["*.test.ts", "*.spec.ts", "*.test.tsx", "*.spec.tsx"]
 topics: ["testing", "express", "backend", "react", "frontend", "vitest"]
-priority: low
+priority: medium
 evidence_count: 3
 last_updated: 2026-06-16
 auto_generated: true
