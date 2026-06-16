@@ -26,7 +26,7 @@
   - FEAT-002: Board CRUD Endpoints (complete) [Level 2]
   - FEAT-003: Add Board CRUD API (planned) [Level 2]
   - FEAT-004: Simple Frontend Kanban Board (planned) [Level 2]
-  - FEAT-005: Realtime Activity Feed (planned) [Level 2]
+  - FEAT-005: Realtime Activity Feed (complete) [Level 2]
 
 ---
 
@@ -72,12 +72,12 @@
 
 ### FEAT-005: Realtime Activity Feed
 - **Version**: next
-- **Status**: planned
+- **Status**: complete
 - **Priority**: medium
 - **Complexity**: Level 2 (user-capped; natural eval = Level 3)
 - **Max Phases**: 2 (user-enforced)
 - **Description**: Track and display a realtime activity feed of card movements between columns. Scoped to ≤2 implementation phases.
-- **Linked Tasks**: TASK-006 (PLANNING)
+- **Linked Tasks**: TASK-006 (COMPLETE)
 - **Branch**: feature/FEAT-005-realtime-activity-feed
 - **Created**: 2026-06-16
 

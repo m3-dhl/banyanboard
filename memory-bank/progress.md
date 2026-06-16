@@ -2,6 +2,17 @@
 
 ## History
 
+---
+
+## Task Archive: TASK-006
+
+**Task**: Realtime Activity Feed
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-16
+**Archive**: `memory-bank/archive/archive-TASK-006.md`
+
+---
+
 ### 2026-06-16 — TASK-006 Reflection (REFLECTION_COMPLETE)
 
 #### Reflection (Step 3)
