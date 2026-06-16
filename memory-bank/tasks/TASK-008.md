@@ -1,7 +1,7 @@
 # TASK-008: Card Labels
 
 **Complexity**: Level 3
-**Status**: CREATIVE_COMPLETE
+**Status**: BUILD_COMPLETE
 **Roadmap**: FEAT-007
 **Branch**: feature/FEAT-007-card-labels
 **Worktree**: N/A
@@ -205,7 +205,7 @@ Three distinct entry points, each needs a design decision (see Creative Explorat
 
 - [x] **Phase 1 — Data model + backend endpoints**: Migration `003_create_labels.sql` (labels table + card_labels join); `label.repository.ts`, `label.service.ts`, `label.controller.ts`, `label.routes.ts`; extend `card.repository.ts` with `GET /cards` including labels; wire routes in `app.ts`; backend tests
 - [x] **Phase 2 — Frontend label badges + picker**: Update `frontend/src/types.ts` (Label interface, CardData.labels); new `LabelBadge.tsx` component; new `LabelPicker.tsx` component; update `Card.tsx` to render badges and host picker; update `api.ts` with label API functions; update Board.tsx to fetch labels; frontend tests
-- **Phase 3 — Filter panel + activity feed integration**: New filter control component (TBD name from creative phase); update `Board.tsx` filter state logic; update `ActivityFeedEntry` union type for label events; update `ActivityFeed.tsx` to render label events; end-to-end frontend tests for filter behavior
+- [x] **Phase 3 — Filter panel + activity feed integration**: `ActivityFeedEntry` union extended (label-added, label-removed); `Board.tsx` emits feed entries in onLabelToggle with optimistic revert on failure; `ActivityFeed.tsx` renders label events; 3 new tests (label-added, label-removed, drag-preserves-filter AC-ERROR-3)
 
 ## Creative Phases
 
@@ -216,17 +216,17 @@ Three distinct entry points, each needs a design decision (see Creative Explorat
 
 ## Execution State
 
-**Build Status**: RUNNING
-**Current Build**: Phase 3 — Filter panel + activity feed integration
+**Build Status**: BUILD_COMPLETE
+**Current Build**: Phase 3 complete — all phases done
 **Build Started**: 2026-06-16
 **Phase Number**: 3 of 3
 **Is Multi-Phase**: YES
 **Branch**: feature/FEAT-007-card-labels
 
 ### Current Build Step
-**Step**: Step 1 — Read Task Context (Phase 3)
-**Status**: RUNNING
-**Started**: 2026-06-16
+**Step**: Phase 3 complete
+**Status**: COMPLETE
+**Completed**: 2026-06-16
 
 ### Completed Steps
 - Step 0.1: Task created for FEAT-007
