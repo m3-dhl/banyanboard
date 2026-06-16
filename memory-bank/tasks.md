@@ -7,4 +7,4 @@
 | TASK-003 | Add CORS configuration (allowed origins, methods, headers) | ARCHIVE | COMPLETE | N/A |
 | TASK-004 | Add input validation middleware (required fields + malformed JSON) | ARCHIVE | COMPLETE | N/A |
 | TASK-005 | Simple Frontend Kanban Board | ARCHIVE | COMPLETE | FEAT-004 |
-| TASK-006 | Realtime Activity Feed | BUILD | BUILD_COMPLETE | FEAT-005 |
+| TASK-006 | Realtime Activity Feed | REFLECT | REFLECTION_COMPLETE | FEAT-005 |
