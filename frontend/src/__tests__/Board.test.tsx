@@ -2,6 +2,22 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import Board from '../components/Board'
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+vi.mock('@hello-pangea/dnd', () => ({
+  DragDropContext: ({ children }: any) => <>{children}</>,
+  Droppable: ({ children }: any) =>
+    children(
+      { innerRef: () => {}, droppableProps: {}, placeholder: null },
+      { isDraggingOver: false }
+    ),
+  Draggable: ({ children }: any) =>
+    children(
+      { innerRef: () => {}, draggableProps: {}, dragHandleProps: {} },
+      { isDragging: false }
+    ),
+}))
+/* eslint-enable @typescript-eslint/no-explicit-any */
+
 describe('Board', () => {
   beforeEach(() => {
     global.fetch = vi.fn().mockResolvedValue({

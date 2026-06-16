@@ -1,7 +1,23 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import Column from '../components/Column'
 import type { CardData } from '../types'
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+vi.mock('@hello-pangea/dnd', () => ({
+  DragDropContext: ({ children }: any) => <>{children}</>,
+  Droppable: ({ children }: any) =>
+    children(
+      { innerRef: () => {}, droppableProps: {}, placeholder: null },
+      { isDraggingOver: false }
+    ),
+  Draggable: ({ children }: any) =>
+    children(
+      { innerRef: () => {}, draggableProps: {}, dragHandleProps: {} },
+      { isDragging: false }
+    ),
+}))
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 const cards: CardData[] = [
   { id: 'c1', title: 'Task Alpha', columnId: 'todo' },

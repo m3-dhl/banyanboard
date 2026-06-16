@@ -148,7 +148,7 @@ Specification is concrete — proceed to implementation planning.
 ## Implementation Roadmap
 
 - [x] Phase 1: Frontend scaffold + static board layout (Vite + React + 3 columns)
-- [ ] Phase 2: Drag-and-drop card movement (@hello-pangea/dnd integration)
+- [x] Phase 2: Drag-and-drop card movement (@hello-pangea/dnd integration)
 
 ## Creative Phases
 
@@ -158,29 +158,32 @@ Specification is concrete — proceed to implementation planning.
 
 ## Execution State
 
-**Build Status**: PHASE_1_COMPLETE
-**Current Phase**: Phase 2: Drag-and-drop card movement
+**Build Status**: BUILD_COMPLETE
+**Current Phase**: Phase 2: Drag-and-drop card movement (COMPLETE)
 **Phase Number**: 2 of 2
 **Is Multi-Phase**: YES
 **Build Started**: 2026-06-16
 
 ### Current Build Step
-**Step**: Awaiting Phase 2
-**Status**: IDLE
+**Step**: Phase 2 - COMPLETE
+**Status**: COMPLETE
+**Completed**: 2026-06-16
 
 ### Completed Steps
 - Step 0: Parsed FEAT-004 → created TASK-005
 - Step 0.1: Auto-provisioned task file and registry entry
 - Step 0.2: Phase gate passed
-- Step 1 Read Task Context: COMPLETE (2026-06-16) - Phase 1 identified
-- Step 2 Load Context: COMPLETE (2026-06-16) - Level 2 rules loaded
-- Step 3 Tests Written: COMPLETE (2026-06-16) - 8 tests in Board.test.tsx + Column.test.tsx
-- Step 4 Coding: COMPLETE (2026-06-16) - Board, Column, Card components; types.ts, api.ts
-- Step 6 Test Execution: COMPLETE (2026-06-16) - 8/8 passing
-- Step 7 Build Verification: COMPLETE (2026-06-16) - tsc + vite build PASS
+- Step 1 Read Task Context P1: COMPLETE (2026-06-16) - Phase 1 identified
+- Step 2 Load Context P1: COMPLETE (2026-06-16) - Level 2 rules loaded
+- Step 3 Tests Written P1: COMPLETE (2026-06-16) - 8 tests in Board.test.tsx + Column.test.tsx
+- Step 4 Coding P1: COMPLETE (2026-06-16) - Board, Column, Card components; types.ts, api.ts
+- Step 6 Test Execution P1: COMPLETE (2026-06-16) - 8/8 passing
+- Step 7 Build Verification P1: COMPLETE (2026-06-16) - tsc + vite build PASS
 - Phase 1 Git Commit: COMPLETE (2026-06-16) - committed to feature/FEAT-004-simple-frontend-kanban-board
+- Step 1 Read Task Context P2: COMPLETE (2026-06-16) - Phase 2 identified (DnD)
+- Step 2 Load Context P2: COMPLETE (2026-06-16) - Level 2 rules loaded
 
 ### Resumption Notes
-**Can Resume**: YES
-**Resume From**: Phase 2 - Step 3 Test Writer
-**Notes**: Phase 1 complete. Run /banyan-build TASK-005 for Phase 2 (DnD integration)
+**Can Resume**: NO
+**Resume From**: N/A
+**Notes**: Both phases complete. Run /banyan-reflect TASK-005
