@@ -3,7 +3,7 @@ name: "Learned: Testing Patterns"
 globs: ["*.test.ts", "*.spec.ts", "*.test.tsx", "*.spec.tsx"]
 topics: ["testing", "express", "backend", "react", "frontend", "vitest"]
 priority: medium
-evidence_count: 5
+evidence_count: 6
 last_updated: 2026-06-16
 auto_generated: true
 ---
@@ -15,6 +15,7 @@ auto_generated: true
 - Mock @hello-pangea/dnd by capturing the `onDragEnd` callback via a module-level closure and invoking it inside `act()` — do not simulate mouse or pointer events to trigger drag-and-drop state changes.
 - When adding a new always-visible UI section to an existing component, scope all existing role/text queries in that component's tests to named landmark regions to prevent false matches against the new section.
 - When adding async optimistic-update with rollback to a component, write the rollback test (pending item removed on API error) before implementing the async path — it pins the exact state shape needed for clean rollback.
+- In Express controllers, guard custom error classes with both `instanceof` and `.name === 'ClassName'` checks; Jest module isolation can reconstruct error objects on a different prototype chain, causing `instanceof` to return false for the correct class.
 
 ## Evidence
 
@@ -25,3 +26,4 @@ auto_generated: true
 | @hello-pangea/dnd mock via captured onDragEnd closure + act() | [reflection-TASK-005.md](../reflection/reflection-TASK-005.md) | 2026-06-16 |
 | Scope existing component test queries to named regions before adding new always-visible sections | [reflection-TASK-006.md](../reflection/reflection-TASK-006.md) | 2026-06-16 |
 | Write rollback test before implementing async optimistic-update | [reflection-TASK-007.md](../reflection/reflection-TASK-007.md) | 2026-06-16 |
+| Dual instanceof/name guard for custom errors in controllers (Jest module isolation) | [reflection-TASK-008.md](../reflection/reflection-TASK-008.md) | 2026-06-16 |
