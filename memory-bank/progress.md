@@ -4,6 +4,34 @@
 
 ---
 
+### 2026-06-16 — TASK-008 Phase 1: Data model + backend endpoints (PHASE_COMPLETE)
+
+**Branch**: feature/FEAT-007-card-labels
+
+**Delivered**:
+- `backend/src/db/migrations/003_create_labels.sql` — DDL for `labels` and `card_labels` tables (UUID PK, board_id FK with cascade, UNIQUE(name, board_id), indexes)
+- `backend/src/types/label.types.ts` — `Label`, `LabelSummary`, `CreateLabelDto` interfaces
+- `backend/src/errors/index.ts` — Shared `ValidationError`, `NotFoundError`, `ConflictError` classes
+- `backend/src/repositories/label.repository.ts` — `createLabel`, `getLabelsByBoard`, `getLabelById`, `deleteLabel`, `attachLabelToCard`, `detachLabelFromCard` (pg error code handling for FK/PK violations)
+- `backend/src/services/label.service.ts` — validation (hex color regex, name length, boardId presence, duplicate check), delegates to repository
+- `backend/src/controllers/label.controller.ts` — HTTP handlers with dual instanceof/name error guards
+- `backend/src/routes/label.routes.ts` — `POST /labels`, `GET /labels`, `DELETE /labels/:id`
+- `backend/src/types/card.types.ts` (modified) — added `labels?: LabelSummary[]` to `Card`
+- `backend/src/repositories/card.repository.ts` (modified) — added `getCards()` with LEFT JOIN + `json_agg`
+- `backend/src/services/card.service.ts` (modified) — added `getCards()`, replaced local `ValidationError` with shared class from `errors/index.ts`
+- `backend/src/controllers/card.controller.ts` (modified) — added `getCards` handler
+- `backend/src/routes/card.routes.ts` (modified) — added `GET /cards`, `POST /cards/:id/labels`, `DELETE /cards/:id/labels/:labelId`
+- `backend/src/app.ts` (modified) — mounted `labelRouter` at `/labels`
+- `backend/src/__tests__/label.test.ts` — 21 tests (label CRUD + card-label endpoints + GET /cards label integration)
+
+**Test results**: 58/58 PASS (21 new + 37 existing)
+**Build**: PASS (tsc)
+**Typecheck**: CLEAN
+
+---
+
+---
+
 ## Task Archive: TASK-007
 
 **Task**: Task Creation System
