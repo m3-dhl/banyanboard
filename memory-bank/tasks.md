@@ -6,3 +6,4 @@
 | TASK-002 | Board model + full CRUD endpoints + tests | ARCHIVE | COMPLETE | FEAT-002 |
 | TASK-003 | Add CORS configuration (allowed origins, methods, headers) | ARCHIVE | COMPLETE | N/A |
 | TASK-004 | Add input validation middleware (required fields + malformed JSON) | ARCHIVE | COMPLETE | N/A |
+| TASK-005 | Simple Frontend Kanban Board | PLAN | PLANNING_COMPLETE | FEAT-004 |
