@@ -2,7 +2,7 @@
 name: "Learned: Architecture Patterns"
 globs: ["src/services/*.ts", "src/controllers/*.ts", "src/config/*.ts", "app.ts"]
 topics: ["architecture", "error-handling", "express", "backend", "middleware"]
-priority: low
+priority: medium
 evidence_count: 3
 last_updated: 2026-06-16
 auto_generated: true

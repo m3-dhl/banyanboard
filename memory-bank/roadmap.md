@@ -1,11 +1,11 @@
 # Product Roadmap
 
 ## Summary
-- **Total Features**: 5
+- **Total Features**: 6
 - **Released Versions**: 0
 - **Active Versions**: 0
 - **Planning Versions**: 1
-- **Backlog (next)**: 4
+- **Backlog (next)**: 5
 
 ---
 
@@ -27,6 +27,7 @@
   - FEAT-003: Add Board CRUD API (planned) [Level 2]
   - FEAT-004: Simple Frontend Kanban Board (planned) [Level 2]
   - FEAT-005: Realtime Activity Feed (complete) [Level 2]
+  - FEAT-006: Task Creation System (planned) [Level 2]
 
 ---
 
@@ -80,6 +81,19 @@
 - **Linked Tasks**: TASK-006 (COMPLETE)
 - **Branch**: feature/FEAT-005-realtime-activity-feed
 - **Created**: 2026-06-16
+
+---
+
+### FEAT-006: Task Creation System
+- **Version**: next
+- **Status**: complete
+- **Priority**: medium
+- **Complexity**: Level 2 (user-capped; natural eval = Level 3)
+- **Description**: Add ability to create new cards on the kanban board — UI form/modal per column, POST /tasks endpoint, input validation, and integration with the existing activity feed on card creation.
+- **Linked Tasks**: TASK-007 (COMPLETE)
+- **Branch**: feature/FEAT-006-task-creation-system
+- **Created**: 2026-06-16
+- **Completed**: 2026-06-16
 
 ---
 

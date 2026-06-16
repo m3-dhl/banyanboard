@@ -20,6 +20,16 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-16 - Consolidation (during TASK-007 archive)
+
+- Files before: 3, Files after: 3
+- Merged: 0 files
+- Expired: 0 bullets (0 files deleted)
+- Promoted: 1 file (`architecture.md` low → medium, evidence_count reached 3)
+- Pruned: 0 excess bullets
+
+---
+
 ## 2026-06-16 - Consolidation (during TASK-006 archive)
 
 - Files before: 3, Files after: 3

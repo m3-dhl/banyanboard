@@ -26,7 +26,7 @@
 | File | Topics | Evidence Count | Priority | Last Updated |
 |------|--------|---------------:|:--------:|:------------:|
 | testing-patterns.md | testing, express, backend, react, frontend, vitest | 5 | medium | 2026-06-16 |
-| architecture.md | architecture, error-handling, express, backend, middleware | 3 | low | 2026-06-16 |
+| architecture.md | architecture, error-handling, express, backend, middleware | 3 | medium | 2026-06-16 |
 | frontend-architecture.md | frontend, react, typescript, vite, architecture | 1 | low | 2026-06-16 |
 
 ## Consolidation History
@@ -37,3 +37,4 @@
 | 2026-06-16 | 2 | 2 | 0 | 0 | 0 |
 | 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
 | 2026-06-16 | 3 | 3 | 0 | 0 | 0 |
+| 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
