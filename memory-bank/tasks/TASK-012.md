@@ -1,7 +1,7 @@
 # TASK-012: Card Deletion
 
 **Complexity**: Level 2
-**Status**: PLANNING_COMPLETE
+**Status**: BUILD_COMPLETE
 **Roadmap**: FEAT-009
 **Branch**: feature/FEAT-009-card-deletion
 **Worktree**: N/A
@@ -153,7 +153,7 @@ Specification is concrete — proceed to implementation planning.
 ## Implementation Roadmap
 
 - [x] Phase 1: Backend `DELETE /cards/:id` — route + controller + service + repository + tests
-- [ ] Phase 2: Frontend `DeleteCardDialog` + card delete button + Board handler + `'deleted'` feed entry + tests
+- [x] Phase 2: Frontend `DeleteCardDialog` + card delete button + Board handler + `'deleted'` feed entry + tests
 
 ### Phase 1 — Backend (files to touch)
 - `backend/src/repositories/card.repository.ts` — add `deleteCard(id: string): Promise<void>` (SQL: `DELETE FROM cards WHERE id = $1`; throw `NotFoundError` if rowCount === 0)
@@ -188,25 +188,25 @@ Specification is concrete — proceed to implementation planning.
 
 ## Execution State
 
-**Build Status**: RUNNING
-**Current Phase**: Phase 1 — Backend DELETE /cards/:id
-**Phase Number**: 1 of 2
+**Build Status**: BUILD_COMPLETE
+**Current Phase**: Phase 2 — Frontend — COMPLETE
+**Phase Number**: 2 of 2
 **Is Multi-Phase**: YES
 **Build Started**: 2026-06-17
-**Can Resume**: YES
+**Can Resume**: NO
 
 ### Current Build Step
-**Step**: Step 11 - Git Completion
-**Status**: RUNNING
-**Started**: 2026-06-17
+**Step**: Step 11 - Git Completion (Phase 2)
+**Status**: COMPLETE
+**Completed**: 2026-06-17
 
 ### Completed Steps
 - Step 3 - Spec Writer Agent - COMPLETE
 - Step 4 - Human Spec Review - APPROVED
 - PLANNING_COMPLETE
 - Step 0.5 Git Setup - COMPLETE (branch: feature/FEAT-009-card-deletion)
-- Step 1 Read Task Context - COMPLETE (Phase 1 identified: Backend DELETE /cards/:id)
-- Step 2 Load Context - COMPLETE (Level 2)
-- Step 3 Test Writer - COMPLETE (7 tests in card.test.ts)
-- Step 4 Coding Agent - COMPLETE (repo + service + controller + route)
-- Step 7 Integration Verification - COMPLETE (72/72 tests, typecheck clean)
+- Phase 1 - All steps - COMPLETE (72 backend tests)
+- Phase 2 - Step 3 Test Writer - COMPLETE (5 Card.delete tests + 2 Board tests)
+- Phase 2 - Step 4 Coding Agent - COMPLETE (DeleteCardDialog, Card, Column, Board, ActivityFeed, api, types)
+- Phase 2 - Step 7 Integration Verification - COMPLETE (91/91 frontend + 72/72 backend, typecheck+lint clean)
+- Phase 2 - Step 11 Git Completion - COMPLETE

@@ -57,12 +57,14 @@ export default function ActivityFeed({ entries }: ActivityFeedProps) {
                       <span>{entry.labelName}</span>
                       {' added'}
                     </>
-                  ) : (
+                  ) : entry.kind === 'label-removed' ? (
                     <>
                       {' label '}
                       <span>{entry.labelName}</span>
                       {' removed'}
                     </>
+                  ) : (
+                    <>{' deleted'}</>
                   )}
                 </span>
                 <time className="activity-entry-time" dateTime={iso}>

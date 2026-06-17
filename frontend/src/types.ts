@@ -42,6 +42,7 @@ export type ActivityFeedEntry =
   | { id: string; kind: 'created'; cardTitle: string; columnId: ColumnId; timestamp: Date }
   | { id: string; kind: 'label-added'; cardTitle: string; labelName: string; timestamp: Date }
   | { id: string; kind: 'label-removed'; cardTitle: string; labelName: string; timestamp: Date }
+  | { id: string; kind: 'deleted'; cardTitle: string; timestamp: Date }
 
 export const SEED_CARDS: CardData[] = [
   { id: 'card-1', title: 'Design login page', columnId: 'todo' },
