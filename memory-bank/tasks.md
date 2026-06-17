@@ -11,5 +11,5 @@
 | TASK-007 | Task Creation System | ARCHIVE | COMPLETE | FEAT-006 |
 | TASK-008 | Card Labels | ARCHIVE | COMPLETE | FEAT-007 |
 | TASK-009 | Card Reordering | ARCHIVE | COMPLETE | FEAT-008 |
-| TASK-010 | Fix card drop animation — reordered card briefly falls from above | BUILD | BUILD_COMPLETE | N/A |
-| TASK-011 | Fix cross-column card drop position | BUILD | BUILD_COMPLETE | N/A |
+| TASK-010 | Fix card drop animation — reordered card briefly falls from above | ARCHIVE | COMPLETE | N/A |
+| TASK-011 | Fix cross-column card drop position | ARCHIVE | COMPLETE | N/A |

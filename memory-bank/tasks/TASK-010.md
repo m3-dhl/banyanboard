@@ -1,7 +1,9 @@
 # TASK-010: Fix card drop animation — reordered card briefly falls from above
 
 **Complexity**: Level 1
-**Status**: INITIALIZED
+**Status**: COMPLETE
+**Archived**: memory-bank/archive/archive-TASK-010.md
+**Completed**: 2026-06-17
 **Roadmap**: N/A
 **Branch**: hotfix/010-fix-card-drop-animation
 **Worktree**: N/A (Level 1 uses direct branch, not worktree)

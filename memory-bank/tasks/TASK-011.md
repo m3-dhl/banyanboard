@@ -1,7 +1,9 @@
 # TASK-011: Fix cross-column card drop position
 
 **Complexity**: Level 1
-**Status**: INITIALIZED
+**Status**: COMPLETE
+**Archived**: memory-bank/archive/archive-TASK-011.md
+**Completed**: 2026-06-17
 **Roadmap**: N/A
 **Branch**: hotfix/011-fix-cross-column-drop-position
 **Worktree**: N/A (Level 1 uses direct branch, not worktree)
