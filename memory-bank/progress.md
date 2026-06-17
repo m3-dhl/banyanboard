@@ -4,6 +4,15 @@
 
 ---
 
+## Task Archive: TASK-012
+
+**Task**: Card Deletion
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-17
+**Archive**: `memory-bank/archive/archive-TASK-012.md`
+
+---
+
 ### 2026-06-17 — TASK-012 Reflection (REFLECTION_COMPLETE)
 
 #### Reflection (Step 3)

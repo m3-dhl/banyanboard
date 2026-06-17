@@ -30,7 +30,7 @@
   - FEAT-006: Task Creation System (planned) [Level 2]
   - FEAT-007: Card Labels (planned) [Level 3]
   - FEAT-008: Card Reordering (planned) [Level 2]
-  - FEAT-009: Card Deletion (planned) [Level 2]
+  - FEAT-009: Card Deletion (complete) [Level 2]
 
 ---
 
@@ -128,13 +128,14 @@
 
 ### FEAT-009: Card Deletion
 - **Version**: next
-- **Status**: planned
+- **Status**: complete
 - **Priority**: medium
 - **Complexity**: Level 2
 - **Description**: Add permanent card deletion with an irreversible-action confirmation dialog. Pattern follows industry standard (Trello/Jira/Asana): a delete trigger on the card → AlertDialog with explicit warning that the action cannot be undone → confirmed DELETE /tasks/:id API call → card removed from board + activity feed logs the deletion. Backend requires DELETE endpoint + repo method; frontend requires delete affordance on card + AlertDialog component.
-- **Linked Tasks**: TASK-012 (INITIALIZED)
+- **Linked Tasks**: TASK-012 (COMPLETE)
 - **Branch**: feature/FEAT-009-card-deletion
 - **Created**: 2026-06-17
+- **Completed**: 2026-06-17
 
 ---
 
