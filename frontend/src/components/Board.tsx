@@ -10,6 +10,7 @@ import {
   deleteLabel,
   attachLabel,
   detachLabel,
+  reorderCard,
 } from '../api'
 import Column from './Column'
 import ActivityFeed from './ActivityFeed'
@@ -57,19 +58,45 @@ export default function Board() {
     if (!destination) return
     if (destination.droppableId === source.droppableId && destination.index === source.index) return
 
-    if (destination.droppableId !== source.droppableId) {
-      const movedCard = cards.find((c) => c.id === draggableId)
-      if (movedCard) {
-        const entry: ActivityFeedEntry = {
-          id: `${draggableId}-${Date.now()}`,
-          kind: 'move',
-          cardTitle: movedCard.title,
-          fromColumn: source.droppableId as ColumnId,
-          toColumn: destination.droppableId as ColumnId,
-          timestamp: new Date(),
-        }
-        setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+    // Same-column reorder: optimistic update + persist + revert on failure
+    if (destination.droppableId === source.droppableId) {
+      const colId = source.droppableId as ColumnId
+      const snapshot = cards
+
+      // Use filteredCards to get the rendered order (handles active filter correctly)
+      const visibleColCards = filteredCards.filter((c) => c.columnId === colId)
+      const reordered = [...visibleColCards]
+      const [dragged] = reordered.splice(source.index, 1)
+      reordered.splice(destination.index, 0, dragged)
+
+      const visibleIdSet = new Set(visibleColCards.map((c) => c.id))
+
+      setCards((prev) => {
+        const hiddenColCards = prev.filter((c) => c.columnId === colId && !visibleIdSet.has(c.id))
+        const otherCards = prev.filter((c) => c.columnId !== colId)
+        return [...otherCards, ...reordered, ...hiddenColCards]
+      })
+
+      reorderCard(draggableId, destination.index).catch(() => {
+        setCards(snapshot)
+        setCardCreateError('Failed to reorder card — please try again')
+      })
+
+      return
+    }
+
+    // Cross-column move: update columnId + activity feed entry
+    const movedCard = cards.find((c) => c.id === draggableId)
+    if (movedCard) {
+      const entry: ActivityFeedEntry = {
+        id: `${draggableId}-${Date.now()}`,
+        kind: 'move',
+        cardTitle: movedCard.title,
+        fromColumn: source.droppableId as ColumnId,
+        toColumn: destination.droppableId as ColumnId,
+        timestamp: new Date(),
       }
+      setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
     }
 
     setCards((prev) =>
