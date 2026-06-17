@@ -27,12 +27,13 @@ File: `frontend/src/components/Board.tsx` — `onDragEnd` function.
 
 ## Execution State
 
-**Build Status**: IDLE
-**Current Phase**: INITIALIZED → BUILD
+**Build Status**: COMPLETE
+**Current Phase**: BUILD_COMPLETE
 **Can Resume**: NO
-
-### Active Sub-Agents
-(none)
+**Latest Commit**: 16550cd
 
 ### Completed Steps
-(none)
+- Step 3 Test Writer: COMPLETE — 3 tests in Board.test.tsx (cross-column drop at index 0, 1, source retention)
+- Step 4 Coding Agent: COMPLETE — onDragEnd cross-column: remove+splice at destination.index
+- Step 7 Integration Verification: COMPLETE — 84/84 tests pass
+- Step 11 Git Completion: COMPLETE — committed to hotfix/011-fix-cross-column-drop-position
