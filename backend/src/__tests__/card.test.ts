@@ -13,6 +13,7 @@ const mockCard = {
   id: CARD_ID,
   title: 'Design login page',
   columnId: 'todo' as const,
+  position: 0,
   createdAt: NOW,
 };
 
@@ -100,6 +101,83 @@ describe('POST /cards', () => {
     const res = await request(app)
       .post('/cards')
       .send({ title: 'New card', columnId: 'todo' });
+
+    expect(res.status).toBe(500);
+    expect(res.body.error).toBe('Internal server error');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// PATCH /cards/:id/position
+// ---------------------------------------------------------------------------
+
+describe('PATCH /cards/:id/position', () => {
+  it('returns 200 with the updated card when position is valid', async () => {
+    const reordered = { ...mockCard, position: 2 };
+    mockedRepo.reorderCard.mockResolvedValue(reordered);
+
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({ position: 2 });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({ id: CARD_ID, position: 2 });
+  });
+
+  it('returns 400 when position is missing from body', async () => {
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/position/i);
+  });
+
+  it('returns 400 when position is a negative integer', async () => {
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({ position: -1 });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/position/i);
+  });
+
+  it('returns 400 when position is a float', async () => {
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({ position: 1.5 });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/position/i);
+  });
+
+  it('returns 400 when position is a non-numeric string', async () => {
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({ position: 'abc' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/position/i);
+  });
+
+  it('returns 404 when card ID does not exist', async () => {
+    const { NotFoundError } = await import('../errors/index');
+    mockedRepo.reorderCard.mockRejectedValue(new NotFoundError('Card not found'));
+
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({ position: 1 });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toMatch(/not found/i);
+  });
+
+  it('returns 500 on unexpected repository error', async () => {
+    mockedRepo.reorderCard.mockRejectedValue(new Error('DB connection lost'));
+
+    const res = await request(app)
+      .patch(`/cards/${CARD_ID}/position`)
+      .send({ position: 1 });
 
     expect(res.status).toBe(500);
     expect(res.body.error).toBe('Internal server error');

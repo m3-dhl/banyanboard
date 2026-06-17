@@ -30,6 +30,7 @@ const mockCard = {
   id: CARD_ID,
   title: 'Fix login bug',
   columnId: 'todo' as const,
+  position: 0,
   createdAt: NOW,
   labels: [],
 };
