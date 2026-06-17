@@ -24,6 +24,10 @@ export async function createCard(data: CreateCardDto): Promise<Card> {
   return cardRepository.createCard({ title: data.title.trim(), columnId: data.columnId });
 }
 
+export async function deleteCard(id: string): Promise<void> {
+  return cardRepository.deleteCard(id);
+}
+
 export async function reorderCard(id: string, position: number): Promise<Card> {
   if (position === undefined || position === null || typeof position !== 'number') {
     throw new ValidationError('position must be a non-negative integer');

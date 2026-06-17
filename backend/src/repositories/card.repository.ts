@@ -57,6 +57,13 @@ export async function createCard(data: CreateCardDto): Promise<Card> {
   return { ...rowToCard(result.rows[0]), labels: [] };
 }
 
+export async function deleteCard(id: string): Promise<void> {
+  const result = await pool.query('DELETE FROM cards WHERE id = $1', [id]);
+  if ((result.rowCount ?? 0) === 0) {
+    throw new NotFoundError(`Card not found: ${id}`);
+  }
+}
+
 export async function reorderCard(id: string, newPosition: number): Promise<Card> {
   const client = await pool.connect();
   try {

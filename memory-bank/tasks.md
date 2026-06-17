@@ -13,3 +13,4 @@
 | TASK-009 | Card Reordering | ARCHIVE | COMPLETE | FEAT-008 |
 | TASK-010 | Fix card drop animation — reordered card briefly falls from above | ARCHIVE | COMPLETE | N/A |
 | TASK-011 | Fix cross-column card drop position | ARCHIVE | COMPLETE | N/A |
+| TASK-012 | Card Deletion | PLAN | PLANNING_COMPLETE | FEAT-009 |
