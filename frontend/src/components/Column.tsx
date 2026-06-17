@@ -11,9 +11,10 @@ interface Props {
   labels: Label[]
   onAddCard: (columnId: ColumnId, title: string) => void
   onLabelToggle: (cardId: string, labelId: string) => void
+  onDeleteCard: (cardId: string) => void
 }
 
-export default function Column({ id, label, cards, labels, onAddCard, onLabelToggle }: Props) {
+export default function Column({ id, label, cards, labels, onAddCard, onLabelToggle, onDeleteCard }: Props) {
   const [formOpen, setFormOpen] = useState(false)
 
   function handleAdd(title: string) {
@@ -56,6 +57,7 @@ export default function Column({ id, label, cards, labels, onAddCard, onLabelTog
                 index={index}
                 labels={labels}
                 onLabelToggle={onLabelToggle}
+                onDelete={onDeleteCard}
               />
             ))}
             {provided.placeholder}

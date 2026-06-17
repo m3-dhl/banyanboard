@@ -4,16 +4,19 @@ import { Draggable } from '@hello-pangea/dnd'
 import type { CardData, Label } from '../types'
 import LabelBadge from './LabelBadge'
 import LabelPickerPopover from './LabelPickerPopover'
+import DeleteCardDialog from './DeleteCardDialog'
 
 interface Props {
   card: CardData
   index: number
   labels: Label[]
   onLabelToggle: (cardId: string, labelId: string) => void
+  onDelete: (cardId: string) => void
 }
 
-export default function Card({ card, index, labels, onLabelToggle }: Props) {
+export default function Card({ card, index, labels, onLabelToggle, onDelete }: Props) {
   const [showPicker, setShowPicker] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const addLabelBtnRef = useRef<HTMLButtonElement>(null)
 
   const attachedLabelIds = (card.labels ?? []).map((l) => l.id)
@@ -32,6 +35,19 @@ export default function Card({ card, index, labels, onLabelToggle }: Props) {
 
   function handlePickerClose(): void {
     setShowPicker(false)
+  }
+
+  function handleDeleteClick(): void {
+    setShowDeleteDialog(true)
+  }
+
+  function handleDeleteConfirm(): void {
+    setShowDeleteDialog(false)
+    onDelete(card.id)
+  }
+
+  function handleDeleteCancel(): void {
+    setShowDeleteDialog(false)
   }
 
   return (
@@ -66,6 +82,14 @@ export default function Card({ card, index, labels, onLabelToggle }: Props) {
             >
               + Label
             </button>
+            <button
+              type="button"
+              className="delete-card-btn"
+              aria-label={`Delete ${card.title}`}
+              onClick={handleDeleteClick}
+            >
+              Delete
+            </button>
           </div>
 
           {showPicker && createPortal(
@@ -78,6 +102,14 @@ export default function Card({ card, index, labels, onLabelToggle }: Props) {
               anchorRect={addLabelBtnRef.current?.getBoundingClientRect()}
             />,
             document.body
+          )}
+
+          {showDeleteDialog && (
+            <DeleteCardDialog
+              cardTitle={card.title}
+              onConfirm={handleDeleteConfirm}
+              onCancel={handleDeleteCancel}
+            />
           )}
         </div>
       )}

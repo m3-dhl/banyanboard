@@ -4,6 +4,25 @@
 
 ---
 
+## Task Archive: TASK-012
+
+**Task**: Card Deletion
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-17
+**Archive**: `memory-bank/archive/archive-TASK-012.md`
+
+---
+
+### 2026-06-17 — TASK-012 Reflection (REFLECTION_COMPLETE)
+
+#### Reflection (Step 3)
+- Completed: 2026-06-17
+- Document: memory-bank/reflection/reflection-TASK-012.md
+- Task Quality: Excellent — all 5 ACs met, 13 tests (7 backend + 6 frontend), zero rework, clean typecheck and lint, portal + rollback + container-Escape patterns applied correctly
+- Ecosystem Effectiveness: Highly Effective — Level 2 two-phase split natural (backend endpoint first, then frontend), 6 learned rules applied correctly, spec quality enabled pattern-assembly coding with zero discovery overhead
+
+---
+
 ## Task Archive: TASK-009
 
 **Task**: Card Reordering

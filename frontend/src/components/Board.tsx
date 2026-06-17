@@ -12,6 +12,7 @@ import {
   attachLabel,
   detachLabel,
   reorderCard,
+  deleteCard,
 } from '../api'
 import Column from './Column'
 import ActivityFeed from './ActivityFeed'
@@ -31,6 +32,7 @@ export default function Board() {
   const [labels, setLabels] = useState<Label[]>([])
   const [activeFilter, setActiveFilter] = useState<string | null>(null)
   const [labelAssignError, setLabelAssignError] = useState<string | null>(null)
+  const [cardDeleteError, setCardDeleteError] = useState<string | null>(null)
   const [showManagePanel, setShowManagePanel] = useState(false)
 
   useEffect(() => {
@@ -198,6 +200,30 @@ export default function Board() {
     }
   }
 
+  async function onDeleteCard(cardId: string) {
+    const card = cards.find((c) => c.id === cardId)
+    if (!card) return
+
+    const entry: ActivityFeedEntry = {
+      id: `deleted-${cardId}-${Date.now()}`,
+      kind: 'deleted',
+      cardTitle: card.title,
+      timestamp: new Date(),
+    }
+
+    setCards((prev) => prev.filter((c) => c.id !== cardId))
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+    setCardDeleteError(null)
+
+    try {
+      await deleteCard(cardId)
+    } catch {
+      setCards((prev) => [...prev, card])
+      setFeedEntries((prev) => prev.filter((e) => e.id !== entry.id))
+      setCardDeleteError('Failed to delete card — please try again')
+    }
+  }
+
   async function onLabelDelete(labelId: string) {
     setLabelAssignError(null)
     try {
@@ -245,6 +271,11 @@ export default function Board() {
               {labelAssignError}
             </p>
           )}
+          {cardDeleteError && (
+            <p role="alert" className="card-delete-error">
+              {cardDeleteError}
+            </p>
+          )}
         </header>
 
         {labels.length > 0 && (
@@ -265,6 +296,7 @@ export default function Board() {
               labels={labels}
               onAddCard={onAddCard}
               onLabelToggle={onLabelToggle}
+              onDeleteCard={onDeleteCard}
             />
           ))}
         </div>

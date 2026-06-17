@@ -183,3 +183,69 @@ describe('PATCH /cards/:id/position', () => {
     expect(res.body.error).toBe('Internal server error');
   });
 });
+
+// ---------------------------------------------------------------------------
+// DELETE /cards/:id
+// ---------------------------------------------------------------------------
+
+describe('DELETE /cards/:id', () => {
+  it('returns 204 with no body when card exists', async () => {
+    mockedRepo.deleteCard.mockResolvedValue(undefined);
+
+    const res = await request(app).delete(`/cards/${CARD_ID}`);
+
+    expect(res.status).toBe(204);
+    expect(res.body).toEqual({});
+  });
+
+  it('calls repository.deleteCard with the correct card ID', async () => {
+    mockedRepo.deleteCard.mockResolvedValue(undefined);
+
+    await request(app).delete(`/cards/${CARD_ID}`);
+
+    expect(mockedRepo.deleteCard).toHaveBeenCalledTimes(1);
+    expect(mockedRepo.deleteCard).toHaveBeenCalledWith(CARD_ID);
+  });
+
+  it('returns 404 with error body when card does not exist', async () => {
+    const { NotFoundError } = await import('../errors/index');
+    mockedRepo.deleteCard.mockRejectedValue(new NotFoundError(`Card not found: ${CARD_ID}`));
+
+    const res = await request(app).delete(`/cards/${CARD_ID}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toMatch(`Card not found: ${CARD_ID}`);
+  });
+
+  it('returns 400 when id is not a valid UUID', async () => {
+    const res = await request(app).delete('/cards/not-a-uuid');
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
+  });
+
+  it('does not call repository when id is not a valid UUID', async () => {
+    await request(app).delete('/cards/not-a-uuid');
+
+    expect(mockedRepo.deleteCard).not.toHaveBeenCalled();
+  });
+
+  it('returns 500 on unexpected repository error', async () => {
+    mockedRepo.deleteCard.mockRejectedValue(new Error('DB connection lost'));
+
+    const res = await request(app).delete(`/cards/${CARD_ID}`);
+
+    expect(res.status).toBe(500);
+    expect(res.body.error).toBe('Internal server error');
+  });
+
+  it('returns 404 using .name check when NotFoundError crosses module boundary', async () => {
+    const err = new Error(`Card not found: ${CARD_ID}`);
+    err.name = 'NotFoundError';
+    mockedRepo.deleteCard.mockRejectedValue(err);
+
+    const res = await request(app).delete(`/cards/${CARD_ID}`);
+
+    expect(res.status).toBe(404);
+  });
+});

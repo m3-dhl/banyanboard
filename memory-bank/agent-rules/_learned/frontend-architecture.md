@@ -3,7 +3,7 @@ name: "Learned: Frontend Architecture Patterns"
 globs: ["*.tsx", "*.ts", "frontend/src/**"]
 topics: ["frontend", "react", "typescript", "vite", "architecture", "dnd", "accessibility"]
 priority: medium
-evidence_count: 4
+evidence_count: 5
 last_updated: 2026-06-17
 auto_generated: true
 ---
@@ -14,6 +14,7 @@ auto_generated: true
 - Use `ReactDOM.createPortal(popover, document.body)` for any popover that opens from inside a @hello-pangea/dnd Draggable; the Draggable CSS transform creates a stacking context that clips `position: absolute` descendants.
 - Scope Escape key listeners to the container element (not `document`) in components that coexist with @hello-pangea/dnd to prevent intercepting the dnd library's own keyboard drag-cancel handler.
 - When reordering a filtered subset of a list in state, build a `Set` of the rendered IDs, splice only the visible subarray, then reconstruct the full array by appending the hidden items — never compute filtered-to-full index offsets manually.
+- Manage dialog/popover open state locally in the component that owns the trigger (e.g., `Card`, not `Board`) unless a parent-level event must programmatically close the dialog — lifting dialog state is only warranted when board-level control is required.
 
 ## Evidence
 
@@ -23,3 +24,4 @@ auto_generated: true
 | ReactDOM portal for dnd-adjacent popover (stacking context escape) | [reflection-TASK-008.md](../reflection/reflection-TASK-008.md) | 2026-06-16 |
 | Escape key listener scoped to container in dnd-adjacent components | [reflection-TASK-008.md](../reflection/reflection-TASK-008.md) | 2026-06-16 |
 | visibleIdSet splice pattern for filtered-list reorder (AC-ENTRY-2 class) | [reflection-TASK-009.md](../reflection/reflection-TASK-009.md) | 2026-06-17 |
+| Local dialog state in Draggable child (Card) vs. lifting to Board | [reflection-TASK-012.md](../reflection/reflection-TASK-012.md) | 2026-06-17 |

@@ -72,6 +72,11 @@ export async function detachLabel(cardId: string, labelId: string): Promise<void
   if (!res.ok) throw new Error(`DELETE /cards/${cardId}/labels/${labelId} failed: ${res.status}`)
 }
 
+export async function deleteCard(cardId: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error(`DELETE /cards/${cardId} failed: ${res.status}`)
+}
+
 export async function reorderCard(cardId: string, position: number): Promise<void> {
   const res = await fetch(`${API_BASE}/cards/${cardId}/position`, {
     method: 'PATCH',

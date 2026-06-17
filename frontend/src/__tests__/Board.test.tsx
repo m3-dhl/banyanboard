@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within, act } from '@testing-library/react'
+import { render, screen, waitFor, within, act, fireEvent } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { DropResult } from '@hello-pangea/dnd'
 import Board from '../components/Board'
@@ -110,6 +110,90 @@ describe('Board', () => {
     render(<Board />)
     await waitFor(() => {
       expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+  })
+})
+
+describe('Board — onDeleteCard', () => {
+  beforeEach(() => {
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (String(url).includes('/cards')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => [
+            { id: 'card-1', title: 'Design login page', columnId: 'todo' },
+            { id: 'card-2', title: 'Implement auth API', columnId: 'in-progress' },
+            { id: 'card-3', title: 'Write README', columnId: 'done' },
+          ],
+        } as unknown as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('optimistically removes card and adds deleted feed entry on confirm', async () => {
+    global.fetch = vi.fn().mockImplementation((url: string, opts?: RequestInit) => {
+      if (String(url).includes('/cards') && opts?.method === 'DELETE') {
+        return Promise.resolve({ ok: true } as unknown as Response)
+      }
+      if (String(url).includes('/cards')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => [{ id: 'card-1', title: 'Design login page', columnId: 'todo' }],
+        } as unknown as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+
+    render(<Board />)
+    await waitFor(() => expect(screen.getByText('Design login page')).toBeInTheDocument())
+
+    fireEvent.click(screen.getByRole('button', { name: /delete design login page/i }))
+    fireEvent.click(screen.getByRole('button', { name: /delete permanently/i }))
+
+    await waitFor(() => {
+      expect(screen.queryByRole('article', { name: 'Design login page' })).toBeNull()
+    })
+    expect(screen.getByText(/deleted/i)).toBeInTheDocument()
+  })
+
+  it('reverts optimistic delete and shows error banner when API fails', async () => {
+    global.fetch = vi.fn().mockImplementation((url: string, opts?: RequestInit) => {
+      if (String(url).includes('/cards') && opts?.method === 'DELETE') {
+        return Promise.resolve({ ok: false, status: 500 } as unknown as Response)
+      }
+      if (String(url).includes('/cards')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => [{ id: 'card-1', title: 'Design login page', columnId: 'todo' }],
+        } as unknown as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+
+    render(<Board />)
+    await waitFor(() => expect(screen.getByText('Design login page')).toBeInTheDocument())
+
+    fireEvent.click(screen.getByRole('button', { name: /delete design login page/i }))
+    fireEvent.click(screen.getByRole('button', { name: /delete permanently/i }))
+
+    await waitFor(() => {
+      expect(screen.getByRole('alert', { name: '' })).toHaveTextContent(
+        /failed to delete card/i
+      )
     })
   })
 })

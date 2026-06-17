@@ -3,8 +3,8 @@ name: "Learned: Testing Patterns"
 globs: ["*.test.ts", "*.spec.ts", "*.test.tsx", "*.spec.tsx"]
 topics: ["testing", "express", "backend", "react", "frontend", "vitest"]
 priority: medium
-evidence_count: 6
-last_updated: 2026-06-16
+evidence_count: 7
+last_updated: 2026-06-17
 auto_generated: true
 ---
 
@@ -16,6 +16,7 @@ auto_generated: true
 - When adding a new always-visible UI section to an existing component, scope all existing role/text queries in that component's tests to named landmark regions to prevent false matches against the new section.
 - When adding async optimistic-update with rollback to a component, write the rollback test (pending item removed on API error) before implementing the async path — it pins the exact state shape needed for clean rollback.
 - In Express controllers, guard custom error classes with both `instanceof` and `.name === 'ClassName'` checks; Jest module isolation can reconstruct error objects on a different prototype chain, causing `instanceof` to return false for the correct class.
+- When adding a new user-facing concern to an existing component (e.g., deletion to `Card.tsx`), create a new `Component.concern.test.tsx` rather than extending the existing test file — prevents query-scope conflicts and scopes test intent without requiring region narrowing.
 
 ## Evidence
 
@@ -27,3 +28,4 @@ auto_generated: true
 | Scope existing component test queries to named regions before adding new always-visible sections | [reflection-TASK-006.md](../reflection/reflection-TASK-006.md) | 2026-06-16 |
 | Write rollback test before implementing async optimistic-update | [reflection-TASK-007.md](../reflection/reflection-TASK-007.md) | 2026-06-16 |
 | Dual instanceof/name guard for custom errors in controllers (Jest module isolation) | [reflection-TASK-008.md](../reflection/reflection-TASK-008.md) | 2026-06-16 |
+| Create Component.concern.test.tsx for new concerns vs. extending existing test file | [reflection-TASK-012.md](../reflection/reflection-TASK-012.md) | 2026-06-17 |
