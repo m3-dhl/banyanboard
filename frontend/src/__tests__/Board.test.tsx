@@ -1,10 +1,16 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within, act } from '@testing-library/react'
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
+import type { DropResult } from '@hello-pangea/dnd'
 import Board from '../components/Board'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+let capturedOnDragEnd: ((result: DropResult) => void) | null = null
+
 vi.mock('@hello-pangea/dnd', () => ({
-  DragDropContext: ({ children }: any) => <>{children}</>,
+  DragDropContext: ({ children, onDragEnd }: any) => {
+    capturedOnDragEnd = onDragEnd
+    return <>{children}</>
+  },
   Droppable: ({ children }: any) =>
     children(
       { innerRef: () => {}, droppableProps: {}, placeholder: null },
@@ -17,6 +23,24 @@ vi.mock('@hello-pangea/dnd', () => ({
     ),
 }))
 /* eslint-enable @typescript-eslint/no-explicit-any */
+
+function makeCrossColDrop(
+  draggableId: string,
+  fromCol: string,
+  fromIndex: number,
+  toCol: string,
+  toIndex: number
+): DropResult {
+  return {
+    draggableId,
+    type: 'DEFAULT',
+    source: { droppableId: fromCol, index: fromIndex },
+    destination: { droppableId: toCol, index: toIndex },
+    reason: 'DROP',
+    mode: 'FLUID',
+    combine: null,
+  }
+}
 
 describe('Board', () => {
   beforeEach(() => {
@@ -86,6 +110,83 @@ describe('Board', () => {
     render(<Board />)
     await waitFor(() => {
       expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+  })
+})
+
+describe('Board cross-column drop position', () => {
+  // Setup: 2 cards in todo, 1 in done — gives us a non-trivial destination column
+  const CARDS_JSON = [
+    { id: 'card-1', title: 'Card One', columnId: 'todo' },
+    { id: 'card-2', title: 'Card Two', columnId: 'todo' },
+    { id: 'card-3', title: 'Card Three', columnId: 'done' },
+  ]
+
+  beforeEach(() => {
+    capturedOnDragEnd = null
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (String(url).includes('/cards')) {
+        return Promise.resolve({ ok: true, json: async () => CARDS_JSON } as unknown as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('inserts card at destination.index=0 (top of column)', async () => {
+    render(<Board />)
+    // Wait for cards to render
+    await waitFor(() => expect(screen.getByText('Card One')).toBeInTheDocument())
+
+    act(() => {
+      capturedOnDragEnd!(makeCrossColDrop('card-1', 'todo', 0, 'done', 0))
+    })
+
+    await waitFor(() => {
+      const doneCol = screen.getByRole('region', { name: /done/i })
+      const articles = within(doneCol).getAllByRole('article')
+      // card-1 should be at index 0, card-3 at index 1
+      expect(articles[0]).toHaveAttribute('aria-label', 'Card One')
+      expect(articles[1]).toHaveAttribute('aria-label', 'Card Three')
+    })
+  })
+
+  it('inserts card at destination.index=1 (after existing card)', async () => {
+    render(<Board />)
+    await waitFor(() => expect(screen.getByText('Card One')).toBeInTheDocument())
+
+    act(() => {
+      capturedOnDragEnd!(makeCrossColDrop('card-1', 'todo', 0, 'done', 1))
+    })
+
+    await waitFor(() => {
+      const doneCol = screen.getByRole('region', { name: /done/i })
+      const articles = within(doneCol).getAllByRole('article')
+      // card-3 at index 0, card-1 at index 1
+      expect(articles[0]).toHaveAttribute('aria-label', 'Card Three')
+      expect(articles[1]).toHaveAttribute('aria-label', 'Card One')
+    })
+  })
+
+  it('source column retains remaining cards after cross-column move', async () => {
+    render(<Board />)
+    await waitFor(() => expect(screen.getByText('Card One')).toBeInTheDocument())
+
+    act(() => {
+      capturedOnDragEnd!(makeCrossColDrop('card-1', 'todo', 0, 'done', 0))
+    })
+
+    await waitFor(() => {
+      const todoCol = screen.getByRole('region', { name: /todo/i })
+      const articles = within(todoCol).getAllByRole('article')
+      expect(articles).toHaveLength(1)
+      expect(articles[0]).toHaveAttribute('aria-label', 'Card Two')
     })
   })
 })

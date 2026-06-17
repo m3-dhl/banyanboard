@@ -87,25 +87,32 @@ export default function Board() {
       return
     }
 
-    // Cross-column move: update columnId + activity feed entry
+    // Cross-column move: insert at destination.index within target column + activity feed entry
     const movedCard = cards.find((c) => c.id === draggableId)
-    if (movedCard) {
-      const entry: ActivityFeedEntry = {
-        id: `${draggableId}-${Date.now()}`,
-        kind: 'move',
-        cardTitle: movedCard.title,
-        fromColumn: source.droppableId as ColumnId,
-        toColumn: destination.droppableId as ColumnId,
-        timestamp: new Date(),
-      }
-      setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
-    }
+    if (!movedCard) return
 
-    setCards((prev) =>
-      prev.map((c) =>
-        c.id === draggableId ? { ...c, columnId: destination.droppableId as ColumnId } : c
-      )
-    )
+    const entry: ActivityFeedEntry = {
+      id: `${draggableId}-${Date.now()}`,
+      kind: 'move',
+      cardTitle: movedCard.title,
+      fromColumn: source.droppableId as ColumnId,
+      toColumn: destination.droppableId as ColumnId,
+      timestamp: new Date(),
+    }
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+
+    setCards((prev) => {
+      const withoutMoved = prev.filter((c) => c.id !== draggableId)
+      const updatedCard = { ...movedCard, columnId: destination.droppableId as ColumnId }
+      const destCards = withoutMoved.filter((c) => c.columnId === destination.droppableId)
+      const nonDestCards = withoutMoved.filter((c) => c.columnId !== destination.droppableId)
+      const newDestCards = [
+        ...destCards.slice(0, destination.index),
+        updatedCard,
+        ...destCards.slice(destination.index),
+      ]
+      return [...nonDestCards, ...newDestCards]
+    })
   }
 
   async function onAddCard(columnId: ColumnId, title: string) {
