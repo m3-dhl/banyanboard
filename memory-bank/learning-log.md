@@ -4,6 +4,26 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-17 - TASK-012 Reflection
+
+### Extracted Patterns
+- **testing-patterns** → amended `agent-rules/_learned/testing-patterns.md` — Component.concern.test.tsx for new concerns vs. extending existing test file (evidence count: 7)
+- **frontend-architecture** → amended `agent-rules/_learned/frontend-architecture.md` — local dialog state in Draggable child vs. lifting to board (evidence count: 5)
+- **architecture** → amended `agent-rules/_learned/architecture.md` — negative-scope enumeration required for destructive-action features (evidence count: 6)
+
+### Confirmed Rules
+- `testing-patterns.md` (rollback test before async path): applied in Board.test.tsx rollback test
+- `testing-patterns.md` (dual instanceof/name guard): applied in backend deleteCard controller for NotFoundError
+- `frontend-architecture.md` (ReactDOM portal for dnd-adjacent): applied in DeleteCardDialog
+- `frontend-architecture.md` (Escape listener scoped to container): applied in DeleteCardDialog
+- `architecture.md` (atomic rollback via single setState): applied in Board.onDeleteCard
+- `architecture.md` (shared role="alert" limit documented): cardDeleteError added alongside cardCreateError with code comment
+
+### systemPatterns.md Updates
+- None (deletion pattern is feature-level refinement of existing optimistic-update architecture)
+
+---
+
 ## 2026-06-17 - Consolidation (during TASK-009 archive)
 
 - Files before: 4, Files after: 4
