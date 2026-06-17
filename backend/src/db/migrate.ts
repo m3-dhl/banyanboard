@@ -27,4 +27,11 @@ export async function runMigrations(): Promise<void> {
     await pool.query('INSERT INTO _migrations (name) VALUES ($1)', [file]);
     console.log(`Migration applied: ${file}`);
   }
+
+  // Seed a default board if none exist
+  const { rowCount } = await pool.query('SELECT 1 FROM boards LIMIT 1');
+  if (!rowCount || rowCount === 0) {
+    await pool.query("INSERT INTO boards (title) VALUES ('BanyanBoard')");
+    console.log('Seeded default board');
+  }
 }

@@ -4,6 +4,15 @@
 
 ---
 
+## Task Archive: TASK-009
+
+**Task**: Card Reordering
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-17
+**Archive**: `memory-bank/archive/archive-TASK-009.md`
+
+---
+
 ### 2026-06-17 — TASK-009 Reflection (REFLECTION_COMPLETE)
 
 #### Reflection (Step 3)

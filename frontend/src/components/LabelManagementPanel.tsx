@@ -49,12 +49,14 @@ export default function LabelManagementPanel({ labels, onCreate, onDelete, onClo
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="label-management-panel"
-      role="dialog"
-      aria-labelledby={headingId}
-    >
+    <>
+      <div className="modal-backdrop" onClick={onClose} aria-hidden="true" />
+      <div
+        ref={containerRef}
+        className="label-management-panel"
+        role="dialog"
+        aria-labelledby={headingId}
+      >
       <h2 id={headingId} className="label-management-heading">
         Manage Labels
       </h2>
@@ -139,5 +141,6 @@ export default function LabelManagementPanel({ labels, onCreate, onDelete, onClo
         Close
       </button>
     </div>
+    </>
   )
 }

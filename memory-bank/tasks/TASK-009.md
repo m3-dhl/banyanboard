@@ -1,8 +1,10 @@
 # TASK-009: Card Reordering
 
 **Complexity**: Level 2
-**Status**: REFLECTION_COMPLETE
+**Status**: COMPLETE
 **Reflection**: memory-bank/reflection/reflection-TASK-009.md
+**Archived**: memory-bank/archive/archive-TASK-009.md
+**Completed**: 2026-06-17
 **Roadmap**: FEAT-008
 **Branch**: feature/FEAT-008-card-reordering
 **Worktree**: N/A
@@ -173,8 +175,7 @@ N/A — specification is concrete, no design exploration needed
 ## Execution State
 
 **Build Status**: IDLE
-**Current Phase**: REFLECT → ARCHIVE
-**Current Step**: REFLECTION_COMPLETE
+**Current Phase**: COMPLETE
 **Can Resume**: NO
 
 ### Completed Steps
@@ -185,7 +186,7 @@ N/A — specification is concrete, no design exploration needed
 - [x] Step 2: Complexity context loaded — Level 2
 - [x] Step 3: Reflection Agent — created reflection-TASK-009.md (Excellent / Highly Effective)
 - [x] Step 3.5: Pattern extraction — 3 learnings extracted (2 amended architecture.md, 1 amended frontend-architecture.md)
-- [x] Step 4: Git commit (pending)
+- [x] Step 4: Git commit — 947090a (no remote; local only)
 
 ### Active Sub-Agents
 (none)

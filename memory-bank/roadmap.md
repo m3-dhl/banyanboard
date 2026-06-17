@@ -1,11 +1,11 @@
 # Product Roadmap
 
 ## Summary
-- **Total Features**: 7
+- **Total Features**: 8
 - **Released Versions**: 0
 - **Active Versions**: 0
 - **Planning Versions**: 1
-- **Backlog (next)**: 6
+- **Backlog (next)**: 7
 
 ---
 
@@ -29,6 +29,7 @@
   - FEAT-005: Realtime Activity Feed (complete) [Level 2]
   - FEAT-006: Task Creation System (planned) [Level 2]
   - FEAT-007: Card Labels (planned) [Level 3]
+  - FEAT-008: Card Reordering (planned) [Level 2]
 
 ---
 
@@ -108,6 +109,19 @@
 - **Branch**: feature/FEAT-007-card-labels
 - **Created**: 2026-06-16
 - **Completed**: 2026-06-16
+
+---
+
+### FEAT-008: Card Reordering
+- **Version**: next
+- **Status**: complete
+- **Priority**: medium
+- **Complexity**: Level 2
+- **Description**: Enable users to reorder cards within the same column via drag-and-drop. Requires a `position` field on cards (DB migration + backend), PATCH endpoint to persist new order, and frontend `onDragEnd` update to handle same-column reordering.
+- **Linked Tasks**: TASK-009 (COMPLETE)
+- **Branch**: feature/FEAT-008-card-reordering
+- **Created**: 2026-06-17
+- **Completed**: 2026-06-17
 
 ---
 
