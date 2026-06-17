@@ -26,6 +26,33 @@ vi.mock('@hello-pangea/dnd', () => ({
 }))
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+const SEED_CARDS_JSON = [
+  { id: 'card-1', title: 'Design login page', columnId: 'todo' },
+  { id: 'card-2', title: 'Implement auth API', columnId: 'in-progress' },
+  { id: 'card-3', title: 'Write README', columnId: 'done' },
+]
+
+function makeDefaultFetch(boardName = 'BanyanBoard', labels: unknown[] = []) {
+  return vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+    if (String(url).includes('/cards') && !String(url).includes('/cards/')) {
+      return Promise.resolve({ ok: true, json: async () => SEED_CARDS_JSON } as unknown as Response)
+    }
+    if (String(url).includes('/boards/') && String(url).includes('/labels')) {
+      return Promise.resolve({ ok: true, json: async () => labels } as unknown as Response)
+    }
+    if (String(url).includes('/cards/') && String(url).includes('/labels')) {
+      return Promise.resolve({ ok: true, json: async () => ({}) } as unknown as Response)
+    }
+    if (init && init.method === 'POST') {
+      return Promise.resolve({ ok: true, json: async () => ({ id: 'new', title: 'x', columnId: 'todo' }) } as unknown as Response)
+    }
+    return Promise.resolve({
+      ok: true,
+      json: async () => [{ id: '1', title: boardName }],
+    } as unknown as Response)
+  })
+}
+
 function makeDropResult(draggableId: string, fromCol: string, toCol: string): DropResult {
   return {
     draggableId,
@@ -41,10 +68,7 @@ function makeDropResult(draggableId: string, fromCol: string, toCol: string): Dr
 describe('Board feed integration', () => {
   beforeEach(() => {
     capturedOnDragEnd = null
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => [{ id: '1', name: 'BanyanBoard' }],
-    } as unknown as Response)
+    global.fetch = makeDefaultFetch()
   })
 
   afterEach(() => {
@@ -118,6 +142,9 @@ describe('Board feed integration', () => {
   // AC-ERROR-2: rollback on backend failure
   it('rolls back card and feed entry and shows error when POST /cards fails', async () => {
     global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (String(url).includes('/cards') && !String(url).includes('/cards/') && (!init?.method || init.method === 'GET')) {
+        return Promise.resolve({ ok: true, json: async () => SEED_CARDS_JSON } as unknown as Response)
+      }
       if (init && init.method === 'POST') {
         return Promise.resolve({ ok: false, status: 500 } as Response)
       }
@@ -140,10 +167,7 @@ describe('Board feed integration', () => {
   })
 
   it('feed entries survive unrelated re-renders caused by board name update', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => [{ id: '1', title: 'Sprint Board' }],
-    } as unknown as Response)
+    global.fetch = makeDefaultFetch('Sprint Board')
     render(<Board />)
     capturedOnDragEnd!(makeDropResult('card-1', 'todo', 'in-progress'))
     await waitFor(() => {
@@ -167,21 +191,7 @@ const BUG_LABEL: Label = { id: 'label-1', name: 'Bug', color: '#C0392B' }
 describe('Board label activity feed', () => {
   beforeEach(() => {
     capturedOnDragEnd = null
-    global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
-      // GET /boards/:id/labels — return one label
-      if (url.includes('/boards/') && url.includes('/labels') && (!init?.method || init.method === 'GET')) {
-        return Promise.resolve({ ok: true, json: async () => [BUG_LABEL] } as unknown as Response)
-      }
-      // POST /cards/:id/labels — attach succeeds
-      if (url.includes('/cards/') && url.includes('/labels') && init?.method === 'POST') {
-        return Promise.resolve({ ok: true, json: async () => ({}) } as unknown as Response)
-      }
-      // Default: boards list
-      return Promise.resolve({
-        ok: true,
-        json: async () => [{ id: 'board-1', name: 'BanyanBoard' }],
-      } as unknown as Response)
-    })
+    global.fetch = makeDefaultFetch('BanyanBoard', [BUG_LABEL])
   })
 
   afterEach(() => {
@@ -216,18 +226,7 @@ describe('Board label activity feed', () => {
   })
 
   it('adds a "label removed" feed entry when a label is detached from a card', async () => {
-    global.fetch = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
-      if (url.includes('/boards/') && url.includes('/labels') && (!init?.method || init.method === 'GET')) {
-        return Promise.resolve({ ok: true, json: async () => [BUG_LABEL] } as unknown as Response)
-      }
-      if (url.includes('/cards/') && url.includes('/labels')) {
-        return Promise.resolve({ ok: true, json: async () => ({}) } as unknown as Response)
-      }
-      return Promise.resolve({
-        ok: true,
-        json: async () => [{ id: 'board-1', name: 'BanyanBoard' }],
-      } as unknown as Response)
-    })
+    global.fetch = makeDefaultFetch('BanyanBoard', [BUG_LABEL])
 
     render(<Board />)
 

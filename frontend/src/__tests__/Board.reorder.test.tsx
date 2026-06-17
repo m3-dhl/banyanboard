@@ -49,6 +49,7 @@ vi.mock('@hello-pangea/dnd', () => ({
 // ---------------------------------------------------------------------------
 vi.mock('../api', () => ({
   fetchBoards: vi.fn(),
+  fetchCards: vi.fn(),
   createCard: vi.fn(),
   fetchLabels: vi.fn(),
   createLabel: vi.fn(),
@@ -94,6 +95,11 @@ describe('Board same-column card reordering', () => {
     // clearAllMocks resets call history for vi.fn() mocks (restoreAllMocks only affects vi.spyOn)
     vi.clearAllMocks()
     vi.mocked(api.fetchBoards).mockResolvedValue([{ id: 'b1', name: 'BanyanBoard' }])
+    vi.mocked(api.fetchCards).mockResolvedValue([
+      { id: 'card-1', title: 'First todo', columnId: 'todo' },
+      { id: 'card-2', title: 'Second todo', columnId: 'todo' },
+      { id: 'card-3', title: 'Done card', columnId: 'done' },
+    ])
     vi.mocked(api.fetchLabels).mockResolvedValue([])
     vi.mocked(api.reorderCard).mockResolvedValue(undefined)
     vi.mocked(api.createCard).mockResolvedValue({ id: 'new', title: 'x', columnId: 'todo' })

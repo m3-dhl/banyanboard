@@ -159,18 +159,26 @@ describe('FilterBar', () => {
 describe('Board label filtering', () => {
   beforeEach(() => {
     capturedOnDragEnd = null
-    // Default fetch: board name + labels
     global.fetch = vi.fn().mockImplementation((url: string) => {
-      if (typeof url === 'string' && url.includes('/labels')) {
+      if (String(url).includes('/cards') && !String(url).includes('/cards/')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => [
+            { id: 'card-1', title: 'Design login page', columnId: 'todo' },
+            { id: 'card-2', title: 'Implement auth API', columnId: 'in-progress' },
+            { id: 'card-3', title: 'Write README', columnId: 'done' },
+          ],
+        } as unknown as Response)
+      }
+      if (String(url).includes('/labels')) {
         return Promise.resolve({
           ok: true,
           json: async () => [BUG_LABEL, FEATURE_LABEL],
         } as unknown as Response)
       }
-      // Board name endpoint
       return Promise.resolve({
         ok: true,
-        json: async () => [{ id: '1', name: 'BanyanBoard' }],
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
       } as unknown as Response)
     })
   })

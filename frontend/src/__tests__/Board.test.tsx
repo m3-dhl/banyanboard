@@ -20,10 +20,22 @@ vi.mock('@hello-pangea/dnd', () => ({
 
 describe('Board', () => {
   beforeEach(() => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => [{ id: '1', name: 'BanyanBoard' }],
-    } as unknown as Response)
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (String(url).includes('/cards')) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => [
+            { id: 'card-1', title: 'Design login page', columnId: 'todo' },
+            { id: 'card-2', title: 'Implement auth API', columnId: 'in-progress' },
+            { id: 'card-3', title: 'Write README', columnId: 'done' },
+          ],
+        } as unknown as Response)
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => [{ id: '1', title: 'BanyanBoard' }],
+      } as unknown as Response)
+    })
   })
 
   afterEach(() => {

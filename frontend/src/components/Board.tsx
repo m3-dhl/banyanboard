@@ -4,6 +4,7 @@ import { COLUMNS, SEED_CARDS } from '../types'
 import type { ActivityFeedEntry, CardData, ColumnId, Label } from '../types'
 import {
   fetchBoards,
+  fetchCards,
   createCard,
   fetchLabels,
   createLabel,
@@ -33,12 +34,13 @@ export default function Board() {
   const [showManagePanel, setShowManagePanel] = useState(false)
 
   useEffect(() => {
-    fetchBoards()
-      .then((boards) => {
+    Promise.all([fetchBoards(), fetchCards()])
+      .then(([boards, dbCards]) => {
+        // Only replace seed cards; never overwrite a user interaction that raced the fetch
+        setCards((prev) => (prev === SEED_CARDS ? dbCards : prev))
         if (boards.length > 0) {
           setBoardName(boards[0].name)
           setBoardId(boards[0].id)
-          // Non-blocking label fetch once we have the board id
           fetchLabels(boards[0].id)
             .then(setLabels)
             .catch(() => { /* non-blocking */ })
