@@ -71,3 +71,12 @@ export async function detachLabel(cardId: string, labelId: string): Promise<void
   const res = await fetch(`${API_BASE}/cards/${cardId}/labels/${labelId}`, { method: 'DELETE' })
   if (!res.ok) throw new Error(`DELETE /cards/${cardId}/labels/${labelId} failed: ${res.status}`)
 }
+
+export async function reorderCard(cardId: string, position: number): Promise<void> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}/position`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ position }),
+  })
+  if (!res.ok) throw new Error(`PATCH /cards/${cardId}/position failed: ${res.status}`)
+}

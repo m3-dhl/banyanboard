@@ -10,3 +10,4 @@
 | TASK-006 | Realtime Activity Feed | ARCHIVE | COMPLETE | FEAT-005 |
 | TASK-007 | Task Creation System | ARCHIVE | COMPLETE | FEAT-006 |
 | TASK-008 | Card Labels | ARCHIVE | COMPLETE | FEAT-007 |
+| TASK-009 | Card Reordering | BUILD | BUILD_COMPLETE | FEAT-008 |
