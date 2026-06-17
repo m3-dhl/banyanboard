@@ -1,7 +1,8 @@
 # TASK-009: Card Reordering
 
 **Complexity**: Level 2
-**Status**: PLAN_COMPLETE
+**Status**: REFLECTION_COMPLETE
+**Reflection**: memory-bank/reflection/reflection-TASK-009.md
 **Roadmap**: FEAT-008
 **Branch**: feature/FEAT-008-card-reordering
 **Worktree**: N/A
@@ -171,24 +172,24 @@ N/A — specification is concrete, no design exploration needed
 
 ## Execution State
 
-**Build Status**: COMPLETE
-**Current Build**: Phase 2: Frontend onDragEnd same-column reorder + persist (TASK-009)
-**Build Started**: 2026-06-17
-**Phase Number**: 2 of 2
-**Is Multi-Phase**: YES
-
-### Current Build Step
-**Step**: Phase 2 COMPLETE — all tests passing
-**Status**: COMPLETE
+**Build Status**: IDLE
+**Current Phase**: REFLECT → ARCHIVE
+**Current Step**: REFLECTION_COMPLETE
+**Can Resume**: NO
 
 ### Completed Steps
 - [x] Spec Writer Agent: specification, test strategy, and implementation roadmap written
 - [x] Phase 1: DB migration + backend (65 tests passing, commit ec749a5)
 - [x] Phase 2: Frontend reorder — 81/81 tests passing, build ✓, lint ✓
+- [x] Step 1: Prerequisites verified — both phases complete
+- [x] Step 2: Complexity context loaded — Level 2
+- [x] Step 3: Reflection Agent — created reflection-TASK-009.md (Excellent / Highly Effective)
+- [x] Step 3.5: Pattern extraction — 3 learnings extracted (2 amended architecture.md, 1 amended frontend-architecture.md)
+- [x] Step 4: Git commit (pending)
 
-### Sub-Agents
+### Active Sub-Agents
 (none)
 
 ### Resumption Notes
 **Can Resume**: NO
-**Resume From**: /banyan-reflect TASK-009
+**Next**: /banyan-archive TASK-009

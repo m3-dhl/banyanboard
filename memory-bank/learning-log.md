@@ -4,6 +4,25 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-17 - TASK-009 Reflection
+
+### Extracted Patterns
+- **frontend-architecture** → amended `agent-rules/_learned/frontend-architecture.md` — visibleIdSet splice pattern for filtered-list reorder (evidence count: 4)
+- **architecture** → amended `agent-rules/_learned/architecture.md` — cross-feature filter×mutation interactions as explicit ACs (evidence count: 5)
+- **architecture** → amended `agent-rules/_learned/architecture.md` — shared role="alert" reuse limit for multiple optimistic ops (evidence count: 5)
+
+### Confirmed Rules
+- `testing-patterns.md` (DnD mock via captured onDragEnd): applied in Board.reorder.test.tsx
+- `testing-patterns.md` (rollback test before async path): AC-ERROR-1 revert test written first
+- `testing-patterns.md` (scope queries to named regions): all assertions use within(todoCol)/within(doneCol)
+- `architecture.md` (atomic rollback via single setState): setCards(snapshot) single call
+- `architecture.md` (ValidationError in service layer): card.service.ts validates position, throws ValidationError
+
+### systemPatterns.md Updates
+- None (no novel architectural patterns — patterns are feature-level refinements of existing approaches)
+
+---
+
 ## 2026-06-16 - Consolidation (during TASK-008 archive)
 
 - Files before: 4, Files after: 4

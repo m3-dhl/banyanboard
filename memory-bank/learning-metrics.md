@@ -21,14 +21,15 @@
 | TASK-006 | 2026-06-16 | 1 | 1 | 0 |
 | TASK-007 | 2026-06-16 | 2 | 2 | 0 |
 | TASK-008 | 2026-06-16 | 4 | 2 | 1 |
+| TASK-009 | 2026-06-17 | 3 | 2 | 0 |
 
 ## Rule Effectiveness
 
 | File | Topics | Evidence Count | Priority | Last Updated |
 |------|--------|---------------:|:--------:|:------------:|
 | testing-patterns.md | testing, express, backend, react, frontend, vitest | 6 | medium | 2026-06-16 |
-| architecture.md | architecture, error-handling, express, backend, middleware | 3 | medium | 2026-06-16 |
-| frontend-architecture.md | frontend, react, typescript, vite, architecture, dnd, accessibility | 3 | medium | 2026-06-16 |
+| architecture.md | architecture, error-handling, express, backend, middleware, planning, spec, frontend | 5 | medium | 2026-06-17 |
+| frontend-architecture.md | frontend, react, typescript, vite, architecture, dnd, accessibility | 4 | medium | 2026-06-17 |
 | accessibility.md | accessibility, wcag, frontend, react, design | 1 | low | 2026-06-16 |
 
 ## Consolidation History
