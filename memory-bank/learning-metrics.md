@@ -13,3 +13,4 @@
 | Task | Date | Learnings Extracted | Rules Created | Rules Amended |
 |------|------|--------------------:|--------------|--------------|
 | TASK-014 | 2026-06-19 | 2 | 2 | 0 |
+| TASK-017 | 2026-06-19 | 4 | 1 | 2 |

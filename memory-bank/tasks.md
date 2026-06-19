@@ -18,4 +18,4 @@
 | TASK-014 | Multi-label filter selection | ARCHIVE | COMPLETE | N/A |
 | TASK-015 | Label picker closes after selection | ARCHIVE | COMPLETE | N/A |
 | TASK-016 | Label picker overflow in DONE column | ARCHIVE | COMPLETE | N/A |
-| TASK-017 | Card Detail View | BUILD | BUILD_COMPLETE | FEAT-010 |
+| TASK-017 | Card Detail View | REFLECT | REFLECTION_COMPLETE | FEAT-010 |

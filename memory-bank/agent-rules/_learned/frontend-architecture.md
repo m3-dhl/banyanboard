@@ -3,8 +3,8 @@ name: "Learned: Frontend Architecture Patterns"
 globs: ["*.tsx", "*.ts", "frontend/src/**"]
 topics: ["frontend", "react", "typescript", "vite", "architecture", "dnd", "accessibility"]
 priority: medium
-evidence_count: 5
-last_updated: 2026-06-17
+evidence_count: 7
+last_updated: 2026-06-19
 auto_generated: true
 ---
 
@@ -15,6 +15,8 @@ auto_generated: true
 - Scope Escape key listeners to the container element (not `document`) in components that coexist with @hello-pangea/dnd to prevent intercepting the dnd library's own keyboard drag-cancel handler.
 - When reordering a filtered subset of a list in state, build a `Set` of the rendered IDs, splice only the visible subarray, then reconstruct the full array by appending the hidden items — never compute filtered-to-full index offsets manually.
 - Manage dialog/popover open state locally in the component that owns the trigger (e.g., `Card`, not `Board`) unless a parent-level event must programmatically close the dialog — lifting dialog state is only warranted when board-level control is required.
+- For click-vs-drag disambiguation in components that receive `dragHandleProps`, use `onPointerDown` + `onPointerUp` with a 5px delta threshold — never rely on `snapshot.isDragging` which is `false` immediately after drop and will spuriously open click handlers on drag completion.
+- When a feature component owns all consumers of a state slice (e.g., comment thread in a modal), keep state local to that component rather than lifting to a board-level ancestor — lift only when a parent component needs to read or write the state programmatically.
 
 ## Evidence
 
@@ -25,3 +27,5 @@ auto_generated: true
 | Escape key listener scoped to container in dnd-adjacent components | [reflection-TASK-008.md](../reflection/reflection-TASK-008.md) | 2026-06-16 |
 | visibleIdSet splice pattern for filtered-list reorder (AC-ENTRY-2 class) | [reflection-TASK-009.md](../reflection/reflection-TASK-009.md) | 2026-06-17 |
 | Local dialog state in Draggable child (Card) vs. lifting to Board | [reflection-TASK-012.md](../reflection/reflection-TASK-012.md) | 2026-06-17 |
+| Pointer-delta click-vs-drag (5px) on onPointerDown/onPointerUp; isDragging unreliable post-drop | [reflection-TASK-017.md](../reflection/reflection-TASK-017.md) | 2026-06-19 |
+| Stateful feature container: keep modal-scoped async state local, not in board ancestor | [reflection-TASK-017.md](../reflection/reflection-TASK-017.md) | 2026-06-19 |

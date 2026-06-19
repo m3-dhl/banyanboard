@@ -3,7 +3,7 @@ name: "Learned: Testing Patterns"
 globs: ["*.test.ts", "*.spec.ts", "*.test.tsx", "*.spec.tsx"]
 topics: ["testing", "express", "backend", "react", "frontend", "vitest"]
 priority: medium
-evidence_count: 8
+evidence_count: 9
 last_updated: 2026-06-19
 auto_generated: true
 ---
@@ -18,6 +18,7 @@ auto_generated: true
 - In Express controllers, guard custom error classes with both `instanceof` and `.name === 'ClassName'` checks; Jest module isolation can reconstruct error objects on a different prototype chain, causing `instanceof` to return false for the correct class.
 - When adding a new user-facing concern to an existing component (e.g., deletion to `Card.tsx`), create a new `Component.concern.test.tsx` rather than extending the existing test file — prevents query-scope conflicts and scopes test intent without requiring region narrowing.
 - When fixing a broken API URL, search for mock handlers in test files that reference the old URL and update them in the same commit to keep the test suite green.
+- Wrap `vi.useFakeTimers()` setup in a dedicated `describe` block with `afterEach(() => vi.useRealTimers())` to prevent fake timer state from leaking into sibling test blocks in the same file.
 
 ## Evidence
 
@@ -31,3 +32,4 @@ auto_generated: true
 | Dual instanceof/name guard for custom errors in controllers (Jest module isolation) | [reflection-TASK-008.md](../reflection/reflection-TASK-008.md) | 2026-06-16 |
 | Create Component.concern.test.tsx for new concerns vs. extending existing test file | [reflection-TASK-012.md](../reflection/reflection-TASK-012.md) | 2026-06-17 |
 | Update mock handlers referencing old API URL in same commit as the route fix | [reflection-TASK-013.md](../reflection/reflection-TASK-013.md) | 2026-06-19 |
+| vi.useFakeTimers() in describe block with afterEach(vi.useRealTimers) to prevent timer state leak | [reflection-TASK-017.md](../reflection/reflection-TASK-017.md) | 2026-06-19 |
