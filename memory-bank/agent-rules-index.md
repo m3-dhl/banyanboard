@@ -7,6 +7,7 @@ Auto-generated index of agent rules. Re-run `/banyan-rules-index` to refresh.
 | File | Name | Priority | Globs / Paths / Topics |
 |------|------|----------|------------------------|
 | [agent-rules/frontend-design.md](agent-rules/frontend-design.md) | BanyanBoard Design System — The Clear Desk | high | `*.css`, `*.tsx`, `*.ts`, `*.html` · `frontend/src/` · design, frontend, ui, css, components, styling |
+| [agent-rules/debugging.md](agent-rules/debugging.md) | Debugging Standards | high | `**/*` · all files |
 
 ## Auto-generated from `_learned/`
 

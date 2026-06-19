@@ -1,11 +1,11 @@
 # Product Roadmap
 
 ## Summary
-- **Total Features**: 9
+- **Total Features**: 10
 - **Released Versions**: 0
 - **Active Versions**: 0
 - **Planning Versions**: 1
-- **Backlog (next)**: 8
+- **Backlog (next)**: 9
 
 ---
 
@@ -31,6 +31,7 @@
   - FEAT-007: Card Labels (planned) [Level 3]
   - FEAT-008: Card Reordering (planned) [Level 2]
   - FEAT-009: Card Deletion (complete) [Level 2]
+  - FEAT-010: Card Detail View (planned) [Level 3]
 
 ---
 
@@ -136,6 +137,18 @@
 - **Branch**: feature/FEAT-009-card-deletion
 - **Created**: 2026-06-17
 - **Completed**: 2026-06-17
+
+---
+
+### FEAT-010: Card Detail View
+- **Version**: next
+- **Status**: planned
+- **Priority**: medium
+- **Complexity**: Level 3
+- **Description**: Modal o panel lateral que se abre al hacer clic en una card. Muestra y permite editar: título, descripción larga (opcional, Markdown), fecha de vencimiento con badge visual en la card cuando está próxima o vencida, y un hilo de comentarios cronológico. La creación de cards no cambia — descripción, fecha y comentarios solo se añaden desde el detalle. Labels y columna accesibles también desde el detalle. Activity feed registra cambios de descripción, fechas y comentarios nuevos.
+- **Linked Tasks**: TASK-017 (PLANNING)
+- **Branch**: feature/FEAT-010-card-detail-view
+- **Created**: 2026-06-19
 
 ---
 
