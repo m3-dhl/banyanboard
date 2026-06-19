@@ -31,7 +31,7 @@
   - FEAT-007: Card Labels (planned) [Level 3]
   - FEAT-008: Card Reordering (planned) [Level 2]
   - FEAT-009: Card Deletion (complete) [Level 2]
-  - FEAT-010: Card Detail View (planned) [Level 3]
+  - FEAT-010: Card Detail View (complete) [Level 3]
 
 ---
 
@@ -142,13 +142,14 @@
 
 ### FEAT-010: Card Detail View
 - **Version**: next
-- **Status**: planned
+- **Status**: complete
 - **Priority**: medium
 - **Complexity**: Level 3
 - **Description**: Modal o panel lateral que se abre al hacer clic en una card. Muestra y permite editar: título, descripción larga (opcional, Markdown), fecha de vencimiento con badge visual en la card cuando está próxima o vencida, y un hilo de comentarios cronológico. La creación de cards no cambia — descripción, fecha y comentarios solo se añaden desde el detalle. Labels y columna accesibles también desde el detalle. Activity feed registra cambios de descripción, fechas y comentarios nuevos.
-- **Linked Tasks**: TASK-017 (PLANNING)
+- **Linked Tasks**: TASK-017 (COMPLETE)
 - **Branch**: feature/FEAT-010-card-detail-view
 - **Created**: 2026-06-19
+- **Completed**: 2026-06-19
 
 ---
 

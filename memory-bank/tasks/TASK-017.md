@@ -1,11 +1,13 @@
 # TASK-017: Card Detail View
 
 **Complexity**: Level 3
-**Status**: REFLECTION_COMPLETE
+**Status**: COMPLETE
 **Roadmap**: FEAT-010
 **Branch**: feature/FEAT-010-card-detail-view
-**Worktree**: N/A (pending /banyan-build)
+**Worktree**: N/A
 **Reflection**: memory-bank/reflection/reflection-TASK-017.md
+**Archived**: memory-bank/archive/archive-TASK-017.md
+**Completed**: 2026-06-19
 
 ## Task Description
 
@@ -294,7 +296,7 @@ frontend/src/__tests__/
 ## Execution State
 
 **Build Status**: IDLE
-**Current Phase**: REFLECT → ARCHIVE
+**Current Phase**: COMPLETE
 **Build Started**: 2026-06-19
 **Phase Number**: 3 of 3
 **Is Multi-Phase**: YES

@@ -4,6 +4,15 @@
 
 ---
 
+## Task Archive: TASK-017
+
+**Task**: Card Detail View
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-19
+**Archive**: `memory-bank/archive/archive-TASK-017.md`
+
+---
+
 ## TASK-017 Reflection (REFLECTION_COMPLETE)
 
 **Date**: 2026-06-19
