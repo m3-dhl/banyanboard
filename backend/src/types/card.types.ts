@@ -19,3 +19,15 @@ export interface CreateCardDto {
 export interface ReorderCardDto {
   position: number;
 }
+
+export interface CardDetail extends Card {
+  description: string | null;
+  dueDate: string | null;
+}
+
+export interface UpdateCardDto {
+  title?: string;
+  description?: string | null;
+  dueDate?: string | null;
+  columnId?: CardColumnId;
+}

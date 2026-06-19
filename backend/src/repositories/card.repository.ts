@@ -1,5 +1,5 @@
 import { pool } from '../db/pool';
-import { Card, CreateCardDto } from '../types/card.types';
+import { Card, CardDetail, CreateCardDto, UpdateCardDto } from '../types/card.types';
 import { LabelSummary } from '../types/label.types';
 import { NotFoundError } from '../errors/index';
 
@@ -21,6 +21,8 @@ const CARD_WITH_LABELS_QUERY = `
     c.column_id,
     c.position,
     c.created_at,
+    c.description,
+    c.due_date,
     COALESCE(
       json_agg(
         json_build_object('id', l.id, 'name', l.name, 'color', l.color)
@@ -62,6 +64,66 @@ export async function deleteCard(id: string): Promise<void> {
   if ((result.rowCount ?? 0) === 0) {
     throw new NotFoundError(`Card not found: ${id}`);
   }
+}
+
+function rowToCardDetail(row: Record<string, unknown>): CardDetail {
+  const base = rowToCard(row);
+  return {
+    ...base,
+    description: (row.description as string | null) ?? null,
+    dueDate:
+      row.due_date instanceof Date
+        ? (row.due_date as Date).toISOString().slice(0, 10)
+        : (row.due_date as string | null) ?? null,
+  };
+}
+
+export async function getCardById(id: string): Promise<CardDetail> {
+  const result = await pool.query(
+    `${CARD_WITH_LABELS_QUERY} WHERE c.id = $1 GROUP BY c.id`,
+    [id],
+  );
+  if (result.rows.length === 0) {
+    throw new NotFoundError(`Card not found: ${id}`);
+  }
+  return rowToCardDetail(result.rows[0]);
+}
+
+export async function updateCard(id: string, dto: UpdateCardDto): Promise<CardDetail> {
+  const fields: string[] = [];
+  const values: unknown[] = [];
+  let idx = 1;
+
+  if (dto.title !== undefined) {
+    fields.push(`title = $${idx++}`);
+    values.push(dto.title);
+  }
+  if (dto.description !== undefined) {
+    fields.push(`description = $${idx++}`);
+    values.push(dto.description);
+  }
+  if (dto.dueDate !== undefined) {
+    fields.push(`due_date = $${idx++}`);
+    values.push(dto.dueDate);
+  }
+  if (dto.columnId !== undefined) {
+    fields.push(`column_id = $${idx++}`);
+    values.push(dto.columnId);
+  }
+
+  if (fields.length === 0) {
+    return getCardById(id);
+  }
+
+  values.push(id);
+  const result = await pool.query(
+    `UPDATE cards SET ${fields.join(', ')} WHERE id = $${idx} RETURNING id`,
+    values,
+  );
+  if ((result.rowCount ?? 0) === 0) {
+    throw new NotFoundError(`Card not found: ${id}`);
+  }
+  return getCardById(id);
 }
 
 export async function reorderCard(id: string, newPosition: number): Promise<Card> {

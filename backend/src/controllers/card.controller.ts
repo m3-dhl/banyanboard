@@ -48,6 +48,51 @@ export async function deleteCard(req: Request, res: Response): Promise<void> {
   }
 }
 
+export async function getCardById(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  if (!UUID_REGEX.test(id)) {
+    res.status(400).json({ error: 'Invalid card ID format' });
+    return;
+  }
+  try {
+    const card = await cardService.getCardById(id);
+    res.json(card);
+  } catch (err) {
+    if (err instanceof NotFoundError || (err as Error).name === 'NotFoundError') {
+      res.status(404).json({ error: (err as Error).message });
+      return;
+    }
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export async function updateCard(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  if (!UUID_REGEX.test(id)) {
+    res.status(400).json({ error: 'Invalid card ID format' });
+    return;
+  }
+  try {
+    const card = await cardService.updateCard(id, {
+      title: req.body.title,
+      description: req.body.description,
+      dueDate: req.body.dueDate,
+      columnId: req.body.columnId,
+    });
+    res.json(card);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      res.status(400).json({ error: (err as Error).message });
+      return;
+    }
+    if (err instanceof NotFoundError || (err as Error).name === 'NotFoundError') {
+      res.status(404).json({ error: (err as Error).message });
+      return;
+    }
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 export async function reorderCardPosition(req: Request, res: Response): Promise<void> {
   try {
     const { id } = req.params;
