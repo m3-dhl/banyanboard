@@ -15,3 +15,6 @@
 | TASK-011 | Fix cross-column card drop position | ARCHIVE | COMPLETE | N/A |
 | TASK-012 | Card Deletion | ARCHIVE | COMPLETE | FEAT-009 |
 | TASK-013 | Failed to create label — please try again | ARCHIVE | COMPLETE | N/A |
+| TASK-014 | Multi-label filter selection | ARCHIVE | COMPLETE | N/A |
+| TASK-015 | Label picker closes after selection | BUILD | BUILD_COMPLETE | N/A |
+| TASK-016 | Label picker overflow in DONE column | BUILD | BUILD_COMPLETE | N/A |

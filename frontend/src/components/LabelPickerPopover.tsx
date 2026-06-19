@@ -44,18 +44,20 @@ export default function LabelPickerPopover({
   let positionStyle: React.CSSProperties = { position: 'fixed', top: 0, left: 0 }
   if (anchorRect) {
     const POPOVER_HEIGHT = 220
+    const POPOVER_MAX_WIDTH = 280  // matches CSS max-width: 280px
     const spaceBelow = window.innerHeight - anchorRect.bottom
+    const clampedLeft = Math.min(anchorRect.left, window.innerWidth - POPOVER_MAX_WIDTH - 8)
     if (spaceBelow < POPOVER_HEIGHT) {
       positionStyle = {
         position: 'fixed',
         bottom: window.innerHeight - anchorRect.top,
-        left: anchorRect.left,
+        left: clampedLeft,
       }
     } else {
       positionStyle = {
         position: 'fixed',
         top: anchorRect.bottom + 4,
-        left: anchorRect.left,
+        left: clampedLeft,
       }
     }
   }

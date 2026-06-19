@@ -245,9 +245,8 @@ describe('Board same-column reorder with active label filter (AC-ENTRY-2)', () =
     const addLabelBtn = screen.getByRole('button', { name: /add label to first todo/i })
     await userEvent.click(addLabelBtn)
     const dialog = await screen.findByRole('dialog')
+    // Picker closes automatically after selection
     await userEvent.click(within(dialog).getByRole('button', { name: /bug/i }))
-    // Close the picker
-    await userEvent.keyboard('{Escape}')
 
     // Activate Bug filter — card-2 (no labels) becomes hidden
     // The filter bar chip has aria-pressed; the picker's chip does not

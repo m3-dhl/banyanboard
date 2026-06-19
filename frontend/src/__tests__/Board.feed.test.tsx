@@ -240,12 +240,13 @@ describe('Board label activity feed', () => {
     const dialog = await screen.findByRole('dialog')
     const bugChip = within(dialog).getByRole('button', { name: /bug/i })
 
-    // First click → attach (label-added)
+    // First click → attach (label-added); picker closes after selection
     await userEvent.click(bugChip)
 
-    // Popover stays open; chip is now aria-pressed=true after optimistic update
-    // Second click → detach (label-removed)
-    await userEvent.click(bugChip)
+    // Re-open picker, then detach (label-removed)
+    await userEvent.click(addLabelBtn)
+    const dialog2 = await screen.findByRole('dialog')
+    await userEvent.click(within(dialog2).getByRole('button', { name: /bug/i }))
 
     // Feed should include a "label removed" entry
     await waitFor(() => {

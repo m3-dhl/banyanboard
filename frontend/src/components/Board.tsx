@@ -30,7 +30,7 @@ export default function Board() {
   const [feedEntries, setFeedEntries] = useState<ActivityFeedEntry[]>([])
   const [cardCreateError, setCardCreateError] = useState<string | null>(null)
   const [labels, setLabels] = useState<Label[]>([])
-  const [activeFilter, setActiveFilter] = useState<string | null>(null)
+  const [activeFilters, setActiveFilters] = useState<string[]>([])
   const [labelAssignError, setLabelAssignError] = useState<string | null>(null)
   const [cardDeleteError, setCardDeleteError] = useState<string | null>(null)
   const [showManagePanel, setShowManagePanel] = useState(false)
@@ -53,8 +53,8 @@ export default function Board() {
       })
   }, [])
 
-  const filteredCards = activeFilter
-    ? cards.filter((c) => (c.labels ?? []).some((l) => l.id === activeFilter))
+  const filteredCards = activeFilters.length > 0
+    ? cards.filter((c) => (c.labels ?? []).some((l) => activeFilters.includes(l.id)))
     : cards
 
   function onDragEnd(result: DropResult) {
@@ -236,8 +236,8 @@ export default function Board() {
           labels: (c.labels ?? []).filter((l) => l.id !== labelId),
         }))
       )
-      // Clear active filter if it was the deleted label
-      if (activeFilter === labelId) setActiveFilter(null)
+      // Remove deleted label from active filters if present
+      setActiveFilters((prev) => prev.filter((id) => id !== labelId))
     } catch {
       setLabelAssignError('Failed to delete label — please try again')
     }
@@ -281,8 +281,13 @@ export default function Board() {
         {labels.length > 0 && (
           <FilterBar
             labels={labels}
-            activeFilter={activeFilter}
-            onFilterChange={setActiveFilter}
+            activeFilters={activeFilters}
+            onFilterChange={(labelId) =>
+              setActiveFilters((prev) =>
+                prev.includes(labelId) ? prev.filter((id) => id !== labelId) : [...prev, labelId]
+              )
+            }
+            onFilterClear={() => setActiveFilters([])}
           />
         )}
 

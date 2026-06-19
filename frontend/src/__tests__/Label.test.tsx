@@ -213,3 +213,115 @@ describe('LabelManagementPanel', () => {
     expect(onClose).toHaveBeenCalledOnce()
   })
 })
+
+// ---------------------------------------------------------------------------
+// LabelPickerPopover positioning
+// ---------------------------------------------------------------------------
+
+describe('LabelPickerPopover positioning', () => {
+  const defaultProps = {
+    labels: SAMPLE_LABELS,
+    attachedLabelIds: [],
+    onToggle: vi.fn(),
+    onManageLabels: vi.fn(),
+    onClose: vi.fn(),
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  function makeAnchorRect(overrides: Partial<DOMRect>): DOMRect {
+    return {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      width: 100,
+      height: 20,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+      ...overrides,
+    } as DOMRect
+  }
+
+  it('clamps left when anchor is near the right viewport edge', () => {
+    // DONE column scenario: anchor sits at 1050 in a 1200px-wide viewport.
+    // The popover (max-width 280) would extend to 1050+280 = 1330, overflowing by 130px.
+    // After clamping: left must be <= 1200 - 280 - 8 = 912.
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1200 })
+    Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 900 })
+
+    const anchorRect = makeAnchorRect({ left: 1050, right: 1150, top: 280, bottom: 300 })
+    const { getByRole } = render(
+      <LabelPickerPopover {...defaultProps} anchorRect={anchorRect} />
+    )
+
+    const dialog = getByRole('dialog')
+    const leftValue = parseFloat(dialog.style.left ?? '0')
+    // Must not overflow: left + 280 + 8 <= 1200
+    expect(leftValue).toBeLessThanOrEqual(1200 - 280 - 8)
+  })
+
+  it('does not clamp left when anchor has ample room from the right edge', () => {
+    // Anchor at left:100 in a 1200px viewport — 1100px of room, well within margin.
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1200 })
+    Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 900 })
+
+    const anchorRect = makeAnchorRect({ left: 100, right: 200, top: 280, bottom: 300 })
+    const { getByRole } = render(
+      <LabelPickerPopover {...defaultProps} anchorRect={anchorRect} />
+    )
+
+    const dialog = getByRole('dialog')
+    // No clamping needed — left should remain at the anchor's left value
+    expect(dialog.style.left).toBe('100px')
+  })
+
+  it('opens upward (uses bottom style, no top style) when space below is insufficient', () => {
+    // Anchor near the bottom of a 600px viewport: bottom=550, only 50px below.
+    // POPOVER_HEIGHT=220, so spaceBelow(50) < POPOVER_HEIGHT(220) → flip upward.
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1200 })
+    Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 600 })
+
+    const anchorRect = makeAnchorRect({ left: 100, right: 200, top: 530, bottom: 550 })
+    const { getByRole } = render(
+      <LabelPickerPopover {...defaultProps} anchorRect={anchorRect} />
+    )
+
+    const dialog = getByRole('dialog')
+    // Upward flip: bottom style must be set, top must not be set
+    expect(dialog.style.bottom).not.toBe('')
+    expect(dialog.style.top).toBe('')
+  })
+
+  it('opens downward (uses top style, no bottom style) when there is space below', () => {
+    // Anchor at bottom:200 in a 900px viewport — 700px below, more than POPOVER_HEIGHT(220).
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1200 })
+    Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 900 })
+
+    const anchorRect = makeAnchorRect({ left: 100, right: 200, top: 180, bottom: 200 })
+    const { getByRole } = render(
+      <LabelPickerPopover {...defaultProps} anchorRect={anchorRect} />
+    )
+
+    const dialog = getByRole('dialog')
+    // Normal case: top style must be set, bottom must not be set
+    expect(dialog.style.top).not.toBe('')
+    expect(dialog.style.bottom).toBe('')
+  })
+
+  it('renders at top:0 left:0 when no anchorRect is provided', () => {
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1200 })
+    Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 900 })
+
+    const { getByRole } = render(
+      <LabelPickerPopover {...defaultProps} anchorRect={undefined} />
+    )
+
+    const dialog = getByRole('dialog')
+    expect(dialog.style.top).toBe('0px')
+    expect(dialog.style.left).toBe('0px')
+  })
+})

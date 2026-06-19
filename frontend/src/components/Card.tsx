@@ -27,6 +27,7 @@ export default function Card({ card, index, labels, onLabelToggle, onDelete }: P
 
   function handleLabelToggle(labelId: string): void {
     onLabelToggle(card.id, labelId)
+    setShowPicker(false)
   }
 
   function handleManageLabels(): void {

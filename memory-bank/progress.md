@@ -4,6 +4,15 @@
 
 ---
 
+## Task Archive: TASK-014
+
+**Task**: Multi-label filter selection (+ TASK-015 picker auto-close, TASK-016 viewport overflow)
+**Status**: ✅ ARCHIVED
+**Date**: 2026-06-19
+**Archive**: `memory-bank/archive/archive-TASK-014.md`
+
+---
+
 ## Task Archive: TASK-013
 
 **Task**: Failed to create label — please try again (label creation 404 bug fix)

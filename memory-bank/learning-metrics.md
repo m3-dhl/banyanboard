@@ -2,49 +2,14 @@
 
 ## Configuration
 
-| Setting | Value | Description |
-|---------|-------|-------------|
-| Max learned rule files | 10 | Hard cap on files in `agent-rules/_learned/` |
-| Expiry period (days) | 90 | Remove unreinforced bullets after this period |
-| Promotion threshold | 3 | Promote to `medium` priority at this evidence count |
-| Max bullets per file | 15 | Prune to 10 most-evidenced when exceeded |
+| Setting | Value |
+|---------|-------|
+| Max learned rule files | 10 |
+| Promotion threshold (medium) | 3 tasks |
+| Expiry (unreinforced) | 90 days |
 
 ## Task History
 
-| Task ID | Date | Learnings Extracted | Rules Amended | Rules Created |
-|---------|------|--------------------:|-------------:|-------------:|
-| TASK-001 | 2026-06-09 | 1 | 0 | 1 |
-| TASK-002 | 2026-06-09 | 2 | 1 | 1 |
-| TASK-003 | 2026-06-09 | 1 | 1 | 0 |
-| TASK-004 | 2026-06-16 | 0 | 0 | 0 |
-| TASK-005 | 2026-06-16 | 2 | 1 | 1 |
-| TASK-006 | 2026-06-16 | 1 | 1 | 0 |
-| TASK-007 | 2026-06-16 | 2 | 2 | 0 |
-| TASK-008 | 2026-06-16 | 4 | 2 | 1 |
-| TASK-009 | 2026-06-17 | 3 | 2 | 0 |
-| TASK-012 | 2026-06-17 | 3 | 3 | 0 |
-| TASK-013 | 2026-06-19 | 2 | 1 | 1 |
-
-## Rule Effectiveness
-
-| File | Topics | Evidence Count | Priority | Last Updated |
-|------|--------|---------------:|:--------:|:------------:|
-| testing-patterns.md | testing, express, backend, react, frontend, vitest | 8 | medium | 2026-06-19 |
-| api-design.md | api-design, frontend, routes, http | 1 | low | 2026-06-19 |
-| architecture.md | architecture, error-handling, express, backend, middleware, planning, spec, frontend | 6 | medium | 2026-06-17 |
-| frontend-architecture.md | frontend, react, typescript, vite, architecture, dnd, accessibility | 5 | medium | 2026-06-17 |
-| accessibility.md | accessibility, wcag, frontend, react, design | 1 | low | 2026-06-16 |
-
-## Consolidation History
-
-| Date | Rules Before | Rules After | Merged | Expired | Promoted |
-|------|------------:|------------:|-------:|--------:|---------:|
-| 2026-06-09 | 2 | 2 | 0 | 0 | 0 |
-| 2026-06-16 | 2 | 2 | 0 | 0 | 0 |
-| 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
-| 2026-06-16 | 3 | 3 | 0 | 0 | 0 |
-| 2026-06-16 | 3 | 3 | 0 | 0 | 1 |
-| 2026-06-16 | 4 | 4 | 0 | 0 | 1 |
-| 2026-06-17 | 4 | 4 | 0 | 0 | 0 |
-| 2026-06-17 | 4 | 4 | 0 | 0 | 0 |
-| 2026-06-19 | 5 | 5 | 0 | 0 | 0 |
+| Task | Date | Learnings Extracted | Rules Created | Rules Amended |
+|------|------|--------------------:|--------------|--------------|
+| TASK-014 | 2026-06-19 | 2 | 2 | 0 |
