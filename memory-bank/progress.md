@@ -4,6 +4,15 @@
 
 ---
 
+## Task Archive: TASK-013
+
+**Task**: Failed to create label — please try again (label creation 404 bug fix)
+**Status**: ARCHIVED
+**Date**: 2026-06-19
+**Archive**: `memory-bank/archive/archive-TASK-013.md`
+
+---
+
 ## Task Archive: TASK-012
 
 **Task**: Card Deletion

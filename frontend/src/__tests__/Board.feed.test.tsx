@@ -37,7 +37,7 @@ function makeDefaultFetch(boardName = 'BanyanBoard', labels: unknown[] = []) {
     if (String(url).includes('/cards') && !String(url).includes('/cards/')) {
       return Promise.resolve({ ok: true, json: async () => SEED_CARDS_JSON } as unknown as Response)
     }
-    if (String(url).includes('/boards/') && String(url).includes('/labels')) {
+    if (String(url).includes('/labels') && String(url).includes('boardId=')) {
       return Promise.resolve({ ok: true, json: async () => labels } as unknown as Response)
     }
     if (String(url).includes('/cards/') && String(url).includes('/labels')) {

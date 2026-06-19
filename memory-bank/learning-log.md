@@ -14,6 +14,27 @@ Chronological record of pattern extraction and consolidation events from task re
 
 ---
 
+## 2026-06-19 - Consolidation (during TASK-013 archive)
+
+- Files before: 5, Files after: 5
+- Merged: 0 files
+- Expired: 0 bullets (0 files deleted)
+- Promoted: 0 files
+- Pruned: 0 excess bullets
+
+---
+
+## 2026-06-19 - TASK-013 Reflection
+
+### Extracted Patterns
+- **testing-patterns** → amended `agent-rules/_learned/testing-patterns.md` — update mock handlers referencing old API URL in same commit (evidence count: 8)
+- **api-design** → created `agent-rules/_learned/api-design.md` — verify route path against backend mount point before writing frontend call (evidence count: 1)
+
+### systemPatterns.md Updates
+- None (no novel architectural patterns)
+
+---
+
 ## 2026-06-17 - TASK-012 Reflection
 
 ### Extracted Patterns

@@ -38,18 +38,19 @@ export async function createCard(title: string, columnId: ColumnId): Promise<Car
 }
 
 export async function fetchLabels(boardId: string): Promise<Label[]> {
-  const res = await fetch(`${API_BASE}/boards/${boardId}/labels`)
-  if (!res.ok) throw new Error(`GET /boards/${boardId}/labels failed: ${res.status}`)
+  const encodedBoardId = encodeURIComponent(boardId)
+  const res = await fetch(`${API_BASE}/labels?boardId=${encodedBoardId}`)
+  if (!res.ok) throw new Error(`GET /labels?boardId=${encodedBoardId} failed: ${res.status}`)
   return res.json() as Promise<Label[]>
 }
 
 export async function createLabel(boardId: string, name: string, color: string): Promise<Label> {
-  const res = await fetch(`${API_BASE}/boards/${boardId}/labels`, {
+  const res = await fetch(`${API_BASE}/labels`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, color }),
+    body: JSON.stringify({ name, color, boardId }),
   })
-  if (!res.ok) throw new Error(`POST /boards/${boardId}/labels failed: ${res.status}`)
+  if (!res.ok) throw new Error(`POST /labels failed: ${res.status}`)
   return res.json() as Promise<Label>
 }
 
