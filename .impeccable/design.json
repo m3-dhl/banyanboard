@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-16T00:00:00Z",
+  "title": "Design System: BanyanBoard",
+  "extensions": {
+    "colorMeta": {
+      "signal-violet": {
+        "role": "primary",
+        "displayName": "Signal Violet",
+        "canonical": "oklch(58% 0.28 295)",
+        "tonalRamp": ["#1a0033", "#360066", "#5200a3", "#6a00d4", "#aa3bff", "#bf6fff", "#d4a0ff", "#ead0ff"]
+      },
+      "signal-violet-dark": {
+        "role": "primary-dark",
+        "displayName": "Signal Violet (Dark Mode)",
+        "canonical": "oklch(70% 0.22 295)",
+        "tonalRamp": ["#2d0052", "#4a0085", "#6600b8", "#8a1fdf", "#c084fc", "#d0a3fd", "#e0c3fe", "#f0e1ff"]
+      },
+      "text-body": {
+        "role": "neutral",
+        "displayName": "Muted Body",
+        "canonical": "oklch(53% 0.04 310)",
+        "tonalRamp": ["#150e1a", "#2d2035", "#46324f", "#5e4468", "#6b6375", "#8a849a", "#aaa6b3", "#cac8cc"]
+      },
+      "text-heading": {
+        "role": "neutral",
+        "displayName": "Near-Black",
+        "canonical": "oklch(10% 0.02 300)",
+        "tonalRamp": ["#08060d", "#201b29", "#393044", "#524660", "#6b5c7c", "#8a7d9a", "#a9a0b8", "#c8c3d6"]
+      },
+      "bg-page": {
+        "role": "neutral",
+        "displayName": "Page White",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": ["#e8e8e8", "#ebebeb", "#eeeeee", "#f1f1f1", "#f4f4f4", "#f7f7f7", "#fafafa", "#ffffff"]
+      },
+      "bg-board": {
+        "role": "neutral",
+        "displayName": "Board Ground",
+        "canonical": "oklch(96% 0.005 240)",
+        "tonalRamp": ["#b8bcc4", "#c4c8d0", "#d0d4db", "#dcdfe5", "#e8eaef", "#eff0f4", "#f4f5f7", "#fafbfc"]
+      },
+      "bg-column": {
+        "role": "neutral",
+        "displayName": "Column Gray",
+        "canonical": "oklch(94% 0.007 240)",
+        "tonalRamp": ["#acafb8", "#b8bcc5", "#c5c8d2", "#d1d5de", "#dde0ea", "#e5e7ef", "#ebecf0", "#f4f5f8"]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Muted Label",
+        "canonical": "oklch(50% 0.06 240)",
+        "tonalRamp": ["#0f1d2e", "#1e3148", "#2e4662", "#3e5b7c", "#5e6c84", "#7e8ca4", "#9eacc4", "#becce4"]
+      },
+      "text-board": {
+        "role": "neutral",
+        "displayName": "Board Text",
+        "canonical": "oklch(24% 0.08 240)",
+        "tonalRamp": ["#040c18", "#0a1b31", "#10294a", "#163863", "#172b4d", "#2e4a73", "#496899", "#6486bf"]
+      },
+      "focus-ring": {
+        "role": "tertiary",
+        "displayName": "Focus Blue",
+        "canonical": "oklch(42% 0.18 255)",
+        "tonalRamp": ["#001433", "#002866", "#003d99", "#0046b8", "#0052cc", "#1a6ddb", "#3388e8", "#66aaf0"]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Warning Amber",
+        "canonical": "oklch(52% 0.12 70)",
+        "tonalRamp": ["#3d2000", "#663500", "#994f00", "#b26a00", "#cc7a00", "#e08a00", "#f0a020", "#f5c060"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Board-level title only. Appears once per view." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings. h2 in UI context." },
+      "body": { "displayName": "Body", "purpose": "Primary reading text. 65–75ch max line length for prose." },
+      "label": { "displayName": "Label", "purpose": "Column headers and structural labels. Uppercase. Never for user-generated content." },
+      "mono": { "displayName": "Mono", "purpose": "Code snippets and counters. Always on code-bg." }
+    },
+    "shadows": [
+      {
+        "name": "card-rest",
+        "value": "0 1px 2px rgba(9, 30, 66, 0.15)",
+        "purpose": "Near-invisible card definition. Insurance on displays where #fff/#ebecf0 reads as identical."
+      },
+      {
+        "name": "card-drag",
+        "value": "0 8px 24px rgba(9, 30, 66, 0.25)",
+        "purpose": "Active drag state. The elevation jump signals the card has lifted off the surface."
+      },
+      {
+        "name": "ambient",
+        "value": "rgba(0,0,0,0.1) 0 10px 15px -3px, rgba(0,0,0,0.05) 0 4px 6px -2px",
+        "purpose": "Floating elements: dialogs, dropdowns, popovers."
+      },
+      {
+        "name": "ambient-dark",
+        "value": "rgba(0,0,0,0.4) 0 10px 15px -3px, rgba(0,0,0,0.25) 0 4px 6px -2px",
+        "purpose": "Dark mode variant of ambient shadow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default state transitions. Enter and exit."
+      },
+      {
+        "name": "ease-out-fast",
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "purpose": "Card drop and form reveal. Element arriving at rest."
+      },
+      {
+        "name": "duration-micro",
+        "value": "120ms",
+        "purpose": "Button hover, focus ring. Immediate feedback."
+      },
+      {
+        "name": "duration-short",
+        "value": "200ms",
+        "purpose": "Card form reveal, shadow transition on drag start."
+      }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "1024px", "purpose": "Font-size step down (18px → 16px), h1 step down (56px → 36px)." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Kanban Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Draggable task unit. Title only in MVP. Lifts on drag.",
+      "html": "<article class=\"ds-card\" role=\"article\" tabindex=\"0\"><p class=\"ds-card-title\">Fix login redirect on mobile</p></article>",
+      "css": ".ds-card { background: #ffffff; border-radius: 4px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(9, 30, 66, 0.15); cursor: grab; user-select: none; } .ds-card:focus { outline: 2px solid #0052cc; outline-offset: 2px; } .ds-card:hover { box-shadow: 0 3px 8px rgba(9, 30, 66, 0.2); transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1); } .ds-card-title { font-size: 0.9rem; line-height: 1.4; color: #172b4d; margin: 0; } @media (prefers-reduced-motion: reduce) { .ds-card:hover { transition: none; } }"
+    },
+    {
+      "name": "Kanban Column",
+      "kind": "card",
+      "refersTo": "column",
+      "description": "Fixed-width (280px) column container. Structural, not interactive.",
+      "html": "<section class=\"ds-column\" role=\"region\" aria-label=\"To Do\"><h2 class=\"ds-column-header\">To Do</h2><div class=\"ds-column-cards\"><article class=\"ds-card-in-column\">Write release notes</article><article class=\"ds-card-in-column\">Update docs</article></div><button class=\"ds-add-card-btn\" type=\"button\">Add card</button></section>",
+      "css": ".ds-column { background: #ebecf0; border-radius: 6px; padding: 12px; width: 280px; min-height: 200px; flex-shrink: 0; } .ds-column-header { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #5e6c84; margin: 0 0 12px; } .ds-column-cards { display: flex; flex-direction: column; gap: 8px; min-height: 60px; } .ds-card-in-column { background: #fff; border-radius: 4px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(9,30,66,0.15); font-size: 0.9rem; color: #172b4d; } .ds-add-card-btn { width: 100%; margin-top: 8px; padding: 6px 8px; background: transparent; border: none; border-radius: 4px; font-size: 0.875rem; color: #5e6c84; cursor: pointer; text-align: left; } .ds-add-card-btn:hover { background: rgba(9,30,66,0.06); color: #172b4d; } .ds-add-card-btn:focus-visible { outline: 2px solid #0052cc; outline-offset: 2px; }"
+    },
+    {
+      "name": "Add Card Form",
+      "kind": "input",
+      "refersTo": "input-card-title",
+      "description": "Inline card-creation form inside a column. Replaces the Add card button.",
+      "html": "<form class=\"ds-card-form\"><input class=\"ds-card-input\" type=\"text\" placeholder=\"Card title\" aria-label=\"Card title\" /><div class=\"ds-card-form-actions\"><button type=\"submit\" class=\"ds-btn-submit\">Add</button><button type=\"button\" class=\"ds-btn-cancel\">Cancel</button></div></form>",
+      "css": ".ds-card-form { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; } .ds-card-input { width: 100%; padding: 8px 10px; background: #fff; border: 1px solid #e5e4e7; border-radius: 4px; font-size: 0.9rem; color: #172b4d; box-sizing: border-box; } .ds-card-input:focus { outline: 2px solid #0052cc; outline-offset: 1px; border-color: transparent; } .ds-card-form-actions { display: flex; gap: 6px; } .ds-btn-submit { padding: 6px 16px; background: #aa3bff; color: #fff; border: none; border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background 120ms; } .ds-btn-submit:hover { background: #9528e6; } .ds-btn-submit:focus-visible { outline: 2px solid #aa3bff; outline-offset: 2px; } .ds-btn-cancel { padding: 6px 16px; background: transparent; color: #6b6375; border: none; border-radius: 4px; font-size: 0.875rem; cursor: pointer; } .ds-btn-cancel:hover { background: rgba(0,0,0,0.05); } .ds-btn-cancel:focus-visible { outline: 2px solid #0052cc; outline-offset: 2px; } @media (prefers-reduced-motion: reduce) { .ds-btn-submit { transition: none; } }"
+    },
+    {
+      "name": "Activity Feed Entry",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Append-only event log item. System-generated, never user-styled.",
+      "html": "<li class=\"ds-activity-entry\"><span class=\"ds-activity-action\">Card moved to <strong>In Progress</strong></span><time class=\"ds-activity-time\">2m ago</time></li>",
+      "css": ".ds-activity-entry { display: flex; justify-content: space-between; align-items: baseline; padding: 4px 0; font-size: 0.875rem; color: #6b6375; border-bottom: 1px solid #e5e4e7; } .ds-activity-entry:last-child { border-bottom: none; } .ds-activity-action strong { color: #08060d; font-weight: 500; } .ds-activity-time { font-family: ui-monospace, Consolas, monospace; font-size: 0.75rem; color: #8a849a; white-space: nowrap; margin-left: 12px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Clear Desk",
+    "overview": "BanyanBoard is a workspace that earns trust by disappearing. The interface is sparse and intentional — every element present because it reduces the next drag, not because it fills space. The visual vocabulary is inherited from familiar tools (system fonts, standard controls, Atlassian-adjacent board colors) on purpose: novelty would only slow the user down.\n\nThe color palette is muted by design. Signal Violet appears on actions and focus states only, never decoration. The board's grays (#f4f5f7 → #ebecf0 → #ffffff) read as a natural depth stack — column lighter than board background, card lighter than column — without any shadows at rest. The system's restraint is its personality.\n\nThis system explicitly rejects the Jira pattern: no dense chrome, no sidebar trees, no configuration forms masquerading as collaboration.",
+    "keyCharacteristics": [
+      "Muted neutral ground, one functional accent",
+      "System font stack — familiar, not designed",
+      "Structural depth without visual weight",
+      "Shadows only on interaction, never at rest",
+      "Focus states are explicit and unmissable"
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Signal Violet appears on ≤2 interactive elements per screen. If you find yourself reaching for it as a background, a badge fill, or a section header — stop. That color's power is its scarcity.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tonal Stack Rule",
+        "body": "Board → Column → Card is a lightness sequence: #f4f5f7 → #ebecf0 → #ffffff. Do not break this order. A column whiter than a card destroys the spatial model.",
+        "section": "colors"
+      },
+      {
+        "name": "The System Stack Rule",
+        "body": "Never replace the system font stack with a webfont without updating --sans, --heading, and the frontmatter typography tokens simultaneously. One-off font-family overrides create an uncanny valley between the token system and the rendered UI.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-by-Default Rule",
+        "body": "Surfaces are flat at rest. A card that looks lifted before you touch it has lost the ability to signal drag state. Elevation is reserved for things that move.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep Signal Violet to focus states, primary action buttons, and hover accents only. One accent color per screen maximum.",
+      "Do use the tonal stack (board → column → card: #f4f5f7 → #ebecf0 → #ffffff) to convey depth. Never reverse it.",
+      "Do apply Focus Blue (#0052cc) for keyboard focus rings — it contrasts with both Signal Violet and the neutral surfaces.",
+      "Do keep shadows out of resting states. Shadows are state signals: drag, hover-lift, popover. Not decoration.",
+      "Do use the system font stack (system-ui, 'Segoe UI', Roboto, sans-serif). Skip webfonts; they add latency and brand none.",
+      "Do keep card UI to title + drag affordance. Every field added to a card increases cognitive load by more than its information value.",
+      "Do test color contrast: body text (#6b6375 on #fff) is 4.9:1 — on the threshold. Never lighten body text further.",
+      "Do provide a prefers-reduced-motion alternative for every drag animation and state transition."
+    ],
+    "donts": [
+      "Don't add features that require reading docs. If a UI pattern needs explaining, the pattern is wrong.",
+      "Don't make this feel like Jira. No sidebar trees, no configuration forms, no dense chrome.",
+      "Don't use border-left greater than 1px as a colored accent stripe on cards, column headers, or callouts.",
+      "Don't use gradient text or background-clip: text with a gradient.",
+      "Don't add decorative motion. Transitions exist to convey state change only.",
+      "Don't invent new status colors beyond warning amber. Encode state in the column, not the card color.",
+      "Don't use modal dialogs as first thought. Card creation is inline; keep it that way.",
+      "Don't add eyebrows, section kickers, or numbered section markers. The board is a tool surface.",
+      "Don't break the 1126px container by adding full-bleed sections or edge-to-edge backgrounds."
+    ]
+  }
+}

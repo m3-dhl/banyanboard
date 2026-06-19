@@ -65,7 +65,7 @@ body {
 .board-title {
   grid-column: 2;
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-h);
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -386,6 +386,13 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.card:hover .card-footer,
+.card:focus-within .card-footer {
+  opacity: 1;
 }
 
 /* ─── Add label button ─── */
@@ -410,6 +417,132 @@ body {
 .add-label-btn:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+/* ─── Delete card button ─── */
+
+.delete-card-btn {
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px dashed transparent;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-family: var(--sans);
+  color: var(--text-column-label);
+  cursor: pointer;
+  transition: background 120ms, color 120ms, border-color 120ms;
+}
+
+.delete-card-btn:hover {
+  color: #de350b;
+  background: rgba(222, 53, 11, 0.06);
+  border-color: rgba(222, 53, 11, 0.25);
+}
+
+.delete-card-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ─── Delete card dialog ─── */
+
+.delete-card-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-modal);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-modal);
+  padding: 24px;
+  max-width: 420px;
+  width: 90vw;
+  box-shadow: var(--shadow-modal);
+}
+
+.delete-card-dialog-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-board);
+  margin-bottom: 8px;
+}
+
+.delete-card-dialog-title {
+  font-size: 0.9rem;
+  color: var(--text-board);
+  font-style: italic;
+  margin-bottom: 6px;
+  padding: 6px 10px;
+  background: var(--bg-column);
+  border-radius: var(--radius-card);
+}
+
+.delete-card-dialog-warning {
+  font-size: 0.875rem;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.delete-card-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.delete-card-cancel-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  color: var(--text-board);
+  cursor: pointer;
+  transition: background 120ms;
+}
+
+.delete-card-cancel-btn:hover {
+  background: var(--hover-tint);
+}
+
+.delete-card-cancel-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.delete-card-confirm-btn {
+  padding: 6px 16px;
+  background: #de350b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 120ms;
+}
+
+.delete-card-confirm-btn:hover {
+  opacity: 0.88;
+}
+
+.delete-card-confirm-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ─── Card delete error ─── */
+
+.card-delete-error {
+  font-size: 0.875rem;
+  color: #b26a00;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(178, 106, 0, 0.08);
+  border-radius: var(--radius-card);
+  grid-column: 1 / -1;
 }
 
 /* ─── Label picker popover ─── */
@@ -804,9 +937,18 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .card,
+  .card-footer,
   .add-card-btn,
+  .add-label-btn,
+  .delete-card-btn,
   .card-form input[type='text'],
-  .card-form-actions button {
+  .card-form-actions button,
+  .delete-card-cancel-btn,
+  .delete-card-confirm-btn {
     transition: none;
+  }
+
+  .card-footer {
+    opacity: 1;
   }
 }
