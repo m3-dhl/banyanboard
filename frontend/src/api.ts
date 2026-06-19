@@ -1,4 +1,4 @@
-import type { CardData, ColumnId, Label } from './types'
+import type { CardData, CardDetail, Comment, ColumnId, Label } from './types'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:3001'
 
@@ -17,12 +17,13 @@ export async function fetchBoards(): Promise<Board[]> {
 export async function fetchCards(): Promise<CardData[]> {
   const res = await fetch(`${API_BASE}/cards`)
   if (!res.ok) throw new Error(`GET /cards failed: ${res.status}`)
-  const data = await res.json() as { id: string; title: string; columnId: string; labels?: Label[] }[]
+  const data = await res.json() as { id: string; title: string; columnId: string; labels?: Label[]; due_date?: string | null }[]
   return data.map((c) => ({
     id: c.id,
     title: c.title,
     columnId: c.columnId as ColumnId,
     labels: c.labels ?? [],
+    dueDate: c.due_date ?? null,
   }))
 }
 
@@ -85,4 +86,69 @@ export async function reorderCard(cardId: string, position: number): Promise<voi
     body: JSON.stringify({ position }),
   })
   if (!res.ok) throw new Error(`PATCH /cards/${cardId}/position failed: ${res.status}`)
+}
+
+export interface UpdateCardDto {
+  title?: string
+  description?: string
+  dueDate?: string | null
+  columnId?: ColumnId
+}
+
+export async function fetchCardDetail(cardId: string, signal?: AbortSignal): Promise<CardDetail> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}`, { signal })
+  if (!res.ok) throw new Error(`GET /cards/${cardId} failed: ${res.status}`)
+  const data = await res.json() as {
+    id: string
+    title: string
+    columnId: string
+    labels?: Label[]
+    description: string | null
+    due_date: string | null
+  }
+  return {
+    id: data.id,
+    title: data.title,
+    columnId: data.columnId as ColumnId,
+    labels: data.labels ?? [],
+    description: data.description ?? null,
+    dueDate: data.due_date ?? null,
+  }
+}
+
+export async function updateCard(cardId: string, dto: UpdateCardDto): Promise<void> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dto),
+  })
+  if (!res.ok) throw new Error(`PATCH /cards/${cardId} failed: ${res.status}`)
+}
+
+export async function fetchComments(cardId: string, signal?: AbortSignal): Promise<Comment[]> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}/comments`, { signal })
+  if (!res.ok) throw new Error(`GET /cards/${cardId}/comments failed: ${res.status}`)
+  const data = await res.json() as Array<{ id: string; card_id: string; body: string; created_at: string }>
+  return data.map((c) => ({
+    id: c.id,
+    cardId: c.card_id,
+    body: c.body,
+    createdAt: c.created_at,
+  }))
+}
+
+export async function createComment(cardId: string, body: string): Promise<Comment> {
+  const res = await fetch(`${API_BASE}/cards/${cardId}/comments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ body }),
+  })
+  if (!res.ok) throw new Error(`POST /cards/${cardId}/comments failed: ${res.status}`)
+  const data = await res.json() as { id: string; card_id: string; body: string; created_at: string }
+  return {
+    id: data.id,
+    cardId: data.card_id,
+    body: data.body,
+    createdAt: data.created_at,
+  }
 }

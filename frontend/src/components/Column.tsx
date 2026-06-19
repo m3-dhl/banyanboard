@@ -12,9 +12,10 @@ interface Props {
   onAddCard: (columnId: ColumnId, title: string) => void
   onLabelToggle: (cardId: string, labelId: string) => void
   onDeleteCard: (cardId: string) => void
+  onOpenDetail: (cardId: string) => void
 }
 
-export default function Column({ id, label, cards, labels, onAddCard, onLabelToggle, onDeleteCard }: Props) {
+export default function Column({ id, label, cards, labels, onAddCard, onLabelToggle, onDeleteCard, onOpenDetail }: Props) {
   const [formOpen, setFormOpen] = useState(false)
 
   function handleAdd(title: string) {
@@ -58,6 +59,7 @@ export default function Column({ id, label, cards, labels, onAddCard, onLabelTog
                 labels={labels}
                 onLabelToggle={onLabelToggle}
                 onDelete={onDeleteCard}
+                onOpenDetail={onOpenDetail}
               />
             ))}
             {provided.placeholder}

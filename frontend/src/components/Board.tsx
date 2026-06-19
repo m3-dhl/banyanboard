@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd'
 import { COLUMNS, SEED_CARDS } from '../types'
 import type { ActivityFeedEntry, CardData, ColumnId, Label } from '../types'
@@ -19,6 +19,7 @@ import ActivityFeed from './ActivityFeed'
 import ThemeToggle from './ThemeToggle'
 import FilterBar from './FilterBar'
 import LabelManagementPanel from './LabelManagementPanel'
+import CardDetailModal from './CardDetailModal'
 
 const MAX_FEED_ENTRIES = 20
 
@@ -34,6 +35,8 @@ export default function Board() {
   const [labelAssignError, setLabelAssignError] = useState<string | null>(null)
   const [cardDeleteError, setCardDeleteError] = useState<string | null>(null)
   const [showManagePanel, setShowManagePanel] = useState(false)
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null)
+  const detailTriggerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     Promise.all([fetchBoards(), fetchCards()])
@@ -243,6 +246,72 @@ export default function Board() {
     }
   }
 
+  function handleOpenDetail(cardId: string): void {
+    detailTriggerRef.current = document.getElementById(cardId)
+    setSelectedCardId(cardId)
+  }
+
+  function handleCloseDetail(): void {
+    setSelectedCardId(null)
+    setTimeout(() => detailTriggerRef.current?.focus(), 0)
+  }
+
+  function handleTitleChange(cardId: string, newTitle: string): void {
+    setCards((prev) => prev.map((c) => (c.id === cardId ? { ...c, title: newTitle } : c)))
+  }
+
+  function handleDescriptionChange(cardId: string): void {
+    const card = cards.find((c) => c.id === cardId)
+    if (!card) return
+    const entry: ActivityFeedEntry = {
+      id: `description-changed-${cardId}-${Date.now()}`,
+      kind: 'description-changed',
+      cardTitle: card.title,
+      timestamp: new Date(),
+    }
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+  }
+
+  function handleDueDateChange(cardId: string, dueDate: string | null): void {
+    setCards((prev) => prev.map((c) => (c.id === cardId ? { ...c, dueDate } : c)))
+    const card = cards.find((c) => c.id === cardId)
+    if (!card) return
+    const entry: ActivityFeedEntry = {
+      id: `due-date-changed-${cardId}-${Date.now()}`,
+      kind: 'due-date-changed',
+      cardTitle: card.title,
+      timestamp: new Date(),
+    }
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+  }
+
+  function handleColumnChange(cardId: string, newColumnId: ColumnId): void {
+    const card = cards.find((c) => c.id === cardId)
+    if (!card) return
+    const entry: ActivityFeedEntry = {
+      id: `move-modal-${cardId}-${Date.now()}`,
+      kind: 'move',
+      cardTitle: card.title,
+      fromColumn: card.columnId,
+      toColumn: newColumnId,
+      timestamp: new Date(),
+    }
+    setCards((prev) => prev.map((c) => (c.id === cardId ? { ...c, columnId: newColumnId } : c)))
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+  }
+
+  function handleCommentAdded(_cardId: string, cardTitle: string): void {
+    const entry: ActivityFeedEntry = {
+      id: `comment-added-${_cardId}-${Date.now()}`,
+      kind: 'comment-added',
+      cardTitle,
+      timestamp: new Date(),
+    }
+    setFeedEntries((prev) => [entry, ...prev].slice(0, MAX_FEED_ENTRIES))
+  }
+
+  const selectedCard = selectedCardId ? cards.find((c) => c.id === selectedCardId) ?? null : null
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <main className="board-container">
@@ -302,6 +371,7 @@ export default function Board() {
               onAddCard={onAddCard}
               onLabelToggle={onLabelToggle}
               onDeleteCard={onDeleteCard}
+              onOpenDetail={handleOpenDetail}
             />
           ))}
         </div>
@@ -314,6 +384,22 @@ export default function Board() {
             onCreate={onLabelCreate}
             onDelete={onLabelDelete}
             onClose={() => setShowManagePanel(false)}
+          />
+        )}
+
+        {selectedCard && (
+          <CardDetailModal
+            cardId={selectedCard.id}
+            card={selectedCard}
+            labels={labels}
+            apiError={apiError}
+            onClose={handleCloseDetail}
+            onTitleChange={handleTitleChange}
+            onDescriptionChange={handleDescriptionChange}
+            onDueDateChange={handleDueDateChange}
+            onColumnChange={handleColumnChange}
+            onLabelToggle={onLabelToggle}
+            onCommentAdded={handleCommentAdded}
           />
         )}
       </main>

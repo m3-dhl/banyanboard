@@ -24,6 +24,24 @@ export interface CardData {
   title: string
   columnId: ColumnId
   labels?: Label[]
+  dueDate?: string | null
+}
+
+export interface CardDetail {
+  id: string
+  title: string
+  columnId: ColumnId
+  labels: Label[]
+  description: string | null
+  dueDate: string | null
+}
+
+export interface Comment {
+  id: string
+  cardId: string
+  body: string
+  createdAt: string
+  pending?: boolean
 }
 
 export interface ColumnData {
@@ -43,6 +61,9 @@ export type ActivityFeedEntry =
   | { id: string; kind: 'label-added'; cardTitle: string; labelName: string; timestamp: Date }
   | { id: string; kind: 'label-removed'; cardTitle: string; labelName: string; timestamp: Date }
   | { id: string; kind: 'deleted'; cardTitle: string; timestamp: Date }
+  | { id: string; kind: 'description-changed'; cardTitle: string; timestamp: Date }
+  | { id: string; kind: 'due-date-changed'; cardTitle: string; timestamp: Date }
+  | { id: string; kind: 'comment-added'; cardTitle: string; timestamp: Date }
 
 export const SEED_CARDS: CardData[] = [
   { id: 'card-1', title: 'Design login page', columnId: 'todo' },

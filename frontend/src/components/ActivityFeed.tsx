@@ -63,6 +63,12 @@ export default function ActivityFeed({ entries }: ActivityFeedProps) {
                       <span>{entry.labelName}</span>
                       {' removed'}
                     </>
+                  ) : entry.kind === 'description-changed' ? (
+                    <>{' description updated'}</>
+                  ) : entry.kind === 'due-date-changed' ? (
+                    <>{' due date changed'}</>
+                  ) : entry.kind === 'comment-added' ? (
+                    <>{' comment added'}</>
                   ) : (
                     <>{' deleted'}</>
                   )}

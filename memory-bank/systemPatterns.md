@@ -232,6 +232,12 @@ These patterns apply to all React components under `frontend/src/components/`.
 
 Components receive all data via props and own no fetch logic. State lives in the nearest stateful ancestor (currently `Board.tsx`) and is passed down. This keeps components independently testable with `@testing-library/react` without mocking network calls.
 
+**Two-tier distinction** (added TASK-017):
+- **Stateful feature containers** (`Board.tsx`, `CardDetailModal.tsx`) — own state and fetch logic for their own feature scope; analogous to pages. These are the exception.
+- **Presentational leaf components** (`ActivityFeed`, `CommentsThread`, `MarkdownRenderer`) — fully prop-driven, no fetch calls. These are the rule.
+
+The pattern's intent is that leaf-level UI components stay decoupled from network calls — not that all state must bubble to `Board.tsx`. A self-contained feature modal is a justified stateful container.
+
 - **Problem**: Components that own their own fetch logic are tightly coupled to backend availability
 - **Implementation**: `ActivityFeed` receives `entries: ActivityFeedEntry[]` — it does not know how entries were produced
 - **Trade-offs**: Slight prop-drilling overhead; acceptable at this scale
@@ -298,6 +304,24 @@ When a positioned overlay (popover, tooltip, dropdown) is rendered as a descenda
 - **Trade-offs**: Portal-rendered content lives outside the React tree's DOM position, so inherited CSS (font, color) still flows via React context but DOM-position-dependent CSS (e.g., `overflow: hidden` on an ancestor) no longer clips the overlay. Acceptable trade-off for overlays that must float above the full viewport.
 - **Example**: `frontend/src/components/LabelPickerPopover.tsx`
 
+### Viewport Clamping for Fixed-Position Portals
+
+Portals rendered with `position: fixed` must clamp their `left` coordinate against the right viewport edge. Without clamping, anchors near the right side of the viewport (e.g., rightmost Kanban column) produce overflow that is invisible and inaccessible.
+
+```typescript
+const POPOVER_MAX_WIDTH = 280 // must match CSS max-width value
+const clampedLeft = Math.min(
+  anchorRect.left,
+  window.innerWidth - POPOVER_MAX_WIDTH - 8, // 8px safety margin
+)
+```
+
+- **Problem**: `left: anchorRect.left` with no guard → DONE column anchor at ~x:1050 in a 1280px viewport → popover extends 50px off-screen
+- **Rule**: Apply clamping to **every** positioning branch (open-below and open-above). A branch without clamping will overflow when vertical flip triggers
+- **Testing**: Mock `window.innerWidth` and `window.innerHeight` via `Object.defineProperty`; assert `parseFloat(dialog.style.left) <= window.innerWidth - POPOVER_MAX_WIDTH - 8`
+- **Implementation**: `frontend/src/components/LabelPickerPopover.tsx`
+- **Companion pattern**: See ReactDOM Portal for Positioned Overlays Inside DnD Containers (above) — that pattern explains *why* to use a portal; this pattern explains *how to position it correctly*
+
 ### useFocusTrap Hook for Accessible Dialogs
 
 Modal dialogs and popovers must trap keyboard focus within themselves while open (WCAG 2.1 success criterion 2.1.2). The `useFocusTrap` hook implements this with a `MutationObserver`-driven focus query limited to the container element, without pulling in a third-party focus-trap library.
@@ -308,9 +332,41 @@ Modal dialogs and popovers must trap keyboard focus within themselves while open
 - **Trade-offs**: Minimal implementation; does not handle edge cases like dynamically added focusable children after initial render (not needed for the current label UI). Upgrade to a library (`focus-trap-react`) if dialogs grow more dynamic.
 - **Example**: `frontend/src/hooks/useFocusTrap.ts`; used in `frontend/src/components/LabelManagementPanel.tsx`
 
+### Pointer-Delta Click/Drag Disambiguation
+
+Prevents DnD drag completion from triggering a card-detail open. `onPointerDown` stores the pointer position; `onPointerUp` computes euclidean distance — if < 5px, fires the action.
+
+- **Problem**: `onClick` fires after a drag release, incorrectly opening the detail modal
+- **Implementation**: `frontend/src/components/Card.tsx` — pointer position stored in a `useRef`; euclidean distance gate of 5px before `onOpenDetail` is called
+- **Trade-offs**: Slightly more code than a simple `onClick`, but correctly separates intentional clicks from drag completions
+
+### React Portal Modal Pattern (Accessible Dialog)
+
+`createPortal(<backdrop + dialog>, document.body)` with `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, focus trap, backdrop click to close, and Escape key handler on the container ref (not `document`) with `stopPropagation`.
+
+- **Problem**: Modals rendered inside DnD Draggable containers are broken by CSS `transform` stacking contexts; Escape listeners on `document` conflict with dnd keyboard drag cancellation
+- **Implementation**: `frontend/src/components/CardDetailModal.tsx` — extends the portal pattern established in `DeleteCardDialog.tsx`; Escape listener attached via `ref.current.addEventListener` with `stopPropagation`
+- **Trade-offs**: See ReactDOM Portal for Positioned Overlays Inside DnD Containers (above); this entry documents the accessible dialog variant
+
+### AbortController for Fetch Cleanup
+
+`useEffect` creates an `AbortController`, passes its `signal` to all fetch calls inside the effect, and returns `() => controller.abort()` as cleanup. Prevents state updates on unmounted components and cancels in-flight requests when the component unmounts or deps change.
+
+- **Problem**: Async fetch callbacks that call `setState` after unmount produce React warnings and potential memory leaks
+- **Implementation**: `frontend/src/components/CardDetailModal.tsx` — one controller per `useEffect` that fetches card detail and comments
+- **Trade-offs**: Requires passing `signal` to every fetch call in the effect; easy to miss for secondary requests within the same effect
+
+### Optimistic Comment Add Pattern
+
+Add comment with `pending: true` immediately to local state; on API success replace with the real server response; on API failure remove the optimistic entry and restore the textarea text for retry.
+
+- **Problem**: Network latency makes comment submission feel slow; naive rollback loses the user's text
+- **Implementation**: `frontend/src/components/CardDetailModal.tsx` — comment list entry carries `pending?: boolean`; success replaces by temp ID; failure removes and restores `commentText` state
+- **Trade-offs**: Slightly more complex state management; textarea text preservation on failure is a UX requirement (AC-ERROR-2)
+
 ## Last Refreshed
 
-2026-06-16 — Updated after TASK-008 Phase 2 completion; added ReactDOM Portal for Positioned Overlays Inside DnD Containers and useFocusTrap Hook for Accessible Dialogs patterns
+2026-06-19 — Updated after TASK-017 Phase 2; added Pointer-Delta Click/Drag Disambiguation, React Portal Modal Pattern, AbortController for Fetch Cleanup, and Optimistic Comment Add Pattern
 
 ## Domain Event Pattern
 

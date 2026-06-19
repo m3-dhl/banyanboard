@@ -262,7 +262,7 @@ frontend/src/__tests__/
 - Update `card.routes.ts`: add `GET /:id`, `PATCH /:id`; add `GET /:id/comments`, `POST /:id/comments`
 - Commit: backend phase complete
 
-### Phase 2 — Frontend: CardDetailModal Component + Card Click Handler
+### ✅ Phase 2 — Frontend: CardDetailModal Component + Card Click Handler
 - Resolve creative decisions (click-vs-drag approach, modal layout, Markdown library)
 - Install chosen Markdown library (e.g., `marked`) in `frontend/package.json`
 - Add `description?: string; dueDate?: string | null` to `CardData` in `frontend/src/types.ts`
@@ -292,15 +292,15 @@ frontend/src/__tests__/
 
 ## Execution State
 
-**Build Status**: RUNNING
-**Current Build**: Phase 2 — Frontend: CardDetailModal + Card Click Handler (TASK-017)
+**Build Status**: PHASE_COMPLETE
+**Current Build**: Phase 3 — Integration + Polish + E2E Tests (TASK-017)
 **Build Started**: 2026-06-19
-**Phase Number**: 2 of 3
+**Phase Number**: 2 of 3 complete
 **Is Multi-Phase**: YES
 
 ### Current Build Step
-**Step**: Phase 1 COMPLETE — awaiting /banyan-build for Phase 2
-**Status**: COMPLETE
+**Step**: Awaiting Phase 3
+**Status**: PENDING
 
 ### Completed Steps
 - Spec Writer Agent: COMPLETE — specification written to TASK-017.md
@@ -313,6 +313,10 @@ frontend/src/__tests__/
 - Step 4 Coding Agent: COMPLETE (2026-06-19) — all Phase 1 files implemented
 - Step 5-7 Test+Build+Verify: COMPLETE (2026-06-19) — 112/112 tests pass, TSC clean
 - Step 11 Git Commit: COMPLETE (2026-06-19) — Phase 1 committed to feature/FEAT-010-card-detail-view
+- Phase 2 Test Writer: COMPLETE (2026-06-19) — frontend tests for modal, click handler, due-date badge
+- Phase 2 Coding Agent: COMPLETE (2026-06-19) — CardDetailModal.tsx, Card.tsx (pointer-delta + badge), Board.tsx wiring
+- Phase 2 Test+Build+Verify: COMPLETE (2026-06-19) — all tests pass, TSC clean
+- Phase 2 Git Commit: COMPLETE (2026-06-19) — Phase 2 committed to feature/FEAT-010-card-detail-view
 
 ### Sub-Agents
 (none active)

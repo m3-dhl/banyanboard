@@ -7,6 +7,7 @@
 - **Language**: TypeScript ~6.0.2 (strict mode)
 - **Build**: Vite ^8.0.12 — `npm run dev` starts dev server on port 5173
 - **DnD**: @hello-pangea/dnd ^18.0.1 — drag-and-drop card movement (TASK-005)
+- **Markdown**: react-markdown — XSS-safe Markdown rendering; no `dangerouslySetInnerHTML`; ~15kB gzipped (TASK-017)
 - **State**: React `useState` (local component state; no external state library)
 - **Testing**: Vitest ^4.1.9 + @testing-library/react ^16.3.2 + jsdom
 - **Test runner**: `npm test` runs `vitest run`; `npm run test:watch` for watch mode
