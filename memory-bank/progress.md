@@ -4,6 +4,28 @@
 
 ---
 
+## TASK-017 Phase 3 — Integration + Polish + E2E Tests
+
+**Date**: 2026-06-19
+**Status**: BUILD_COMPLETE (all 3 phases done)
+
+### Tests Added (Phase 3)
+- `frontend/src/__tests__/DescriptionSection.xss.test.tsx` — 3 tests; real react-markdown XSS safety (no mock): script tag, onerror attr, normal Markdown rendering
+- `frontend/src/__tests__/Board.detail.test.tsx` — 3 tests added: title change reflects on board card, column change reflects in board state, closing modal returns focus to originating card (vi.useFakeTimers)
+
+### Verification
+- Frontend: 180/180 tests pass (18 test files)
+- Backend: 112/112 tests pass
+- TSC: clean
+- Lint: clean
+
+### Key Observations
+- react-markdown is XSS-safe by construction (no innerHTML, no dangerouslySetInnerHTML) — confirmed by jsdom assertion
+- Focus-return via setTimeout(0) + vi.runAllTimersAsync() pattern works correctly
+- Board state propagation (title, column changes) verified end-to-end through Board → CardDetailModal → handlers
+
+---
+
 ## Task Archive: TASK-014
 
 **Task**: Multi-label filter selection (+ TASK-015 picker auto-close, TASK-016 viewport overflow)

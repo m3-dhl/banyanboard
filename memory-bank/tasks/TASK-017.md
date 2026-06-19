@@ -273,7 +273,7 @@ frontend/src/__tests__/
 - Modify `frontend/src/components/Board.tsx`: manage `openDetailCardId: string | null` state; handle all detail modal callbacks (`onTitleChange`, `onDescriptionChange`, `onDueDateChange`, `onCommentAdd`); pass through to `CardDetailModal`; extend `feedEntries` for new event kinds
 - Commit: frontend modal phase complete
 
-### Phase 3 — Integration + Polish + E2E Tests
+### ✅ Phase 3 — Integration + Polish + E2E Tests
 - End-to-end test pass: open modal, edit title, set due date, add comment, change column — verify all changes persist across page refresh (real API calls against test DB)
 - Markdown XSS sanitization verification: inject `<script>alert(1)</script>` as description, assert it does not execute (the Markdown library must HTML-encode or strip script tags)
 - Keyboard navigation audit: Tab through all modal fields, Escape closes, focus returns to originating card
@@ -292,15 +292,16 @@ frontend/src/__tests__/
 
 ## Execution State
 
-**Build Status**: PHASE_COMPLETE
+**Build Status**: BUILD_COMPLETE
 **Current Build**: Phase 3 — Integration + Polish + E2E Tests (TASK-017)
 **Build Started**: 2026-06-19
-**Phase Number**: 2 of 3 complete
+**Phase Number**: 3 of 3
 **Is Multi-Phase**: YES
 
 ### Current Build Step
-**Step**: Awaiting Phase 3
-**Status**: PENDING
+**Step**: All phases complete
+**Status**: COMPLETE
+**Completed**: 2026-06-19
 
 ### Completed Steps
 - Spec Writer Agent: COMPLETE — specification written to TASK-017.md
@@ -317,11 +318,14 @@ frontend/src/__tests__/
 - Phase 2 Coding Agent: COMPLETE (2026-06-19) — CardDetailModal.tsx, Card.tsx (pointer-delta + badge), Board.tsx wiring
 - Phase 2 Test+Build+Verify: COMPLETE (2026-06-19) — all tests pass, TSC clean
 - Phase 2 Git Commit: COMPLETE (2026-06-19) — Phase 2 committed to feature/FEAT-010-card-detail-view
+- Phase 3 Test Writer: COMPLETE (2026-06-19) — DescriptionSection.xss.test.tsx (3 tests), Board.detail.test.tsx (3 tests added)
+- Phase 3 Test+Build+Verify: COMPLETE (2026-06-19) — 180 frontend + 112 backend = 292 tests passing, TSC clean, lint clean
+- Phase 3 Code Review: COMPLETE (2026-06-19) — APPROVED
 
 ### Sub-Agents
 (none active)
 
 ### Resumption Notes
-**Can Resume**: YES
-**Resume From**: Phase 2 — Frontend modal + card click handler
-**Notes**: Phase 1 complete. Phase 2 = install react-markdown, update types.ts + api.ts, create CardDetailModal + DescriptionSection + CommentsSection, modify Card.tsx (pointer-delta + due-date badge), wire Board.tsx
+**Can Resume**: NO
+**Resume From**: N/A
+**Notes**: All 3 phases complete. Run /banyan-reflect TASK-017 next.
