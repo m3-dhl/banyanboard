@@ -2,34 +2,35 @@ import type { Label } from '../types'
 
 interface Props {
   labels: Label[]
-  activeFilter: string | null
-  onFilterChange: (labelId: string | null) => void
+  activeFilters: string[]
+  onFilterChange: (labelId: string) => void
+  onFilterClear: () => void
 }
 
-export default function FilterBar({ labels, activeFilter, onFilterChange }: Props) {
+export default function FilterBar({ labels, activeFilters, onFilterChange, onFilterClear }: Props) {
   if (labels.length === 0) return null
 
   return (
     <div className="filter-bar">
       {labels.map((label) => {
-        const isActive = activeFilter === label.id
+        const isActive = activeFilters.includes(label.id)
         return (
           <button
             key={label.id}
             type="button"
             className={`filter-chip${isActive ? ' filter-chip--active' : ''}`}
             aria-pressed={isActive}
-            onClick={() => onFilterChange(isActive ? null : label.id)}
+            onClick={() => onFilterChange(label.id)}
           >
             {label.name}
           </button>
         )
       })}
-      {activeFilter !== null && (
+      {activeFilters.length > 0 && (
         <button
           type="button"
           className="filter-chip-clear"
-          onClick={() => onFilterChange(null)}
+          onClick={onFilterClear}
         >
           Clear filter
         </button>

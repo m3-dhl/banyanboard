@@ -49,6 +49,7 @@ function makeDropResult(draggableId: string, fromCol: string, toCol: string): Dr
 
 const BUG_LABEL: Label = { id: 'label-1', name: 'Bug', color: '#C0392B' }
 const FEATURE_LABEL: Label = { id: 'label-2', name: 'Feature', color: '#2980B9' }
+const URGENT_LABEL: Label = { id: 'label-3', name: 'Urgent', color: '#E67E22' }
 
 const SAMPLE_LABELS: Label[] = [BUG_LABEL, FEATURE_LABEL]
 
@@ -59,8 +60,9 @@ const SAMPLE_LABELS: Label[] = [BUG_LABEL, FEATURE_LABEL]
 describe('FilterBar', () => {
   const defaultProps = {
     labels: SAMPLE_LABELS,
-    activeFilter: null,
+    activeFilters: [] as string[],
     onFilterChange: vi.fn(),
+    onFilterClear: vi.fn(),
   }
 
   beforeEach(() => {
@@ -77,7 +79,6 @@ describe('FilterBar', () => {
     const { container } = render(
       <FilterBar {...defaultProps} labels={[]} />
     )
-    // Either the component returns null or renders no interactive chips
     const chips = container.querySelectorAll('[role="button"], button')
     expect(chips).toHaveLength(0)
   })
@@ -90,11 +91,11 @@ describe('FilterBar', () => {
     expect(onFilterChange).toHaveBeenCalledWith('label-1')
   })
 
-  it('marks the active filter chip with aria-pressed="true"', () => {
+  it('marks active filter chips with aria-pressed="true"', () => {
     render(
       <FilterBar
         {...defaultProps}
-        activeFilter="label-1"
+        activeFilters={['label-1']}
       />
     )
     expect(screen.getByRole('button', { name: /bug/i })).toHaveAttribute('aria-pressed', 'true')
@@ -104,51 +105,103 @@ describe('FilterBar', () => {
     render(
       <FilterBar
         {...defaultProps}
-        activeFilter="label-1"
+        activeFilters={['label-1']}
       />
     )
     expect(screen.getByRole('button', { name: /feature/i })).toHaveAttribute('aria-pressed', 'false')
   })
 
-  it('calls onFilterChange with null when the already-active chip is clicked (toggle off)', async () => {
+  it('calls onFilterChange with the label id when the already-active chip is clicked (toggle off)', async () => {
     const onFilterChange = vi.fn()
     render(
       <FilterBar
         labels={SAMPLE_LABELS}
-        activeFilter="label-1"
+        activeFilters={['label-1']}
         onFilterChange={onFilterChange}
+        onFilterClear={vi.fn()}
       />
     )
     await userEvent.click(screen.getByRole('button', { name: /bug/i }))
-    expect(onFilterChange).toHaveBeenCalledWith(null)
+    expect(onFilterChange).toHaveBeenCalledWith('label-1')
   })
 
   it('renders a "Clear filter" button when a filter is active', () => {
     render(
       <FilterBar
         {...defaultProps}
-        activeFilter="label-1"
+        activeFilters={['label-1']}
       />
     )
     expect(screen.getByRole('button', { name: /clear filter/i })).toBeInTheDocument()
   })
 
   it('does not render a "Clear filter" button when no filter is active', () => {
-    render(<FilterBar {...defaultProps} activeFilter={null} />)
+    render(<FilterBar {...defaultProps} activeFilters={[]} />)
     expect(screen.queryByRole('button', { name: /clear filter/i })).toBeNull()
   })
 
-  it('calls onFilterChange(null) when the "Clear filter" button is clicked', async () => {
+  it('calls onFilterClear when the "Clear filter" button is clicked', async () => {
+    const onFilterClear = vi.fn()
+    render(
+      <FilterBar
+        labels={SAMPLE_LABELS}
+        activeFilters={['label-2']}
+        onFilterChange={vi.fn()}
+        onFilterClear={onFilterClear}
+      />
+    )
+    await userEvent.click(screen.getByRole('button', { name: /clear filter/i }))
+    expect(onFilterClear).toHaveBeenCalledOnce()
+  })
+
+  // Multi-select specific tests
+  it('marks multiple chips as active when multiple filters are selected', () => {
+    render(
+      <FilterBar
+        {...defaultProps}
+        activeFilters={['label-1', 'label-2']}
+      />
+    )
+    expect(screen.getByRole('button', { name: /bug/i })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: /feature/i })).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('renders "Clear filter" button when multiple filters are active', () => {
+    render(
+      <FilterBar
+        {...defaultProps}
+        activeFilters={['label-1', 'label-2']}
+      />
+    )
+    expect(screen.getByRole('button', { name: /clear filter/i })).toBeInTheDocument()
+  })
+
+  it('can activate a second chip while one is already active', async () => {
     const onFilterChange = vi.fn()
     render(
       <FilterBar
         labels={SAMPLE_LABELS}
-        activeFilter="label-2"
+        activeFilters={['label-1']}
         onFilterChange={onFilterChange}
+        onFilterClear={vi.fn()}
       />
     )
-    await userEvent.click(screen.getByRole('button', { name: /clear filter/i }))
-    expect(onFilterChange).toHaveBeenCalledWith(null)
+    await userEvent.click(screen.getByRole('button', { name: /feature/i }))
+    expect(onFilterChange).toHaveBeenCalledWith('label-2')
+  })
+
+  it('handles three labels and tracks all active states correctly', () => {
+    render(
+      <FilterBar
+        labels={[BUG_LABEL, FEATURE_LABEL, URGENT_LABEL]}
+        activeFilters={['label-1', 'label-3']}
+        onFilterChange={vi.fn()}
+        onFilterClear={vi.fn()}
+      />
+    )
+    expect(screen.getByRole('button', { name: /bug/i })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: /feature/i })).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByRole('button', { name: /urgent/i })).toHaveAttribute('aria-pressed', 'true')
   })
 })
 
@@ -164,9 +217,9 @@ describe('Board label filtering', () => {
         return Promise.resolve({
           ok: true,
           json: async () => [
-            { id: 'card-1', title: 'Design login page', columnId: 'todo' },
-            { id: 'card-2', title: 'Implement auth API', columnId: 'in-progress' },
-            { id: 'card-3', title: 'Write README', columnId: 'done' },
+            { id: 'card-1', title: 'Design login page', columnId: 'todo', labels: [BUG_LABEL] },
+            { id: 'card-2', title: 'Implement auth API', columnId: 'in-progress', labels: [FEATURE_LABEL] },
+            { id: 'card-3', title: 'Write README', columnId: 'done', labels: [] },
           ],
         } as unknown as Response)
       }
@@ -190,19 +243,18 @@ describe('Board label filtering', () => {
   it('hides cards that do not carry the active label when a filter is selected', async () => {
     render(<Board />)
 
-    // Wait for Board to finish loading
     await waitFor(() => {
       expect(screen.getByText('Design login page')).toBeInTheDocument()
     })
 
-    // The FilterBar should be rendered once labels have loaded.
-    // Click the "Bug" chip to activate the filter.
     const bugChip = await screen.findByRole('button', { name: /bug/i })
     await userEvent.click(bugChip)
 
-    // Seed cards have no labels, so all seed cards should be hidden
+    // card-1 has Bug label → visible; card-2 has Feature → hidden; card-3 has none → hidden
     await waitFor(() => {
-      expect(screen.queryByText('Design login page')).toBeNull()
+      expect(screen.getByText('Design login page')).toBeInTheDocument()
+      expect(screen.queryByText('Implement auth API')).toBeNull()
+      expect(screen.queryByText('Write README')).toBeNull()
     })
   })
 
@@ -213,15 +265,12 @@ describe('Board label filtering', () => {
       expect(screen.getByText('Design login page')).toBeInTheDocument()
     })
 
-    // Activate a filter
     const bugChip = await screen.findByRole('button', { name: /bug/i })
     await userEvent.click(bugChip)
 
-    // Then clear it
     const clearButton = await screen.findByRole('button', { name: /clear filter/i })
     await userEvent.click(clearButton)
 
-    // All seed cards should be visible again
     await waitFor(() => {
       expect(screen.getByText('Design login page')).toBeInTheDocument()
       expect(screen.getByText('Implement auth API')).toBeInTheDocument()
@@ -229,30 +278,83 @@ describe('Board label filtering', () => {
     })
   })
 
-  // AC-ERROR-3: filter state preserved across drag-and-drop
-  it('preserves active filter when a card is dragged to a different column', async () => {
+  it('shows cards matching ANY of the selected labels (OR logic)', async () => {
     render(<Board />)
 
-    // Wait for labels to load
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /bug/i })).toBeInTheDocument()
+      expect(screen.getByText('Design login page')).toBeInTheDocument()
     })
 
-    // Activate Bug filter — all seed cards have no labels so all become hidden
-    const bugChip = screen.getByRole('button', { name: /bug/i })
+    // Select Bug filter → only card-1 visible
+    const bugChip = await screen.findByRole('button', { name: /bug/i })
+    await userEvent.click(bugChip)
+
+    await waitFor(() => {
+      expect(screen.getByText('Design login page')).toBeInTheDocument()
+      expect(screen.queryByText('Implement auth API')).toBeNull()
+    })
+
+    // Also select Feature → card-1 and card-2 visible, card-3 still hidden
+    const featureChip = screen.getByRole('button', { name: /feature/i })
+    await userEvent.click(featureChip)
+
+    await waitFor(() => {
+      expect(screen.getByText('Design login page')).toBeInTheDocument()
+      expect(screen.getByText('Implement auth API')).toBeInTheDocument()
+      expect(screen.queryByText('Write README')).toBeNull()
+    })
+  })
+
+  it('removes a single label from the active set when its chip is clicked again', async () => {
+    render(<Board />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Design login page')).toBeInTheDocument()
+    })
+
+    const bugChip = await screen.findByRole('button', { name: /bug/i })
+    const featureChip = screen.getByRole('button', { name: /feature/i })
+
+    // Activate both
+    await userEvent.click(bugChip)
+    await userEvent.click(featureChip)
+
+    await waitFor(() => {
+      expect(screen.getByText('Design login page')).toBeInTheDocument()
+      expect(screen.getByText('Implement auth API')).toBeInTheDocument()
+    })
+
+    // Deactivate Bug — only Feature active now → only card-2 visible
     await userEvent.click(bugChip)
 
     await waitFor(() => {
       expect(screen.queryByText('Design login page')).toBeNull()
+      expect(screen.getByText('Implement auth API')).toBeInTheDocument()
+      expect(screen.queryByText('Write README')).toBeNull()
+    })
+  })
+
+  // AC-ERROR-3: filter state preserved across drag-and-drop
+  it('preserves active filters when a card is dragged to a different column', async () => {
+    render(<Board />)
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /bug/i })).toBeInTheDocument()
     })
 
-    // Simulate a drag — "Design login page" (card-1) moves todo → in-progress
-    capturedOnDragEnd!(makeDropResult('card-1', 'todo', 'in-progress'))
+    const bugChip = screen.getByRole('button', { name: /bug/i })
+    await userEvent.click(bugChip)
 
-    // Filter must remain active: the card is still hidden (no Bug label)
     await waitFor(() => {
-      expect(screen.queryByText('Design login page')).toBeNull()
-      // Filter chip still shows active state
+      expect(screen.queryByText('Implement auth API')).toBeNull()
+    })
+
+    // Simulate a drag
+    capturedOnDragEnd!(makeDropResult('card-2', 'in-progress', 'done'))
+
+    // Filter must remain active
+    await waitFor(() => {
+      expect(screen.queryByText('Implement auth API')).toBeNull()
       expect(screen.getByRole('button', { name: /bug/i })).toHaveAttribute('aria-pressed', 'true')
     })
   })
